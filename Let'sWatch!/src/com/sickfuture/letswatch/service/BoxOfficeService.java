@@ -15,10 +15,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
+import com.android.sickfuture.sickcore.asynctask.CommonTask;
+import com.android.sickfuture.sickcore.http.HttpManager;
+import com.android.sickfuture.sickcore.service.CommonService;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.http.HttpManager;
-import com.sickfuture.letswatch.service.common.CommonService;
-import com.sickfuture.letswatch.task.CommonTask;
 
 public class BoxOfficeService extends CommonService<List<JSONObject>> {
 
@@ -101,6 +101,12 @@ public class BoxOfficeService extends CommonService<List<JSONObject>> {
 		Intent intent = new Intent(ACTION_ON_ERROR);
 		intent.putExtra(EXTRA_KEY_MESSAGE, e.toString());
 		sendBroadcast(intent);
+	}
+
+	@Override
+	protected int getStartMode() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -19,6 +20,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.android.sickfuture.sickcore.db.BaseColumns;
+import com.android.sickfuture.sickcore.service.CommonService;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.InetChecker;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -27,10 +32,8 @@ import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
 import com.sickfuture.letswatch.app.activity.MainActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.database.CommonDataBase;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.service.BoxOfficeService;
-import com.sickfuture.letswatch.service.common.CommonService;
-import com.sickfuture.letswatch.utils.InetChecker;
 
 public class BoxOfficeFragment extends SherlockFragment implements
 		OnRefreshListener<ListView>, LoaderCallbacks<Cursor>,
@@ -43,6 +46,8 @@ public class BoxOfficeFragment extends SherlockFragment implements
 	private BroadcastReceiver mBroadcastReceiver;
 
 	private IListClickable mCallback;
+
+	private Uri mUri = ContractUtils.getProviderUriFromContract(Contract.class);
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -100,8 +105,11 @@ public class BoxOfficeFragment extends SherlockFragment implements
 	@Override
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 		if (InetChecker.checkInetConnection(getSherlockActivity())) {
-			CommonDataBase.getInstance().deleteTable(
-					Contract.BoxOfficeColumns.TABLE_NAME, null, null);
+			getActivity().getContentResolver()
+					.delete(mUri,
+							MovieColumns.SECTION + " = ?",
+							new String[] { String
+									.valueOf(Contract.BOX_OFFICE_SECTION) });
 			Intent intent = new Intent(getSherlockActivity(),
 					BoxOfficeService.class);
 			intent.putExtra("url",
@@ -115,17 +123,16 @@ public class BoxOfficeFragment extends SherlockFragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-		return new CursorLoader(getSherlockActivity(),
-				Contract.MovieColumns.CONTENT_URI, null,
+		return new CursorLoader(getSherlockActivity(), mUri, null,
 				Contract.MovieColumns.SECTION + " = ?",
 				new String[] { Contract.BOX_OFFICE_SECTION_MARK }, null);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		/*if (cursor.getCount() == 0) {
-			onRefresh(mListView);
-		}*/
+		/*
+		 * if (cursor.getCount() == 0) { onRefresh(mListView); }
+		 */
 		mBoxOfficeCursorAdapter.swapCursor(cursor);
 	}
 
@@ -140,7 +147,8 @@ public class BoxOfficeFragment extends SherlockFragment implements
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.SECTION, Contract.BOX_OFFICE_SECTION);
-		arguments.putInt(Contract.ID, cursor.getInt(cursor.getColumnIndex(Contract.MovieColumns.MOVIE_ID)));
+		arguments.putInt(Contract.ID,
+				cursor.getInt(cursor.getColumnIndex(BaseColumns._ID)));
 		arguments
 				.putInt(MainActivity.FRAGMENT, MainActivity.BOXOFFICE_FRAGMENT);
 		mCallback.onItemListClick(arguments);

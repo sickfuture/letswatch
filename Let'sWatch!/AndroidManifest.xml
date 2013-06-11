@@ -13,13 +13,13 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name="com.sickfuture.letswatch.app.LetsWatchApplication"
+        android:name=".app.LetsWatchApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Sherlock.Light" >
         <activity
-            android:name="com.sickfuture.letswatch.app.activity.MainActivity"
+            android:name=".app.activity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +28,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.sickfuture.letswatch.app.activity.FullScreenImageActivity"
+            android:name=".app.activity.FullScreenImageActivity"
             android:theme="@style/FullscreenTheme" >
         </activity>
-        <activity android:name="com.sickfuture.letswatch.app.activity.MovieDetailsActivity" >
+        <activity android:name=".app.activity.MovieDetailsActivity" >
         </activity>
         <activity
-            android:name="com.sickfuture.letswatch.app.activity.SearchActivity"
+            android:name=".app.activity.SearchActivity"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -50,20 +50,8 @@
         <service android:name="com.sickfuture.letswatch.service.UpcomingService" >
         </service>
 
-        <!--
         <provider
-            android:name="com.sickfuture.letswatch.content.provider.UpcomingProvider"
-            android:authorities="com.sickfuture.letswatch.content.provider.UpcomingProvider"
-            android:exported="false" >
-        </provider>
-        <provider
-            android:name="com.sickfuture.letswatch.content.provider.BoxOfficeProvider"
-            android:authorities="com.sickfuture.letswatch.content.provider.BoxOfficeProvider"
-            android:exported="false" >
-        </provider>
-        -->
-        <provider
-            android:name="com.sickfuture.letswatch.content.provider.MoviesProvider"
+            android:name=".content.provider.MoviesProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.MoviesProvider"
             android:exported="false" >
         </provider>

@@ -9,15 +9,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.android.sickfuture.sickcore.asynctask.ParamCallback;
+import com.android.sickfuture.sickcore.image.ImageLoader;
 import com.custom.TouchImageView;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.images.ImageLoader;
-import com.sickfuture.letswatch.task.ParamCallback;
-import com.sickfuture.letswatch.utils.ui.SystemUiHider;
+import com.sickfuture.letswatch.uiutils.SystemUiHider;
 
 public class FullScreenImageActivity extends SherlockActivity {
 
@@ -116,20 +115,20 @@ public class FullScreenImageActivity extends SherlockActivity {
 		mIntent = getIntent();
 		String source = mIntent.getStringExtra(POSTERS_PROFILE);
 		Log.d("Full screen image intent", source);
-		ImageLoader.getInstance().bind(mFullScreenImageView, source,
-				new ParamCallback<Void>() {
-
-					@Override
-					public void onSuccess(Void c) {
-						mProgressBar.setVisibility(View.GONE);
-						loadHiRes();
-					}
-
-					@Override
-					public void onError(Throwable e) {
-						mProgressBar.setVisibility(View.GONE);
-					}
-				});
+//		ImageLoader.getInstance(this).bind(mFullScreenImageView, source,
+//				new ParamCallback<Void>() {
+//
+//					@Override
+//					public void onSuccess(Void c) {
+//						mProgressBar.setVisibility(View.GONE);
+//						loadHiRes();
+//					}
+//
+//					@Override
+//					public void onError(Throwable e) {
+//						mProgressBar.setVisibility(View.GONE);
+//					}
+//				});
 		
 	}
 
@@ -138,19 +137,19 @@ public class FullScreenImageActivity extends SherlockActivity {
 		Log.d("Full screen image intent", original);
 		if(!TextUtils.isEmpty(original)){
 			mProgressBar.setVisibility(View.VISIBLE);
-			ImageLoader.getInstance().bind(mFullScreenImageView, original,
-				new ParamCallback<Void>() {
-
-					@Override
-					public void onSuccess(Void c) {
-						mProgressBar.setVisibility(View.GONE);
-					}
-
-					@Override
-					public void onError(Throwable e) {
-						mProgressBar.setVisibility(View.GONE);
-					}
-				});
+//			ImageLoader.getInstance(this).bind(mFullScreenImageView, original,
+//				new ParamCallback<Void>() {
+//
+//					@Override
+//					public void onSuccess(Void c) {
+//						mProgressBar.setVisibility(View.GONE);
+//					}
+//
+//					@Override
+//					public void onError(Throwable e) {
+//						mProgressBar.setVisibility(View.GONE);
+//					}
+//				});
 		}
 		
 	}

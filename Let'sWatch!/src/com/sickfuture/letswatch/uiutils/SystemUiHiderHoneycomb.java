@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.utils.ui;
+package com.sickfuture.letswatch.uiutils;
 
 import android.annotation.TargetApi;
 import android.os.Build;
