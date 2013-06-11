@@ -3,6 +3,8 @@ package com.sickfuture.letswatch.content.contract;
 import com.android.sickfuture.sickcore.annotations.ContentInfo;
 import com.android.sickfuture.sickcore.annotations.db.DBTableName;
 import com.android.sickfuture.sickcore.annotations.db.contract.DBContract;
+import com.android.sickfuture.sickcore.annotations.db.types.DBIntegerType;
+import com.android.sickfuture.sickcore.annotations.db.types.DBVarcharType;
 import com.android.sickfuture.sickcore.db.BaseColumns;
 
 @DBContract
@@ -35,65 +37,64 @@ public class Contract {
 		public MovieColumns() {
 		}
 
-		public static final String MOVIE_ID = _ID;
+		@DBVarcharType
 		public static final String MOVIE_TITLE = "MOVIE_TITLE";
+		@DBIntegerType
 		public static final String YEAR = "YEAR";
+		@DBVarcharType
 		public static final String MPAA = "MPAA";
+		@DBIntegerType
 		public static final String RUNTIME = "RUNTIME";
+		@DBVarcharType
 		public static final String RELEASE_DATE_THEATER = "RELEASE_DATE_THEATER";
+		@DBVarcharType
 		public static final String RELEASE_DATE_DVD = "RELEASE_DATE_DVD";
+		@DBVarcharType
 		public static final String CRITICS_CONSENSUS = "CRITICS_CONSENSUS";
+		@DBVarcharType
 		public static final String SYNOPSIS = "SYNOPSIS";
+		@DBVarcharType
 		public static final String RATING_CRITICS = "RATING_CRITICS";
+		@DBVarcharType
 		public static final String RATING_CRITICS_SCORE = "RATING_CRITICS_SCORE";
+		@DBVarcharType
 		public static final String RATING_AUDIENCE = "RATING_AUDIENCE";
+		@DBVarcharType
 		public static final String RATING_AUDIENCE_SCORE = "RATING_AUDIENCE_SCORE";
+		@DBVarcharType
 		public static final String POSTERS_THUMBNAIL = "POSTERS_THUMBNAIL";
+		@DBVarcharType
 		public static final String POSTERS_PROFILE = "POSTERS_PROFILE";
+		@DBVarcharType
 		public static final String POSTERS_DETAILED = "POSTERS_DETAILED";
+		@DBVarcharType
 		public static final String POSTERS_ORIGINAL = "POSTERS_ORIGINAL";
+		@DBVarcharType
 		public static final String CAST_IDS = "CAST_IDS";
+		@DBVarcharType
 		public static final String ALTERNATE_IDS = "ALTERNATE_IDS";
+		@DBVarcharType
 		public static final String LINK_SELF = "LINK_SELF";
+		@DBVarcharType
 		public static final String LINK_ALTRENATE = "LINK_ALTRENATE";
+		@DBVarcharType
 		public static final String LINK_CAST = "LINK_CAST";
+		@DBVarcharType
 		public static final String LINK_CLIPS = "LINK_CLIPS";
+		@DBVarcharType
 		public static final String LINK_REVIEWS = "LINK_REVIEWS";
+		@DBVarcharType
 		public static final String LINK_SIMILAR = "LINK_SIMILAR";
+		@DBIntegerType
 		public static final String SECTION = "SECTION";
+		@DBVarcharType
 		public static final String IS_FAVORITE = "IS_FAVORITE";
+		@DBVarcharType
 		public static final String GENRES = "GENRES";
+		@DBVarcharType
 		public static final String STUDIO = "STUDIO";
+		@DBVarcharType
 		public static final String DIRECTORS = "DIRECTORS";
-
-		public final static String[] COLUMNS = {
-				Contract.MovieColumns.MOVIE_ID,
-				Contract.MovieColumns.MOVIE_TITLE, Contract.MovieColumns.YEAR,
-				Contract.MovieColumns.MPAA, Contract.MovieColumns.RUNTIME,
-				Contract.MovieColumns.RELEASE_DATE_THEATER,
-				Contract.MovieColumns.RELEASE_DATE_DVD,
-				Contract.MovieColumns.CRITICS_CONSENSUS,
-				Contract.MovieColumns.SYNOPSIS,
-				Contract.MovieColumns.RATING_CRITICS,
-				Contract.MovieColumns.RATING_CRITICS_SCORE,
-				Contract.MovieColumns.RATING_AUDIENCE,
-				Contract.MovieColumns.RATING_AUDIENCE_SCORE,
-				Contract.MovieColumns.POSTERS_THUMBNAIL,
-				Contract.MovieColumns.POSTERS_PROFILE,
-				Contract.MovieColumns.POSTERS_DETAILED,
-				Contract.MovieColumns.POSTERS_ORIGINAL,
-				Contract.MovieColumns.CAST_IDS,
-				Contract.MovieColumns.ALTERNATE_IDS,
-				Contract.MovieColumns.LINK_SELF,
-				Contract.MovieColumns.LINK_ALTRENATE,
-				Contract.MovieColumns.LINK_CAST,
-				Contract.MovieColumns.LINK_CLIPS,
-				Contract.MovieColumns.LINK_REVIEWS,
-				Contract.MovieColumns.LINK_SIMILAR,
-				Contract.MovieColumns.SECTION,
-				Contract.MovieColumns.IS_FAVORITE,
-				Contract.MovieColumns.GENRES, Contract.MovieColumns.DIRECTORS,
-				Contract.MovieColumns.STUDIO };
 
 	}
 
