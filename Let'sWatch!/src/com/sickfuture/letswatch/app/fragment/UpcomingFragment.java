@@ -24,6 +24,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.android.sickfuture.sickcore.service.CommonService;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.InetChecker;
+import com.android.sickfuture.sickcore.utils.ui.ViewHider;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -32,14 +36,11 @@ import com.sickfuture.letswatch.adapter.UpcomingCursorAdapter;
 import com.sickfuture.letswatch.app.activity.MainActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.database.CommonDataBase;
 import com.sickfuture.letswatch.service.UpcomingService;
-import com.sickfuture.letswatch.service.common.CommonService;
-import com.sickfuture.letswatch.utils.InetChecker;
-import com.sickfuture.letswatch.utils.ViewHider;
 
 public class UpcomingFragment extends SherlockFragment implements
-		LoaderCallbacks<Cursor>, OnRefreshListener<ListView>, OnScrollListener, OnItemClickListener {
+		LoaderCallbacks<Cursor>, OnRefreshListener<ListView>, OnScrollListener,
+		OnItemClickListener {
 
 	private static int PAGINATION = R.string.pagination;
 
@@ -58,7 +59,7 @@ public class UpcomingFragment extends SherlockFragment implements
 	private boolean mViewLoadingHidden, mLoading = true;
 
 	private SharedPreferences mPreferences;
-	
+
 	private IListClickable mClickable;
 
 	@Override
@@ -106,7 +107,7 @@ public class UpcomingFragment extends SherlockFragment implements
 
 	@Override
 	public void onAttach(Activity activity) {
-		if(!(activity instanceof IListClickable))
+		if (!(activity instanceof IListClickable))
 			throw new IllegalArgumentException(
 					"Activity must implements IListClickable");
 		mClickable = (IListClickable) activity;
@@ -123,8 +124,9 @@ public class UpcomingFragment extends SherlockFragment implements
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 		Log.d(LOG_TAG, "onRefresh");
 		if (InetChecker.checkInetConnection(getSherlockActivity())) {
-			CommonDataBase.getInstance().deleteTable(
-					Contract.UpcomingColumns.TABLE_NAME, null, null);
+			// CommonDataBase.getInstance(getActivity()).deleteTable(
+			// DatabaseUtils.getTableNameFromContract(Contract.class), null,
+			// null);
 			Intent intent = new Intent(getSherlockActivity(),
 					UpcomingService.class);
 			intent.putExtra(URL, getString(R.string.API_UPCOMING_REQUEST_URL));
@@ -143,16 +145,17 @@ public class UpcomingFragment extends SherlockFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle bundle) {
 		return new CursorLoader(getSherlockActivity(),
-				Contract.MovieColumns.CONTENT_URI, null,
+				ContractUtils.getProviderUriFromContract(Contract.class), null,
 				Contract.MovieColumns.SECTION + " = ?",
-				new String[] { Contract.UPCOMING_SECTION_MARK }, null);
+				new String[] { String.valueOf(Contract.UPCOMING_SECTION) },
+				null);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		/*if (cursor.getCount() == 0) {
-			onRefresh(null);
-		}*/
+		/*
+		 * if (cursor.getCount() == 0) { onRefresh(null); }
+		 */
 		mUpcomingCursorAdapter.swapCursor(cursor);
 	}
 
@@ -201,13 +204,15 @@ public class UpcomingFragment extends SherlockFragment implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> list, View view, int position,
+			long id) {
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.SECTION, Contract.UPCOMING_SECTION);
-		arguments.putInt(Contract.ID, cursor.getInt(cursor.getColumnIndex(Contract.MovieColumns.MOVIE_ID)));
 		arguments
-				.putInt(MainActivity.FRAGMENT, MainActivity.UPCOM_FRAGMENT);
+				.putInt(Contract.ID, cursor.getInt(cursor
+						.getColumnIndex(Contract.MovieColumns._ID)));
+		arguments.putInt(MainActivity.FRAGMENT, MainActivity.UPCOM_FRAGMENT);
 		mClickable.onItemListClick(arguments);
 	}
 

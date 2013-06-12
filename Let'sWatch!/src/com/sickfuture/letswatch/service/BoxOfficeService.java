@@ -18,6 +18,7 @@ import android.util.Log;
 import com.android.sickfuture.sickcore.asynctask.CommonTask;
 import com.android.sickfuture.sickcore.http.HttpManager;
 import com.android.sickfuture.sickcore.service.CommonService;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class BoxOfficeService extends CommonService<List<JSONObject>> {
@@ -63,11 +64,6 @@ public class BoxOfficeService extends CommonService<List<JSONObject>> {
 		}.start(URL);
 	}
 
-	@Override
-	protected Uri getProviderUri() {
-		return Contract.MovieColumns.CONTENT_URI;
-	}
-
 	@Override //runs in new thread
 	protected void callbackOnSuccess(final List<JSONObject> c) {
 		
@@ -107,6 +103,11 @@ public class BoxOfficeService extends CommonService<List<JSONObject>> {
 	protected int getStartMode() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	protected Uri getProviderUri() {
+		return ContractUtils.getProviderUriFromContract(Contract.class);
 	}
 
 }

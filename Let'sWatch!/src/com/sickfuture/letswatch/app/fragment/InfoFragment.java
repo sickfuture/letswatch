@@ -1,7 +1,6 @@
 package com.sickfuture.letswatch.app.fragment;
 
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -11,15 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.android.sickfuture.sickcore.image.ImageLoader;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.database.CommonDataBase;
-import com.sickfuture.letswatch.images.ImageLoader;
 
 public class InfoFragment extends SherlockListFragment implements
 		LoaderCallbacks<Cursor> {
@@ -36,12 +34,12 @@ public class InfoFragment extends SherlockListFragment implements
 	private int mSection, mId;
 
 	private static final String[] PROJECTION = new String[] {
-			Contract.BoxOfficeColumns.MOVIE_ID,
-			Contract.BoxOfficeColumns.MOVIE_TITLE,
-			Contract.BoxOfficeColumns.YEAR, Contract.BoxOfficeColumns.RUNTIME,
-			Contract.BoxOfficeColumns.RATING_CRITICS,
-			Contract.BoxOfficeColumns.RATING_AUDIENCE,
-			Contract.BoxOfficeColumns.SYNOPSIS,
+			Contract.MovieColumns._ID,
+			Contract.MovieColumns.MOVIE_TITLE,
+			Contract.MovieColumns.YEAR, Contract.MovieColumns.RUNTIME,
+			Contract.MovieColumns.RATING_CRITICS,
+			Contract.MovieColumns.RATING_AUDIENCE,
+			Contract.MovieColumns.SYNOPSIS,
 			Contract.MovieColumns.POSTERS_DETAILED };
 
 	@Override
@@ -74,9 +72,9 @@ public class InfoFragment extends SherlockListFragment implements
 	}
 
 	private void loadInfoValues() {
-		Uri uri = Contract.MovieColumns.CONTENT_URI;
+		Uri uri = ContractUtils.getProviderUriFromContract(Contract.class);
 		Cursor cursor = getSherlockActivity().getContentResolver().query(uri,
-				PROJECTION, Contract.MovieColumns.MOVIE_ID + " = ?",
+				PROJECTION, Contract.MovieColumns._ID + " = ?",
 				new String[] { String.valueOf(mId) }, null);
 
 		if (cursor != null) {
@@ -95,7 +93,7 @@ public class InfoFragment extends SherlockListFragment implements
 				mDescripTextView.setText(cursor.getString(cursor
 						.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
 				ImageLoader
-						.getInstance()
+						.getInstance(getActivity())
 						.bind(mPosterImageView,
 								cursor.getString(cursor
 										.getColumnIndex(Contract.MovieColumns.POSTERS_DETAILED)), true);
