@@ -73,8 +73,8 @@ public class Contract {
 		public static final String CAST_IDS = "CAST_IDS";
 		@DBVarcharType
 		public static final String ALTERNATE_IDS = "ALTERNATE_IDS";
-		@DBVarcharType
-		public static final String LINK_SELF = "LINK_SELF";
+//		@DBVarcharType
+//		public static final String LINK_SELF = "LINK_SELF";
 		@DBVarcharType
 		public static final String LINK_ALTRENATE = "LINK_ALTRENATE";
 		@DBVarcharType
