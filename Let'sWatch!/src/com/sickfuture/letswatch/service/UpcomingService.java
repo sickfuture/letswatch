@@ -26,7 +26,7 @@ import com.sickfuture.letswatch.http.HttpManager;
 import com.sickfuture.letswatch.service.common.CommonService;
 import com.sickfuture.letswatch.task.CommonTask;
 
-public class UpcomingService extends CommonService<List<JSONObject>> {
+public class UpcomingService extends LoadingService<List<JSONObject>> {
 	
 	public static final String NEXT_UPCOMING = "next_upcoming";
 	

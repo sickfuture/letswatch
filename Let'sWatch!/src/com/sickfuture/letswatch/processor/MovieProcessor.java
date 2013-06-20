@@ -11,7 +11,7 @@ import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
 public class MovieProcessor {
 
-	public ContentValues[] parseMovieList (String source, int marker) {
+	public static ContentValues[] parseMovieList (String source, int marker) {
 		if(source!=null){
 			Gson gson = new Gson();
 			MovieList movieList = gson.fromJson(source, MovieList.class);
@@ -50,40 +50,41 @@ public class MovieProcessor {
 		return null;
 	}
 
-	public ContentValues parseMovie (String source, int marker) {
+	public static ContentValues[] parseMovie (String source, int marker) {
 		if(source!=null){
 			Gson gson = new Gson();
 			Movie movie = gson.fromJson(source, Movie.class);
-			ContentValues value = new ContentValues();
-			value.put(MovieColumns._ID, movie.getId());
-			value.put(MovieColumns.MOVIE_TITLE, movie.getTitle());
-			value.put(MovieColumns.YEAR, movie.getYear());
-			value.put(MovieColumns.MPAA, movie.getMpaaRating());
-			value.put(MovieColumns.RUNTIME, movie.getRuntime());
-			value.put(MovieColumns.RELEASE_DATE_THEATER, movie.getReleaseDates().getTheater());
-			value.put(MovieColumns.RELEASE_DATE_DVD, movie.getReleaseDates().getDvd());
-			value.put(MovieColumns.CRITICS_CONSENSUS, movie.getCriticsConsensus());
-			value.put(MovieColumns.SYNOPSIS, movie.getSynopsis());
-			value.put(MovieColumns.RATING_CRITICS, movie.getRatings().getCriticsRating());
-			value.put(MovieColumns.RATING_CRITICS_SCORE, movie.getRatings().getCriticsScore());
-			value.put(MovieColumns.RATING_AUDIENCE, movie.getRatings().getAudienceRating());
-			value.put(MovieColumns.RATING_AUDIENCE_SCORE, movie.getRatings().getAudienceScore());
-			value.put(MovieColumns.POSTERS_DETAILED, movie.getPosters().getDetailed());
-			value.put(MovieColumns.POSTERS_ORIGINAL, movie.getPosters().getOriginal());
-			value.put(MovieColumns.POSTERS_PROFILE, movie.getPosters().getProfile());
-			value.put(MovieColumns.POSTERS_THUMBNAIL, movie.getPosters().getThumbnail());
-			value.put(MovieColumns.ALTERNATE_IDS, movie.getAlternateIds().getImdb());
-			value.put(MovieColumns.LINK_ALTRENATE, movie.getLinks().getAlternate());
-			value.put(MovieColumns.LINK_CAST, movie.getLinks().getCast());
-			value.put(MovieColumns.LINK_CLIPS, movie.getLinks().getClips());
-			value.put(MovieColumns.LINK_REVIEWS, movie.getLinks().getReviews());
-			value.put(MovieColumns.LINK_SIMILAR, movie.getLinks().getSimilar());
-			value.put(MovieColumns.SECTION, marker);
+			ContentValues[] values = new ContentValues[1];
+			values[0] = new ContentValues();
+			values[0].put(MovieColumns._ID, movie.getId());
+			values[0].put(MovieColumns.MOVIE_TITLE, movie.getTitle());
+			values[0].put(MovieColumns.YEAR, movie.getYear());
+			values[0].put(MovieColumns.MPAA, movie.getMpaaRating());
+			values[0].put(MovieColumns.RUNTIME, movie.getRuntime());
+			values[0].put(MovieColumns.RELEASE_DATE_THEATER, movie.getReleaseDates().getTheater());
+			values[0].put(MovieColumns.RELEASE_DATE_DVD, movie.getReleaseDates().getDvd());
+			values[0].put(MovieColumns.CRITICS_CONSENSUS, movie.getCriticsConsensus());
+			values[0].put(MovieColumns.SYNOPSIS, movie.getSynopsis());
+			values[0].put(MovieColumns.RATING_CRITICS, movie.getRatings().getCriticsRating());
+			values[0].put(MovieColumns.RATING_CRITICS_SCORE, movie.getRatings().getCriticsScore());
+			values[0].put(MovieColumns.RATING_AUDIENCE, movie.getRatings().getAudienceRating());
+			values[0].put(MovieColumns.RATING_AUDIENCE_SCORE, movie.getRatings().getAudienceScore());
+			values[0].put(MovieColumns.POSTERS_DETAILED, movie.getPosters().getDetailed());
+			values[0].put(MovieColumns.POSTERS_ORIGINAL, movie.getPosters().getOriginal());
+			values[0].put(MovieColumns.POSTERS_PROFILE, movie.getPosters().getProfile());
+			values[0].put(MovieColumns.POSTERS_THUMBNAIL, movie.getPosters().getThumbnail());
+			values[0].put(MovieColumns.ALTERNATE_IDS, movie.getAlternateIds().getImdb());
+			values[0].put(MovieColumns.LINK_ALTRENATE, movie.getLinks().getAlternate());
+			values[0].put(MovieColumns.LINK_CAST, movie.getLinks().getCast());
+			values[0].put(MovieColumns.LINK_CLIPS, movie.getLinks().getClips());
+			values[0].put(MovieColumns.LINK_REVIEWS, movie.getLinks().getReviews());
+			values[0].put(MovieColumns.LINK_SIMILAR, movie.getLinks().getSimilar());
+			values[0].put(MovieColumns.SECTION, marker);
 			//value.put(MovieColumns.GENRES, movie.getGenres());
 			//value.put(MovieColumns.CAST_IDS, movies.);
 			//value.put(MovieColumns.DIRECTORS, movies.);
-			value.put(MovieColumns.STUDIO, movie.getStudio());
-			return value;
+			values[0].put(MovieColumns.STUDIO, movie.getStudio());
+			return values;
 		}
 		return null;
 	}
