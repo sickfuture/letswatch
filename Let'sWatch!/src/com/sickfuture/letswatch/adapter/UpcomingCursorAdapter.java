@@ -13,11 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.sickfuture.sickcore.image.SuperImageLoader;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter.ViewHolder;
 import com.sickfuture.letswatch.app.activity.FullScreenImageActivity;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.images.ImageLoader;
 
 public class UpcomingCursorAdapter extends CursorAdapter {
 
@@ -65,26 +64,26 @@ public class UpcomingCursorAdapter extends CursorAdapter {
 	public void bindView(View view, final Context context, final Cursor cursor) {
 		ArrayList<Object> x = (ArrayList<Object>) view.getTag();
 		ViewHolder holder = (ViewHolder) x.get(0);
-		final String poster = cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.POSTERS_PROFILE));
-		final String original = cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.POSTERS_ORIGINAL));
-		if (!TextUtils.isEmpty(poster)) {
+		final String posterUrl = cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.POSTERS_PROFILE));
+		final String original = cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.POSTERS_ORIGINAL));
+		if (!TextUtils.isEmpty(posterUrl)) {
 			holder.mPosterImageView.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(context, FullScreenImageActivity.class);
-					intent.putExtra(POSTERS_PROFILE, poster);
+					intent.putExtra(POSTERS_PROFILE, posterUrl);
 					intent.putExtra(POSTERS_ORIGINAL, original);
 					context.startActivity(intent);
 				}
 			});
-			ImageLoader.getInstance().bind(this, holder.mPosterImageView, poster, true);
+			//SuperImageLoader.getInstance(mContext).loadBitmap(holder.mPosterImageView, posterUrl, true);
 		}
-		holder.mTitleTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.MOVIE_TITLE)));
-		holder.mSynopsisTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.SYNOPSIS)));
-		holder.mMPAATextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.MPAA)));
-		holder.mReleaseDateTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.RELEASE_DATE_THEATER)));
-		String cast = cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.CAST_IDS));
+		holder.mTitleTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
+		holder.mSynopsisTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
+		holder.mMPAATextView.setText(cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.MPAA)));
+		holder.mReleaseDateTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.RELEASE_DATE_THEATER)));
+		String cast = cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.CAST_IDS));
 		holder.mCastTextView.setText(cast);
 	}
 

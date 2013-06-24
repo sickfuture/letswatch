@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 
+import com.android.sickfuture.sickcore.utils.L;
 import com.google.gson.Gson;
 import com.sickfuture.letswatch.bo.models.Movie;
 import com.sickfuture.letswatch.bo.models.MovieList;
@@ -11,7 +12,10 @@ import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
 public class MovieProcessor {
 
+	private static final String LOG_TAG = MovieProcessor.class.getSimpleName();
+
 	public static ContentValues[] parseMovieList (String source, int marker) {
+		L.d(LOG_TAG, "parseList");
 		if(source!=null){
 			Gson gson = new Gson();
 			MovieList movieList = gson.fromJson(source, MovieList.class);
@@ -44,6 +48,7 @@ public class MovieProcessor {
 				values[i].put(MovieColumns.LINK_REVIEWS, movies.get(i).getLinks().getReviews());
 				values[i].put(MovieColumns.LINK_SIMILAR, movies.get(i).getLinks().getSimilar());
 				values[i].put(MovieColumns.SECTION, marker);
+				L.d(LOG_TAG, i+"");
 			}
 			return values;
 		}
@@ -51,6 +56,7 @@ public class MovieProcessor {
 	}
 
 	public static ContentValues[] parseMovie (String source, int marker) {
+		L.d(LOG_TAG, "parseMovie");
 		if(source!=null){
 			Gson gson = new Gson();
 			Movie movie = gson.fromJson(source, Movie.class);

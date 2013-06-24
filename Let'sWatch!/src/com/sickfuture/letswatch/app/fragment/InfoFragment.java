@@ -72,7 +72,7 @@ public class InfoFragment extends SherlockListFragment implements
 	}
 
 	private void loadInfoValues() {
-		Uri uri = ContractUtils.getProviderUriFromContract(Contract.class);
+		Uri uri = ContractUtils.getProviderUriFromContract(Contract.MovieColumns.class);
 		Cursor cursor = getSherlockActivity().getContentResolver().query(uri,
 				PROJECTION, Contract.MovieColumns._ID + " = ?",
 				new String[] { String.valueOf(mId) }, null);

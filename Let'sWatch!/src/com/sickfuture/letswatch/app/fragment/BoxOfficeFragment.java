@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.android.sickfuture.sickcore.db.BaseColumns;
+import com.android.sickfuture.sickcore.http.HttpManager.RequestType;
 import com.android.sickfuture.sickcore.service.CommonService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.InetChecker;
@@ -33,7 +34,9 @@ import com.sickfuture.letswatch.app.activity.MainActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
-import com.sickfuture.letswatch.service.BoxOfficeService;
+import com.sickfuture.letswatch.request.LoadingRequest;
+import com.sickfuture.letswatch.request.LoadingRequest.RequestHelper;
+import com.sickfuture.letswatch.service.LoadingService;
 
 public class BoxOfficeFragment extends SherlockFragment implements
 		OnRefreshListener<ListView>, LoaderCallbacks<Cursor>,
@@ -47,7 +50,7 @@ public class BoxOfficeFragment extends SherlockFragment implements
 
 	private IListClickable mCallback;
 
-	private Uri mUri = ContractUtils.getProviderUriFromContract(Contract.class);
+	private final Uri mUri = ContractUtils.getProviderUriFromContract(Contract.MovieColumns.class);
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -105,15 +108,19 @@ public class BoxOfficeFragment extends SherlockFragment implements
 	@Override
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 		if (InetChecker.checkInetConnection(getSherlockActivity())) {
-			getActivity().getContentResolver()
+			getSherlockActivity().getContentResolver()
 					.delete(mUri,
 							MovieColumns.SECTION + " = ?",
 							new String[] { String
 									.valueOf(Contract.BOX_OFFICE_SECTION) });
 			Intent intent = new Intent(getSherlockActivity(),
-					BoxOfficeService.class);
-			intent.putExtra("url",
-					getString(R.string.API_BOX_OFFICE_REQUEST_URL));
+					LoadingService.class);
+			LoadingRequest request = new LoadingRequest(RequestType.GET,
+					getString(R.string.API_BOX_OFFICE_REQUEST_URL),
+					Contract.BOX_OFFICE_SECTION,
+					RequestHelper.PROCESS_MOVIE_LIST,
+					mUri);
+			intent.putExtra("request", request);
 			getSherlockActivity().startService(intent);
 		} else {
 			refreshView.onRefreshComplete();
@@ -125,7 +132,7 @@ public class BoxOfficeFragment extends SherlockFragment implements
 	public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 		return new CursorLoader(getSherlockActivity(), mUri, null,
 				Contract.MovieColumns.SECTION + " = ?",
-				new String[] { Contract.BOX_OFFICE_SECTION_MARK }, null);
+				new String[] { String.valueOf(Contract.BOX_OFFICE_SECTION) }, null);
 	}
 
 	@Override
@@ -134,6 +141,7 @@ public class BoxOfficeFragment extends SherlockFragment implements
 		 * if (cursor.getCount() == 0) { onRefresh(mListView); }
 		 */
 		mBoxOfficeCursorAdapter.swapCursor(cursor);
+		mListView.onRefreshComplete();
 	}
 
 	@Override

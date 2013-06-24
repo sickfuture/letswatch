@@ -7,7 +7,7 @@ public class MoviesProvider extends CommonProvider {
 
 	@Override
 	protected Class<?> getContractClass() {
-		return Contract.class;
+		return Contract.MovieColumns.class;
 	}
 
 }

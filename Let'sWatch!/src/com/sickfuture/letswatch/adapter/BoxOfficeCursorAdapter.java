@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.sickfuture.sickcore.image.SuperImageLoader;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.activity.FullScreenImageActivity;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.images.ImageLoader;
 
 public class BoxOfficeCursorAdapter extends CursorAdapter {
 
@@ -77,7 +77,7 @@ public class BoxOfficeCursorAdapter extends CursorAdapter {
 					return;
 				}
 			});
-			ImageLoader.getInstance().bind(this, holder.mPosterImageView, posterUrl, true);
+			//SuperImageLoader.getInstance(mContext).loadBitmap(holder.mPosterImageView, posterUrl, true);
 		}
 		holder.mCastTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.CAST_IDS)));
 		holder.mTitleTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));

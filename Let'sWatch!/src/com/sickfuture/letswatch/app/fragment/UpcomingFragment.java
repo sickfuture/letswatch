@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
@@ -24,6 +25,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.android.sickfuture.sickcore.http.HttpManager.RequestType;
 import com.android.sickfuture.sickcore.service.CommonService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.InetChecker;
@@ -36,7 +38,10 @@ import com.sickfuture.letswatch.adapter.UpcomingCursorAdapter;
 import com.sickfuture.letswatch.app.activity.MainActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.service.UpcomingService;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.request.LoadingRequest;
+import com.sickfuture.letswatch.request.LoadingRequest.RequestHelper;
+import com.sickfuture.letswatch.service.LoadingService;
 
 public class UpcomingFragment extends SherlockFragment implements
 		LoaderCallbacks<Cursor>, OnRefreshListener<ListView>, OnScrollListener,
@@ -61,6 +66,8 @@ public class UpcomingFragment extends SherlockFragment implements
 	private SharedPreferences mPreferences;
 
 	private IListClickable mClickable;
+	
+	private final Uri mUri = ContractUtils.getProviderUriFromContract(Contract.MovieColumns.class);
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -124,12 +131,19 @@ public class UpcomingFragment extends SherlockFragment implements
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 		Log.d(LOG_TAG, "onRefresh");
 		if (InetChecker.checkInetConnection(getSherlockActivity())) {
-			// CommonDataBase.getInstance(getActivity()).deleteTable(
-			// DatabaseUtils.getTableNameFromContract(Contract.class), null,
-			// null);
+			getSherlockActivity().getContentResolver()
+			.delete(mUri,
+					MovieColumns.SECTION + " = ?",
+					new String[] { String
+							.valueOf(Contract.UPCOMING_SECTION) });
 			Intent intent = new Intent(getSherlockActivity(),
-					UpcomingService.class);
-			intent.putExtra(URL, getString(R.string.API_UPCOMING_REQUEST_URL));
+					LoadingService.class);
+			LoadingRequest request = new LoadingRequest(RequestType.GET,
+					getString(R.string.API_UPCOMING_REQUEST_URL),
+					Contract.UPCOMING_SECTION,
+					RequestHelper.PROCESS_MOVIE_LIST,
+					mUri);
+			intent.putExtra("request", request);
 			load(intent);
 		} else {
 			Log.i(LOG_TAG, "onRefreshComplete");
@@ -145,7 +159,7 @@ public class UpcomingFragment extends SherlockFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(int arg0, Bundle bundle) {
 		return new CursorLoader(getSherlockActivity(),
-				ContractUtils.getProviderUriFromContract(Contract.class), null,
+				mUri, null,
 				Contract.MovieColumns.SECTION + " = ?",
 				new String[] { String.valueOf(Contract.UPCOMING_SECTION) },
 				null);
@@ -157,6 +171,7 @@ public class UpcomingFragment extends SherlockFragment implements
 		 * if (cursor.getCount() == 0) { onRefresh(null); }
 		 */
 		mUpcomingCursorAdapter.swapCursor(cursor);
+		mListViewUpcoming.onRefreshComplete();
 	}
 
 	@Override
@@ -167,30 +182,33 @@ public class UpcomingFragment extends SherlockFragment implements
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
-		if (visibleItemCount > 0
-				&& firstVisibleItem + visibleItemCount + 3 >= totalItemCount
-				&& InetChecker
-						.checkInetConnection(getSherlockActivity(), false)) {
-			if (!mLoading) {
-				Log.d(LOG_TAG, "onScroll load");
-				mPreferences = getSherlockActivity().getSharedPreferences(
-						getString(PAGINATION), Context.MODE_PRIVATE);
-				String nextPage = mPreferences.getString(
-						UpcomingService.NEXT_UPCOMING, null);
-				if (!TextUtils.isEmpty(nextPage)) {
-					if (mViewLoadingHidden)
-						hideViewLoading(false);
-					Log.d(LOG_TAG, "next = " + nextPage);
-					Intent intent = new Intent(getSherlockActivity(),
-							UpcomingService.class);
-					intent.putExtra(URL, nextPage);
-					load(intent);
-				} else {
-					if (!mViewLoadingHidden)
-						hideViewLoading(true);
-				}
-			}
-		}
+		
+		// TODO refactor
+		
+//		if (visibleItemCount > 0
+//				&& firstVisibleItem + visibleItemCount + 3 >= totalItemCount
+//				&& InetChecker
+//						.checkInetConnection(getSherlockActivity(), false)) {
+//			if (!mLoading) {
+//				Log.d(LOG_TAG, "onScroll load");
+//				mPreferences = getSherlockActivity().getSharedPreferences(
+//						getString(PAGINATION), Context.MODE_PRIVATE);
+//				String nextPage = mPreferences.getString(
+//						UpcomingService.NEXT_UPCOMING, null);
+//				if (!TextUtils.isEmpty(nextPage)) {
+//					if (mViewLoadingHidden)
+//						hideViewLoading(false);
+//					Log.d(LOG_TAG, "next = " + nextPage);
+//					Intent intent = new Intent(getSherlockActivity(),
+//							UpcomingService.class);
+//					intent.putExtra(URL, nextPage);
+//					load(intent);
+//				} else {
+//					if (!mViewLoadingHidden)
+//						hideViewLoading(true);
+//				}
+//			}
+//		}
 	}
 
 	@Override

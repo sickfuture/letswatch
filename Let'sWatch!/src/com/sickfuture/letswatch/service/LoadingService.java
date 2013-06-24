@@ -46,8 +46,9 @@ public class LoadingService extends Service implements ParamCallback<String> {
 							RequestType.GET);
 					Class<?> cl = MovieProcessor.class;
 					final Object processor = cl.newInstance();
+					//Method[] m = cl.getMethods();
 					final Method method = cl.getMethod(d.getProcessMethod(),
-							String.class, Integer.class);
+							String.class, int.class);
 					ContentValues[] values = AccessController
 							.doPrivileged(new PrivilegedExceptionAction() {
 								public Object run() throws Exception {
