@@ -2,6 +2,9 @@ package com.sickfuture.letswatch.app.fragment.common;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +25,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.adapter.CommonListAdapter;
 import com.sickfuture.letswatch.app.activity.MainActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
@@ -39,24 +43,35 @@ public class CommonListFragment extends SherlockFragment implements
 	private Uri mUri = ContractUtils
 			.getProviderUriFromContract(Contract.MovieColumns.class);
 	private BroadcastReceiver mBroadcastReceiver;
-
-	// private common adapter
+	private IntentFilter mFilter;
+	private CommonListAdapter mAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mLoaderId = getClass().hashCode();
-
+		mFilter = new IntentFilter();
+		//filter.addAction();
+		
+		getLoaderManager().initLoader(mLoaderId, null, this);
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(mResourse, null);
-		// mListView = (ListView)
-		// view.findViewById(R.id.list_view_common_fragment);
-		// mListView.setAdapter(mAdapter);
+		mListView = (PullToRefreshListView) view.findViewById(R.id.list_view_common_fragment);
+		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
+		mBroadcastReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				String action = intent.getAction();
+				// TODO 
+				
+			}
+		};
 		return view;
 	}
 
@@ -117,6 +132,18 @@ public class CommonListFragment extends SherlockFragment implements
 	public void onLoaderReset(Loader<Cursor> arg0) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void onPause() {
+		getSherlockActivity().unregisterReceiver(mBroadcastReceiver);
+		super.onPause();
+	}
+
+	@Override
+	public void onResume() {
+		getSherlockActivity().registerReceiver(mBroadcastReceiver, mFilter);
+		super.onResume();
 	}
 
 }

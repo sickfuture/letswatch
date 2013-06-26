@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    
     android:orientation="vertical" >
 
     <LinearLayout
@@ -11,7 +10,7 @@
         android:layout_margin="8dp"
         android:orientation="horizontal" >
 
-        <ImageView
+        <com.android.sickfuture.sickcore.image.view.RecyclingImageView
             android:id="@+id/upcoming_poster_image_view"
             style="@style/styleViewPosterOnMainScreen"
             android:layout_width="88dip"
@@ -61,18 +60,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
             android:gravity="center_vertical"
             android:text="@string/cast"
-            android:layout_marginRight="16dp"
             android:textAllCaps="true" />
 
         <TextView

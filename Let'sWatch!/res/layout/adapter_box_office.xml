@@ -10,7 +10,7 @@
         android:layout_margin="8dp"
         android:orientation="horizontal" >
 
-        <ImageView
+        <com.android.sickfuture.sickcore.image.view.RecyclingImageView
             android:id="@+id/box_office_poster_image_view"
             style="@style/styleViewPosterOnMainScreen"
             android:layout_width="88dip"

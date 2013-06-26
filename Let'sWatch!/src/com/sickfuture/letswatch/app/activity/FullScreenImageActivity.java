@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
-import com.android.sickfuture.sickcore.asynctask.ParamCallback;
-import com.android.sickfuture.sickcore.image.ImageLoader;
 import com.custom.TouchImageView;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.uiutils.SystemUiHider;
