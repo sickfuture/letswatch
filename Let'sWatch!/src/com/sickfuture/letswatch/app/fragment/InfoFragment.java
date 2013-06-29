@@ -9,12 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.android.sickfuture.sickcore.image.ImageLoader;
+import com.android.sickfuture.sickcore.image.SickImageLoader;
+import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.content.contract.Contract;
@@ -24,7 +24,7 @@ public class InfoFragment extends SherlockListFragment implements
 
 	private View mInfoHeaderView;
 
-	private ImageView mPosterImageView;
+	private RecyclingImageView mPosterImageView;
 
 	private TextView mYearTextView, mMpaaTextView, mCriticsTextView,
 			mAudienceTextView, mDescripTextView, mRuntimeTextView;
@@ -34,8 +34,7 @@ public class InfoFragment extends SherlockListFragment implements
 	private int mSection, mId;
 
 	private static final String[] PROJECTION = new String[] {
-			Contract.MovieColumns._ID,
-			Contract.MovieColumns.MOVIE_TITLE,
+			Contract.MovieColumns._ID, Contract.MovieColumns.MOVIE_TITLE,
 			Contract.MovieColumns.YEAR, Contract.MovieColumns.RUNTIME,
 			Contract.MovieColumns.RATING_CRITICS,
 			Contract.MovieColumns.RATING_AUDIENCE,
@@ -63,7 +62,7 @@ public class InfoFragment extends SherlockListFragment implements
 				.findViewById(R.id.textview_descript_movie_details_header);
 		mRuntimeTextView = (TextView) mInfoHeaderView
 				.findViewById(R.id.textview_runtime_movie_details_header);
-		mPosterImageView = (ImageView) mInfoHeaderView
+		mPosterImageView = (RecyclingImageView) mInfoHeaderView
 				.findViewById(R.id.imageview_movie_details_header);
 		loadInfoValues();
 		mListView.setAdapter(new ArrayAdapter<String>(getSherlockActivity(),
@@ -72,7 +71,8 @@ public class InfoFragment extends SherlockListFragment implements
 	}
 
 	private void loadInfoValues() {
-		Uri uri = ContractUtils.getProviderUriFromContract(Contract.class);
+		Uri uri = ContractUtils
+				.getProviderUriFromContract(Contract.MovieColumns.class);
 		Cursor cursor = getSherlockActivity().getContentResolver().query(uri,
 				PROJECTION, Contract.MovieColumns._ID + " = ?",
 				new String[] { String.valueOf(mId) }, null);
@@ -92,11 +92,12 @@ public class InfoFragment extends SherlockListFragment implements
 						.getColumnIndex(Contract.MovieColumns.RATING_CRITICS)));
 				mDescripTextView.setText(cursor.getString(cursor
 						.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
-				ImageLoader
+				SickImageLoader
 						.getInstance(getActivity())
-						.bind(mPosterImageView,
+						.loadBitmap(
+								mPosterImageView,
 								cursor.getString(cursor
-										.getColumnIndex(Contract.MovieColumns.POSTERS_DETAILED)), true);
+										.getColumnIndex(Contract.MovieColumns.POSTERS_DETAILED)));
 			}
 		}
 	}

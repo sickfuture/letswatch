@@ -21,28 +21,30 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.widget.SearchView;
 import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.BoxOfficeFragment;
+import com.sickfuture.letswatch.app.fragment.OpeningFragment;
 import com.sickfuture.letswatch.app.fragment.UpcomingFragment;
+import com.sickfuture.letswatch.app.fragment.common.CommonMovieListFragment;
+import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MainActivity extends SherlockFragmentActivity implements
 		ActionBar.TabListener, IListClickable {
 
-	private InputMethodManager mKeyboard;
-	
-	public static final String FRAGMENT = "FRAGMENT";
+	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
+	public static final String FRAGMENT = "FRAGMENT";
 	public static final String ARGUMENTS = "ARGS";
 
-	public static final int BOXOFFICE_FRAGMENT = 0;
+	public static final int FRAGMENT_BOXOFFICE = 0;
+	public static final int FRAGMENT_UPCOMING = 1;
+	public static final int FRAGMENT_THEATERS = 2;
+	public static final int FRAGMENT_OPENING = 3;
 
-	public static final int UPCOM_FRAGMENT = 1;
-
-	private static final String LOG_TAG = "MainActivity";
-
-	SectionsPagerAdapter mSectionsPagerAdapter;
-
-	ViewPager mViewPager;
+	private InputMethodManager mKeyboard;
+	private SectionsPagerAdapter mSectionsPagerAdapter;
+	private ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,12 +67,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 					}
 				});
 
-		// For each of the sections in the app, add a tab to the action bar.
 		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
 			actBar.addTab(actBar.newTab()
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
@@ -103,28 +100,44 @@ public class MainActivity extends SherlockFragmentActivity implements
 		@Override
 		public Fragment getItem(int position) {
 			switch (position) {
-			case 0:
-				return new BoxOfficeFragment();
-			case 1:
+			case FRAGMENT_BOXOFFICE:
+				return new BoxOfficeFragment(new BoxOfficeCursorAdapter(
+						getApplicationContext(), null),
+						Contract.BOX_OFFICE_SECTION,
+						R.string.API_BOX_OFFICE_REQUEST_URL);
+			case FRAGMENT_UPCOMING:
 				return new UpcomingFragment();
+			case FRAGMENT_THEATERS:
+				return new CommonMovieListFragment(new BoxOfficeCursorAdapter(
+						getApplicationContext(), null),
+						Contract.IN_THEATRES_SECTION,
+						R.string.API_IN_THEATERS_REQUEST_URL);
+			case FRAGMENT_OPENING:
+				return new OpeningFragment(new BoxOfficeCursorAdapter(
+						getApplicationContext(), null),
+						Contract.OPENING_SECTION,
+						R.string.API_OPENING_REQUEST_URL);
 			}
 			return null;
 		}
 
 		@Override
 		public int getCount() {
-			// Show 2 total pages.
-			return 2;
+			return 4;
 		}
 
 		@Override
 		public CharSequence getPageTitle(int position) {
 			Locale l = Locale.getDefault();
 			switch (position) {
-			case BOXOFFICE_FRAGMENT:
+			case FRAGMENT_BOXOFFICE:
 				return getString(R.string.title_box_office).toUpperCase(l);
-			case UPCOM_FRAGMENT:
+			case FRAGMENT_UPCOMING:
 				return getString(R.string.title_upcoming).toUpperCase(l);
+			case FRAGMENT_THEATERS:
+				return getString(R.string.title_theaters).toUpperCase(l);
+			case FRAGMENT_OPENING:
+				return getString(R.string.title_opening).toUpperCase(l);
 			}
 			return null;
 		}
@@ -143,7 +156,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 		final SearchView searchView = (SearchView) menu.findItem(
 				R.id.menu_search).getActionView();
-		searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+		searchView.setSearchableInfo(searchManager
+				.getSearchableInfo(getComponentName()));
 		searchView.setIconifiedByDefault(false);
 		searchView.setSubmitButtonEnabled(true);
 		searchView.setQueryRefinementEnabled(true);
@@ -154,7 +168,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 				Log.d(LOG_TAG, "submit");
 				mKeyboard.hideSoftInputFromWindow(searchView.getWindowToken(),
 						0);
-				//startSearch(query, mIgnoreNativeCreate, null, mIgnoreNativeCreate);
+				// startSearch(query, mIgnoreNativeCreate, null,
+				// mIgnoreNativeCreate);
 				return onSearchRequested();
 			}
 

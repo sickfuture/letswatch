@@ -13,6 +13,8 @@
     <!-- MainActivity  -->
     <string name="title_box_office">box office</string>
     <string name="title_upcoming">upcoming</string>
+    <string name="title_theaters">in theaters</string>
+    <string name="title_opening">opening</string>
     
     <!-- MovieDetailsActivity  -->
     <string name="title_info">info</string>
@@ -29,13 +31,13 @@
     <string name="API_APPEND_KEY">&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
     <string name="API_BOX_OFFICE_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?limit=50&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
     <string name="API_UPCOMING_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/movies/upcoming.json?page_limit=10&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    <string name="API_IN_THEATERS_REQUEST_URL">api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?page_limit=10&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    <string name="API_OPENING_REQUEST_URL">api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json?limit=16&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    <string name="API_TOP_RENTALS_REQUEST_URL">api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?limit=10&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    <string name="API_CURRENT_RELEASES_REQUEST_URL">api.rottentomatoes.com/api/public/v1.0/lists/dvds/current_releases.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    <string name="API_NEW_RELEASES_REQUEST_URL">api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    <string name="API_UPCOMING_DVDS_REQUEST_URL">api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    <string name="API_SEARCH_REQUEST_URL">api.rottentomatoes.com/api/public/v1.0/movies.json?q=#&amp;page_limit=#&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
+    <string name="API_IN_THEATERS_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?page_limit=10&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
+    <string name="API_OPENING_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/movies/opening.json?limit=16&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
+    <string name="API_TOP_RENTALS_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?limit=10&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
+    <string name="API_CURRENT_RELEASES_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/current_releases.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
+    <string name="API_NEW_RELEASES_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
+    <string name="API_UPCOMING_DVDS_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
+    <string name="API_SEARCH_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/movies.json?q=#&amp;page_limit=#&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
     
     <!-- App constants and keys -->
     <string name="internet_connection_is_not_avalible">Internet connection is not avalible</string>
@@ -51,7 +53,7 @@
     
     <!-- Search -->
     <string name="search_label">LETS_WATCH_SEARCH_LABEL</string>
-    <string name="search_hint">Search movies</string>
+    <string name="search_hint">Search movie...</string>
     
 
 </resources>

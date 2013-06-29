@@ -13,6 +13,7 @@ import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.android.sickfuture.sickcore.asynctask.CommonTask;
 import com.android.sickfuture.sickcore.asynctask.ParamCallback;
@@ -24,6 +25,12 @@ import com.sickfuture.letswatch.request.LoadingRequest;
 
 public class LoadingService extends Service implements ParamCallback<String> {
 
+	private static final String LOG_TAG = LoadingService.class.getSimpleName();
+	
+	public static final String ACTION_ON_SUCCESS = "com.sickfuture.letswatch.ACTION_ON_SUCCESS";
+	public static final String ACTION_ON_ERROR = "com.sickfuture.letswatch.ACTION_ON_ERROR";
+	public static final String EXTRA_KEY_MESSAGE = "LoadingService.EXTRA_KEY_MESSAGE";
+	
 	private LoadingRequest request;
 
 	@Override
@@ -44,10 +51,12 @@ public class LoadingService extends Service implements ParamCallback<String> {
 					final String source = HttpManager.getInstance(
 							getApplicationContext()).loadAsString(d.getUrl(),
 							RequestType.GET);
+					
+					Log.d(LOG_TAG, "processIntent: "+source);
 					Class<?> cl = MovieProcessor.class;
 					final Object processor = cl.newInstance();
 					final Method method = cl.getMethod(d.getProcessMethod(),
-							String.class, Integer.class);
+							String.class, int.class);
 					ContentValues[] values = AccessController
 							.doPrivileged(new PrivilegedExceptionAction() {
 								public Object run() throws Exception {
@@ -85,19 +94,18 @@ public class LoadingService extends Service implements ParamCallback<String> {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void onSuccess(String c) {
-		// TODO Auto-generated method stub
-
+		sendBroadcast(new Intent(ACTION_ON_SUCCESS));
 	}
 
 	@Override
 	public void onError(Throwable e) {
-		// TODO Auto-generated method stub
+		Intent intent = new Intent(ACTION_ON_ERROR);
+		intent.putExtra(EXTRA_KEY_MESSAGE, e.toString());
 
 	}
 

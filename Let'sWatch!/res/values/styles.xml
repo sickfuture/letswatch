@@ -34,7 +34,6 @@
     </style>
     <style name="styleViewPosterOnMainScreen">
         <item name="android:contentDescription">@string/content_description</item>
-        <item name="android:background">@android:color/darker_gray</item>
     </style>
     <style name="styleFilmTitleOnMainScreen" parent="android:Widget.Holo.Light.TextView">
         <item name="android:layout_marginLeft">8dip</item>
@@ -46,9 +45,11 @@
     <style name="styleTextDescription" parent="android:Widget.Holo.Light.TextView">
         <item name="android:layout_margin">8dip</item>
         <item name="android:maxLines">8</item>
+        <item name="android:textColor">@color/Black</item>
         <item name="android:singleLine">false</item>
     </style>
     <style name="styleMppaOnMainScreen" parent="android:Widget.Holo.Light.TextView">
         <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/Black</item>
     </style>
 </resources>

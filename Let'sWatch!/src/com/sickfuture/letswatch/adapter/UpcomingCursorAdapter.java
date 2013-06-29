@@ -1,91 +1,38 @@
 package com.sickfuture.letswatch.adapter;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
+import com.android.sickfuture.sickcore.image.SickImageLoader;
+import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter.ViewHolder;
 import com.sickfuture.letswatch.app.activity.FullScreenImageActivity;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.images.ImageLoader;
 
-public class UpcomingCursorAdapter extends CursorAdapter {
+public class UpcomingCursorAdapter extends BaseCursorAdapter {
 
-	private static final String LOG_TAG = "UpcomingCursorAdapter";
+	private static final String LOG_TAG = UpcomingCursorAdapter.class
+			.getSimpleName();
 
 	public static final String POSTERS_PROFILE = "posters_profile";
-	
 	public static final String POSTERS_ORIGINAL = "posters_original";
 
-	public UpcomingCursorAdapter(Context context, Cursor c) {
-		super(context, c, true);
-	}
-	// Basic @getView method where implemented ViewHolder
-	// It uses to avoid calling @findViewById all the time
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (!mDataValid) {
-			throw new IllegalStateException("this should only be called when the cursor is valid");
-		}
-		if (!mCursor.moveToPosition(position)) {
-			throw new IllegalStateException("couldn't move cursor to position "	+ position);
-		}
-		View view;
-		if (convertView == null) {
-			view = newView(mContext, mCursor, parent);
-			ViewHolder holder = new ViewHolder();
-			holder.mTitleTextView = (TextView) view.findViewById(R.id.upcoming_title_text_view);
-			holder.mSynopsisTextView = (TextView) view.findViewById(R.id.upcoming_synopsis_text_view);
-			holder.mReleaseDateTextView = (TextView) view.findViewById(R.id.upcoming_release_date_text_view);
-			holder.mMPAATextView = (TextView) view.findViewById(R.id.upcoming_mpaa_text_view);
-			holder.mCastTextView = (TextView) view.findViewById(R.id.upcoming_cast_text_view);
-			holder.mPosterImageView = (ImageView) view.findViewById(R.id.upcoming_poster_image_view);
-			ArrayList<Object> x = new ArrayList<Object>(1);
-			x.add(holder);
-			view.setTag(x);
-		} else {
-			view = convertView;
-		}
-		bindView(view, mContext, mCursor);
-		return view;
-	}
+	private static final int TEXT_VIEW_TITLE = R.id.upcoming_title_text_view;
+	private static final int TEXT_VIEW_SYNOPSIS = R.id.upcoming_synopsis_text_view;
+	private static final int TEXT_VIEW_RELEASE_DATE = R.id.upcoming_release_date_text_view;
+	private static final int TEXT_VIEW_MPAA = R.id.upcoming_mpaa_text_view;
+	private static final int TEXT_VIEW_CAST = R.id.upcoming_cast_text_view;
+	private static final int IMAGE_VIEW_POSTER = R.id.upcoming_poster_image_view;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public void bindView(View view, final Context context, final Cursor cursor) {
-		ArrayList<Object> x = (ArrayList<Object>) view.getTag();
-		ViewHolder holder = (ViewHolder) x.get(0);
-		final String poster = cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.POSTERS_PROFILE));
-		final String original = cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.POSTERS_ORIGINAL));
-		if (!TextUtils.isEmpty(poster)) {
-			holder.mPosterImageView.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context, FullScreenImageActivity.class);
-					intent.putExtra(POSTERS_PROFILE, poster);
-					intent.putExtra(POSTERS_ORIGINAL, original);
-					context.startActivity(intent);
-				}
-			});
-			ImageLoader.getInstance().bind(this, holder.mPosterImageView, poster, true);
-		}
-		holder.mTitleTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.MOVIE_TITLE)));
-		holder.mSynopsisTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.SYNOPSIS)));
-		holder.mMPAATextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.MPAA)));
-		holder.mReleaseDateTextView.setText(cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.RELEASE_DATE_THEATER)));
-		String cast = cursor.getString(cursor.getColumnIndex(Contract.UpcomingColumns.CAST_IDS));
-		holder.mCastTextView.setText(cast);
+	public UpcomingCursorAdapter(Context context, Cursor c) {
+		super(context, c);
 	}
 
 	@Override
@@ -94,11 +41,53 @@ public class UpcomingCursorAdapter extends CursorAdapter {
 		return view;
 	}
 
-	// ViewHolder pattern implementation class
-	static class ViewHolder {
-		TextView mTitleTextView, mSynopsisTextView, mMPAATextView, mReleaseDateTextView, mCastTextView;
+	@Override
+	public void bindData(View view, final Context context, Cursor cursor,
+			ViewHolder holder) {
 
-		ImageView mPosterImageView;
+		final String posterUrl = cursor.getString(cursor
+				.getColumnIndex(Contract.MovieColumns.POSTERS_PROFILE));
+		final String original = cursor.getString(cursor
+				.getColumnIndex(Contract.MovieColumns.POSTERS_ORIGINAL));
+		if (!TextUtils.isEmpty(posterUrl)) {
+			holder.getViewById(IMAGE_VIEW_POSTER).setOnClickListener(
+					new OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent(context,
+									FullScreenImageActivity.class);
+							intent.putExtra(POSTERS_PROFILE, posterUrl);
+							intent.putExtra(POSTERS_ORIGINAL, original);
+							context.startActivity(intent);
+						}
+					});
+			SickImageLoader.getInstance(mContext).loadBitmap(
+					(RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER),
+					posterUrl);
+		}
+		((TextView) holder.getViewById(TEXT_VIEW_TITLE)).setText(cursor
+				.getString(cursor
+						.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
+		((TextView) holder.getViewById(TEXT_VIEW_SYNOPSIS)).setText(cursor
+				.getString(cursor
+						.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
+		((TextView) holder.getViewById(TEXT_VIEW_MPAA)).setText(cursor
+				.getString(cursor.getColumnIndex(Contract.MovieColumns.MPAA)));
+		((TextView) holder.getViewById(TEXT_VIEW_RELEASE_DATE))
+				.setText(cursor.getString(cursor
+						.getColumnIndex(Contract.MovieColumns.RELEASE_DATE_THEATER)));
+		String cast = cursor.getString(cursor
+				.getColumnIndex(Contract.MovieColumns.CAST_IDS));
+		((TextView) holder.getViewById(TEXT_VIEW_CAST)).setText(cast);
+
+	}
+
+	@Override
+	protected int[] getViewsIds() {
+		return new int[] { TEXT_VIEW_TITLE, TEXT_VIEW_SYNOPSIS,
+				TEXT_VIEW_RELEASE_DATE, TEXT_VIEW_MPAA, TEXT_VIEW_CAST,
+				IMAGE_VIEW_POSTER };
 	}
 
 }

@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Movie {
 
-	private int id, year, runtime;
-	private String title, mpaa_rating, critics_consensus, studio;
+	private int id, year;
+	private String title, mpaa_rating, critics_consensus, studio, runtime;
 	private List<String> genres;
 	private ReleaseDates release_dates;
 	private Ratings ratings;
@@ -27,7 +27,7 @@ public class Movie {
 		return year;
 	}
 
-	public int getRuntime() {
+	public String getRuntime() {
 		return runtime;
 	}
 
@@ -76,6 +76,9 @@ public class Movie {
 	}
 
 	public AlternateIds getAlternateIds() {
-		return alternate_ids;
+		if (alternate_ids != null)
+			return alternate_ids;
+		else
+			return new AlternateIds();
 	}
 }
