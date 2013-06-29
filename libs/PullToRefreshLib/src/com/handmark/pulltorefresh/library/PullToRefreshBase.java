@@ -47,7 +47,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout
 	// Constants
 	// ===========================================================
 
-	static final boolean DEBUG = true;
+	static final boolean DEBUG = false;
 
 	static final boolean USE_HW_LAYERS = false;
 

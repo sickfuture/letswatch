@@ -1,7 +1,5 @@
 package com.sickfuture.letswatch.app.fragment;
 
-import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,123 +7,45 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.text.TextUtils;
+import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.android.sickfuture.sickcore.http.HttpManager.RequestType;
-import com.android.sickfuture.sickcore.service.CommonService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.InetChecker;
 import com.android.sickfuture.sickcore.utils.ui.ViewHider;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.UpcomingCursorAdapter;
 import com.sickfuture.letswatch.app.activity.MainActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
+import com.sickfuture.letswatch.app.fragment.common.SickCursorListFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.request.LoadingRequest;
 import com.sickfuture.letswatch.request.LoadingRequest.RequestHelper;
 import com.sickfuture.letswatch.service.LoadingService;
 
-public class UpcomingFragment extends SherlockFragment implements
-		LoaderCallbacks<Cursor>, OnRefreshListener<ListView>, OnScrollListener,
-		OnItemClickListener {
+public class UpcomingFragment extends SickCursorListFragment  {
 
-	private static int PAGINATION = R.string.pagination;
-
-	private static final String URL = "url";
-
-	private static final String LOG_TAG = "UpcomingFragment";
-
-	private PullToRefreshListView mListViewUpcoming;
+	private static final String LOG_TAG = UpcomingFragment.class.getSimpleName();
 
 	private UpcomingCursorAdapter mUpcomingCursorAdapter;
 
-	private BroadcastReceiver mBroadcastReceiver;
-
-	private View mViewLoading;
-
-	private boolean mViewLoadingHidden, mLoading = true;
-
-	private SharedPreferences mPreferences;
-
-	private IListClickable mClickable;
-	
 	private final Uri mUri = ContractUtils.getProviderUriFromContract(Contract.MovieColumns.class);
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_upcoming, null);
-		mViewLoading = inflater.inflate(R.layout.view_loading, null);
-		hideViewLoading(true);
-		mListViewUpcoming = (PullToRefreshListView) rootView
-				.findViewById(R.id.upcoming_pull_refresh_list);
-		mListViewUpcoming.setOnScrollListener(this);
-		mBroadcastReceiver = new BroadcastReceiver() {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				String action = intent.getAction();
-				if (action.equals(CommonService.ACTION_ON_ERROR)) {
-					mListViewUpcoming.onRefreshComplete();
-					Toast.makeText(
-							getSherlockActivity(),
-							intent.getStringExtra(CommonService.EXTRA_KEY_MESSAGE),
-							Toast.LENGTH_SHORT).show();
-					mLoading = false;
-				} else if (action.equals(CommonService.ACTION_ON_SUCCESS)) {
-					mListViewUpcoming.onRefreshComplete();
-					mLoading = false;
-				}
-			}
-		};
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(CommonService.ACTION_ON_ERROR);
-		filter.addAction(CommonService.ACTION_ON_SUCCESS);
-		getActivity().registerReceiver(mBroadcastReceiver, filter);
-		mUpcomingCursorAdapter = new UpcomingCursorAdapter(
-				getSherlockActivity(), null);
-		mListViewUpcoming.setAdapter(mUpcomingCursorAdapter);
-		ListView actualListView = mListViewUpcoming.getRefreshableView();
-		actualListView.addFooterView(mViewLoading);
-		mListViewUpcoming.setOnRefreshListener(this);
-		mListViewUpcoming.setOnItemClickListener(this);
-		getSherlockActivity().getSupportLoaderManager().initLoader(1, null,
-				this);
-		return rootView;
-	}
-
-	@Override
-	public void onAttach(Activity activity) {
-		if (!(activity instanceof IListClickable))
-			throw new IllegalArgumentException(
-					"Activity must implements IListClickable");
-		mClickable = (IListClickable) activity;
-		super.onAttach(activity);
-	}
-
-	@Override
-	public void onDestroy() {
-		getSherlockActivity().unregisterReceiver(mBroadcastReceiver);
-		super.onDestroy();
-	}
+	private View mViewLoading;
+	private boolean mViewLoadingHidden, mLoading = true;
+	private SharedPreferences mPreferences;
+	private static int PAGINATION = R.string.pagination;
+	private static final String URL = "url";
 
 	@Override
 	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
@@ -147,7 +67,7 @@ public class UpcomingFragment extends SherlockFragment implements
 			load(intent);
 		} else {
 			Log.i(LOG_TAG, "onRefreshComplete");
-			mListViewUpcoming.onRefreshComplete();
+			mListView.onRefreshComplete();
 		}
 	}
 
@@ -157,7 +77,7 @@ public class UpcomingFragment extends SherlockFragment implements
 	}
 
 	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle bundle) {
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		return new CursorLoader(getSherlockActivity(),
 				mUri, null,
 				Contract.MovieColumns.SECTION + " = ?",
@@ -171,7 +91,6 @@ public class UpcomingFragment extends SherlockFragment implements
 		 * if (cursor.getCount() == 0) { onRefresh(null); }
 		 */
 		mUpcomingCursorAdapter.swapCursor(cursor);
-		mListViewUpcoming.onRefreshComplete();
 	}
 
 	@Override
@@ -222,16 +141,47 @@ public class UpcomingFragment extends SherlockFragment implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> list, View view, int position,
-			long id) {
+	public CursorAdapter cursorAdapter() {
+		mUpcomingCursorAdapter = new UpcomingCursorAdapter(
+				getSherlockActivity(), null);
+		return mUpcomingCursorAdapter;
+	}
+
+	@Override
+	public void onListItemClick(AdapterView<?> list, View view, int position,
+			long id, IListClickable clickable) {
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.SECTION, Contract.UPCOMING_SECTION);
 		arguments
 				.putInt(Contract.ID, cursor.getInt(cursor
 						.getColumnIndex(Contract.MovieColumns._ID)));
-		arguments.putInt(MainActivity.FRAGMENT, MainActivity.UPCOM_FRAGMENT);
-		mClickable.onItemListClick(arguments);
+		arguments.putInt(MainActivity.FRAGMENT, MainActivity.FRAGMENT_UPCOMING);
+		clickable.onItemListClick(arguments);
+	}
+
+	@Override
+	public IntentFilter filter() {
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(LoadingService.ACTION_ON_ERROR);
+		filter.addAction(LoadingService.ACTION_ON_SUCCESS);
+		return filter;
+	}
+
+	@Override
+	public void handleOnRecieve(Context context, Intent intent) {
+		String action = intent.getAction();
+		if (action.equals(LoadingService.ACTION_ON_ERROR)) {
+			mListView.onRefreshComplete();
+			Toast.makeText(
+					getSherlockActivity(),
+					intent.getStringExtra(LoadingService.EXTRA_KEY_MESSAGE),
+					Toast.LENGTH_SHORT).show();
+			mLoading = false;
+		} else if (action.equals(LoadingService.ACTION_ON_SUCCESS)) {
+			mListView.onRefreshComplete();
+			mLoading = false;
+		}
 	}
 
 }
