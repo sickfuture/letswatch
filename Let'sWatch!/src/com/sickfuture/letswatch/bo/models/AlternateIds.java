@@ -1,9 +1,9 @@
 package com.sickfuture.letswatch.bo.models;
 
 public class AlternateIds {
-	private int imdb;
+	private String imdb;
 
-	public int getImdb() {
+	public String getImdb() {
 		return imdb;
 	}
 }

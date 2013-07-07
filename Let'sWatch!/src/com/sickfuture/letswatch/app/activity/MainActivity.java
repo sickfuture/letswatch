@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -19,14 +18,13 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.widget.SearchView;
-import com.actionbarsherlock.widget.SearchView.OnQueryTextListener;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.BoxOfficeFragment;
 import com.sickfuture.letswatch.app.fragment.OpeningFragment;
+import com.sickfuture.letswatch.app.fragment.TheatersFragment;
 import com.sickfuture.letswatch.app.fragment.UpcomingFragment;
-import com.sickfuture.letswatch.app.fragment.common.CommonMovieListFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MainActivity extends SherlockFragmentActivity implements
@@ -108,7 +106,7 @@ public class MainActivity extends SherlockFragmentActivity implements
 			case FRAGMENT_UPCOMING:
 				return new UpcomingFragment();
 			case FRAGMENT_THEATERS:
-				return new CommonMovieListFragment(new BoxOfficeCursorAdapter(
+				return new TheatersFragment(new BoxOfficeCursorAdapter(
 						getApplicationContext(), null),
 						Contract.IN_THEATRES_SECTION,
 						R.string.API_IN_THEATERS_REQUEST_URL);
@@ -161,25 +159,8 @@ public class MainActivity extends SherlockFragmentActivity implements
 		searchView.setIconifiedByDefault(false);
 		searchView.setSubmitButtonEnabled(true);
 		searchView.setQueryRefinementEnabled(true);
-		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				Log.d(LOG_TAG, "submit");
-				mKeyboard.hideSoftInputFromWindow(searchView.getWindowToken(),
-						0);
-				// startSearch(query, mIgnoreNativeCreate, null,
-				// mIgnoreNativeCreate);
-				return onSearchRequested();
-			}
-
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				return false;
-			}
-		});
-
-		return super.onCreateOptionsMenu(menu);
+		return true;
 	}
 
 }
