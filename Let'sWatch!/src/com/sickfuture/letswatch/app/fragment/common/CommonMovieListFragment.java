@@ -116,7 +116,7 @@ public class CommonMovieListFragment extends SickCursorListFragment {
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.SECTION, mSection);
 		arguments.putInt(Contract.ID,
-				cursor.getInt(cursor.getColumnIndex(BaseColumns._ID)));
+				cursor.getInt(cursor.getColumnIndex(MovieColumns.MOVIE_ID)));
 		arguments
 				.putInt(MainActivity.FRAGMENT, mSection);
 		clickable.onItemListClick(arguments);
