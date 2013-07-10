@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
@@ -27,8 +28,12 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 	private static final int TEXT_VIEW_CAST = R.id.box_office_cast_text_view;
 	private static final int IMAGE_VIEW_POSTER = R.id.box_office_poster_image_view;
 
+	private RecyclingImageView mPosterImageView;
+	private SickImageLoader mImageLoader;
+
 	public BoxOfficeCursorAdapter(Context context, Cursor c) {
 		super(context, c);
+		mImageLoader = SickImageLoader.getInstance(context);
 	}
 
 	@Override
@@ -48,27 +53,32 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 			ViewHolder holder) {
 		final String posterUrl = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.POSTERS_PROFILE));
-		final String orinalUrl = cursor.getString(cursor
+		final String originalUrl = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.POSTERS_ORIGINAL));
+		mPosterImageView = (RecyclingImageView) holder
+				.getViewById(IMAGE_VIEW_POSTER);
 		if (!TextUtils.isEmpty(posterUrl)) {
-			holder.getViewById(IMAGE_VIEW_POSTER).setOnClickListener(new OnClickListener() {
+			mPosterImageView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(context,
 							FullScreenImageActivity.class);
 					intent.putExtra(POSTERS_PROFILE, posterUrl);
-					intent.putExtra(POSTERS_ORIGINAL, orinalUrl);
+					intent.putExtra(POSTERS_ORIGINAL, originalUrl);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					context.startActivity(intent);
 					return;
 				}
 			});
-			SickImageLoader.getInstance(mContext).loadBitmap(
-					(RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER), posterUrl);
+
+			mImageLoader.loadBitmap(mPosterImageView, posterUrl);
 		}
-		((TextView) holder.getViewById(TEXT_VIEW_CAST)).setText(cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.CAST_IDS)));
-		((TextView) holder.getViewById(TEXT_VIEW_TITLE)).setText(cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
+		((TextView) holder.getViewById(TEXT_VIEW_CAST)).setText(cursor
+				.getString(cursor
+						.getColumnIndex(Contract.MovieColumns.CAST_IDS)));
+		((TextView) holder.getViewById(TEXT_VIEW_TITLE)).setText(cursor
+				.getString(cursor
+						.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
 		String consensus = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.CRITICS_CONSENSUS));
 		TextView synopsis = (TextView) holder.getViewById(TEXT_VIEW_SYNOPSIS);
@@ -79,8 +89,8 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 			synopsis.setText(cursor.getString(cursor
 					.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
 		}
-		((TextView) holder.getViewById(TEXT_VIEW_MPAA)).setText(cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.MPAA)));
-		
+		((TextView) holder.getViewById(TEXT_VIEW_MPAA)).setText(cursor
+				.getString(cursor.getColumnIndex(Contract.MovieColumns.MPAA)));
+
 	}
 }

@@ -31,8 +31,12 @@ public class UpcomingCursorAdapter extends BaseCursorAdapter {
 	private static final int TEXT_VIEW_CAST = R.id.upcoming_cast_text_view;
 	private static final int IMAGE_VIEW_POSTER = R.id.upcoming_poster_image_view;
 
+	private RecyclingImageView mPosterImageView;
+	private SickImageLoader mImageLoader;
+
 	public UpcomingCursorAdapter(Context context, Cursor c) {
 		super(context, c);
+		mImageLoader = SickImageLoader.getInstance(context);
 	}
 
 	@Override
@@ -49,22 +53,21 @@ public class UpcomingCursorAdapter extends BaseCursorAdapter {
 				.getColumnIndex(Contract.MovieColumns.POSTERS_PROFILE));
 		final String original = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.POSTERS_ORIGINAL));
+		mPosterImageView = (RecyclingImageView) holder
+				.getViewById(IMAGE_VIEW_POSTER);
 		if (!TextUtils.isEmpty(posterUrl)) {
-			holder.getViewById(IMAGE_VIEW_POSTER).setOnClickListener(
-					new OnClickListener() {
+			mPosterImageView.setOnClickListener(new OnClickListener() {
 
-						@Override
-						public void onClick(View v) {
-							Intent intent = new Intent(context,
-									FullScreenImageActivity.class);
-							intent.putExtra(POSTERS_PROFILE, posterUrl);
-							intent.putExtra(POSTERS_ORIGINAL, original);
-							context.startActivity(intent);
-						}
-					});
-			SickImageLoader.getInstance(mContext).loadBitmap(
-					(RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER),
-					posterUrl);
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(context,
+							FullScreenImageActivity.class);
+					intent.putExtra(POSTERS_PROFILE, posterUrl);
+					intent.putExtra(POSTERS_ORIGINAL, original);
+					context.startActivity(intent);
+				}
+			});
+			mImageLoader.loadBitmap(mPosterImageView, posterUrl);
 		}
 		((TextView) holder.getViewById(TEXT_VIEW_TITLE)).setText(cursor
 				.getString(cursor

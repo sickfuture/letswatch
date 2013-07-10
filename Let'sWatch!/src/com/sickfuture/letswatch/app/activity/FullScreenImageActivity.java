@@ -12,20 +12,27 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.android.sickfuture.sickcore.image.SickImageLoader;
+import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.custom.TouchImageView;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.uiutils.SystemUiHider;
 
 public class FullScreenImageActivity extends SherlockActivity {
 
-	private TouchImageView mFullScreenImageView;
+	// private TouchImageView mFullScreenImageView;
+
+	private RecyclingImageView mFullScreenImageView;
 
 	private ProgressBar mProgressBar;
-	
+
 	private Intent mIntent;
 
+	private SickImageLoader mImageLoader = SickImageLoader
+			.getInstance(FullScreenImageActivity.this);
+
 	public static final String POSTERS_PROFILE = "posters_profile";
-	
+
 	public static final String POSTERS_ORIGINAL = "posters_original";
 
 	private static final boolean AUTO_HIDE = true;
@@ -37,12 +44,12 @@ public class FullScreenImageActivity extends SherlockActivity {
 	private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
 
 	private SystemUiHider mSystemUiHider;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_full_screen_image_view);
-		
+
 		final View controlsView = findViewById(R.id.layout_fullscreen_controls);
 		final View contentView = findViewById(R.id.image_view_full_screen);
 
@@ -106,52 +113,55 @@ public class FullScreenImageActivity extends SherlockActivity {
 		// Upon interacting with UI controls, delay any scheduled hide()
 		// operations to prevent the jarring behavior of controls going away
 		// while interacting with the UI.
-		
+
 		mProgressBar = (ProgressBar) findViewById(R.id.progress_bar_full_screen_image);
-		mFullScreenImageView = (TouchImageView) findViewById(R.id.image_view_full_screen);
-		//mProgressBar.setVisibility(View.VISIBLE);
+		mFullScreenImageView = (RecyclingImageView) findViewById(R.id.image_view_full_screen);
+		// mProgressBar.setVisibility(View.VISIBLE);
 		mIntent = getIntent();
 		String source = mIntent.getStringExtra(POSTERS_PROFILE);
 		Log.d("Full screen image intent", source);
-//		ImageLoader.getInstance(this).bind(mFullScreenImageView, source,
-//				new ParamCallback<Void>() {
-//
-//					@Override
-//					public void onSuccess(Void c) {
-//						mProgressBar.setVisibility(View.GONE);
-//						loadHiRes();
-//					}
-//
-//					@Override
-//					public void onError(Throwable e) {
-//						mProgressBar.setVisibility(View.GONE);
-//					}
-//				});
-		
+		// ImageLoader.getInstance(this).bind(mFullScreenImageView, source,
+		// new ParamCallback<Void>() {
+		//
+		// @Override
+		// public void onSuccess(Void c) {
+		// mProgressBar.setVisibility(View.GONE);
+		// loadHiRes();
+		// }
+		//
+		// @Override
+		// public void onError(Throwable e) {
+		// mProgressBar.setVisibility(View.GONE);
+		// }
+		// });
+		SickImageLoader.getInstance(this).loadBitmap(mFullScreenImageView,
+				mIntent.getStringExtra(POSTERS_ORIGINAL));
+
 	}
 
 	protected void loadHiRes() {
 		String original = mIntent.getStringExtra(POSTERS_ORIGINAL);
 		Log.d("Full screen image intent", original);
-		if(!TextUtils.isEmpty(original)){
+		if (!TextUtils.isEmpty(original)) {
 			mProgressBar.setVisibility(View.VISIBLE);
-//			ImageLoader.getInstance(this).bind(mFullScreenImageView, original,
-//				new ParamCallback<Void>() {
-//
-//					@Override
-//					public void onSuccess(Void c) {
-//						mProgressBar.setVisibility(View.GONE);
-//					}
-//
-//					@Override
-//					public void onError(Throwable e) {
-//						mProgressBar.setVisibility(View.GONE);
-//					}
-//				});
+			// ImageLoader.getInstance(this).bind(mFullScreenImageView,
+			// original,
+			// new ParamCallback<Void>() {
+			//
+			// @Override
+			// public void onSuccess(Void c) {
+			// mProgressBar.setVisibility(View.GONE);
+			// }
+			//
+			// @Override
+			// public void onError(Throwable e) {
+			// mProgressBar.setVisibility(View.GONE);
+			// }
+			// });
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
