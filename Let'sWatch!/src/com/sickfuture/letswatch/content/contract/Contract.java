@@ -2,6 +2,7 @@ package com.sickfuture.letswatch.content.contract;
 
 import com.android.sickfuture.sickcore.annotations.ContentInfo;
 import com.android.sickfuture.sickcore.annotations.db.DBTableName;
+import com.android.sickfuture.sickcore.annotations.db.DBUnique;
 import com.android.sickfuture.sickcore.annotations.db.contract.DBContract;
 import com.android.sickfuture.sickcore.annotations.db.types.DBIntegerType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBVarcharType;
@@ -18,6 +19,7 @@ public class Contract {
 	public static final int UPCOMING_DVD_SECTION = 21;
 	public static final int CURRENT_RELEASE_SECTION = 22;
 	public static final int NEW_RELEASE_SECTION = 23;
+	public static final int SEARCH = 30;
 
 	public static final String ID = "ID";
 	public static final String BOX_OFFICE_SECTION_MARK = "BOX_OFFICE";
@@ -37,6 +39,8 @@ public class Contract {
 		public MovieColumns() {
 		}
 
+		@DBIntegerType
+		public static final String MOVIE_ID = "MOVIE_ID";
 		@DBVarcharType
 		public static final String MOVIE_TITLE = "MOVIE_TITLE";
 		@DBIntegerType
@@ -95,7 +99,7 @@ public class Contract {
 		public static final String STUDIO = "STUDIO";
 		@DBVarcharType
 		public static final String DIRECTORS = "DIRECTORS";
-
+		
 	}
 
 }

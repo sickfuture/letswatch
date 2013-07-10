@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.security.cert.LDAPCertStoreParameters;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
@@ -70,21 +71,21 @@ public class LoadingService extends Service implements ParamCallback<String> {
 					getContentResolver().bulkInsert(d.getContentUri(), values);
 					return null;
 				} catch (ClientProtocolException e) {
-					this.setException(e);
+					onError(e);
 				} catch (IOException e) {
-					this.setException(e);
+					onError(e);
 				} catch (JSONException e) {
-					this.setException(e);
+					onError(e);
 				} catch (BadRequestException e) {
-					this.setException(e);
+					onError(e);
 				} catch (PrivilegedActionException e) {
-					this.setException(e);
+					onError(e);
 				} catch (NoSuchMethodException e) {
-					this.setException(e);
+					onError(e);
 				} catch (InstantiationException e) {
-					this.setException(e);
+					onError(e);
 				} catch (IllegalAccessException e) {
-					this.setException(e);
+					onError(e);
 				}
 				return null;
 			}
@@ -107,6 +108,8 @@ public class LoadingService extends Service implements ParamCallback<String> {
 		Intent intent = new Intent(ACTION_ON_ERROR);
 		intent.putExtra(EXTRA_KEY_MESSAGE, e.toString());
 
+		
+		Log.e(LOG_TAG, "onError: "+e.toString());
 	}
 
 }

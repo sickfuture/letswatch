@@ -26,6 +26,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.default_searchable"
+                   android:value=".app.activity.SearchActivity" />
         </activity>
         <activity
             android:name=".app.activity.FullScreenImageActivity"
@@ -52,6 +54,10 @@
             android:name=".content.provider.MoviesProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.MoviesProvider"
             android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.RecentMovieSuggestionsProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.RecentMovieSuggestionsProvider" >
         </provider>
     </application>
 

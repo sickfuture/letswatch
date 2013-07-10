@@ -23,7 +23,7 @@ public class MovieProcessor {
 			ContentValues[] values = new ContentValues[movies.size()];
 			for(int i = 0;i< movies.size();i++){
 				values[i] = new ContentValues();
-				values[i].put(MovieColumns._ID, movies.get(i).getId());
+				values[i].put(MovieColumns.MOVIE_ID, movies.get(i).getId());
 				values[i].put(MovieColumns.MOVIE_TITLE, movies.get(i).getTitle());
 				values[i].put(MovieColumns.YEAR, movies.get(i).getYear());
 				values[i].put(MovieColumns.MPAA, movies.get(i).getMpaaRating());

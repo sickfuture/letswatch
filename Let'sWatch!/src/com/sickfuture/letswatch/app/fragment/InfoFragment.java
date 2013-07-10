@@ -34,7 +34,7 @@ public class InfoFragment extends SherlockListFragment implements
 	private int mSection, mId;
 
 	private static final String[] PROJECTION = new String[] {
-			Contract.MovieColumns._ID, Contract.MovieColumns.MOVIE_TITLE,
+			Contract.MovieColumns.MOVIE_ID, Contract.MovieColumns.MOVIE_TITLE,
 			Contract.MovieColumns.YEAR, Contract.MovieColumns.RUNTIME,
 			Contract.MovieColumns.RATING_CRITICS,
 			Contract.MovieColumns.RATING_AUDIENCE,
@@ -74,7 +74,7 @@ public class InfoFragment extends SherlockListFragment implements
 		Uri uri = ContractUtils
 				.getProviderUriFromContract(Contract.MovieColumns.class);
 		Cursor cursor = getSherlockActivity().getContentResolver().query(uri,
-				PROJECTION, Contract.MovieColumns._ID + " = ?",
+				PROJECTION, Contract.MovieColumns.MOVIE_ID + " = ?",
 				new String[] { String.valueOf(mId) }, null);
 
 		if (cursor != null) {
