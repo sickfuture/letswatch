@@ -1,32 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Let's highlight resourses from differrent classes by comment rows with annotations -->
-    
+    <!-- Let's highlight resourses from differrent classes by comments -->
+
+
     <!-- App -->
     <string name="app_name">Let\'s Watch!</string>
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_search">Search</string>
     <string name="content_description">poster image</string>
-    
-    <!-- MainActivity  -->
+
+    <!-- MainActivity -->
+
+	<!-- Drawer items -->
+	<string name="drawer_theaters">Theaters</string>
+	<string name="drawer_dvd">Dvd</string>
+	<string name="drawer_favorites">Favorites</string>
+
+	<string-array name="titles_drawer">
+	    <item >@string/drawer_theaters</item>
+	    <item >@string/drawer_dvd</item>
+	    <item >@string/drawer_favorites</item>
+	</string-array>
+	
+    <!-- Page titles -->
     <string name="title_box_office">box office</string>
     <string name="title_upcoming">upcoming</string>
     <string name="title_theaters">in theaters</string>
     <string name="title_opening">opening</string>
+
+    <string-array name="titles_theater">
+        <item>@string/title_box_office</item>
+        <item>@string/title_upcoming</item>
+        <item>@string/title_theaters</item>
+        <item>@string/title_opening</item>
+    </string-array>
+
+    <string name="title_top_rentals">top rentals</string>
+    <string name="title_current_releases">current releases</string>
+    <string name="title_new_releases">new releases</string>
+    <string name="title_upcoming_dvd">upcoming</string>
+
+    <string-array name="titles_dvd">
+        <item>@string/title_top_rentals</item>
+        <item>@string/title_current_releases</item>
+        <item>@string/title_new_releases</item>
+        <item>@string/title_opening</item>
+    </string-array>
     
-    <!-- MovieDetailsActivity  -->
+    <!-- MovieDetailsActivity -->
     <string name="title_info">info</string>
-    
-	    <!-- InfoFragment -->
-	    <string name="year_info_movie_details">year</string>
-	    <string name="runtime_info_movie_details">runtime</string>
-	    <string name="mpaa_info_movie_details">mpaa</string>
-	    <string name="critics_info_movie_details">critics</string>
-	    <string name="audience_info_movie_details">audience</string>
-	    <string name="description_info_movie_details">Threre is no movie description (:</string>
-    
+
+    <!-- InfoFragment -->
+    <string name="year_info_movie_details">year</string>
+    <string name="runtime_info_movie_details">runtime</string>
+    <string name="mpaa_info_movie_details">mpaa</string>
+    <string name="critics_info_movie_details">critics</string>
+    <string name="audience_info_movie_details">audience</string>
+    <string name="description_info_movie_details">Threre is no movie description (:</string>
+
     <!-- API -->
     <string name="API_APPEND_KEY">&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
     <string name="API_BOX_OFFICE_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?limit=50&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
@@ -38,22 +71,18 @@
     <string name="API_NEW_RELEASES_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
     <string name="API_UPCOMING_DVDS_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/upcoming.json?page_limit=16&amp;page=1&amp;country=us&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
     <string name="API_SEARCH_REQUEST_URL">http://api.rottentomatoes.com/api/public/v1.0/movies.json?q=%s&amp;apikey=7j5zn3t5z3e63q227mx3b495</string>
-    
+
     <!-- App constants and keys -->
     <string name="internet_connection_is_not_avalible">Internet connection is not avalible</string>
     <string name="pagination">pagination</string>
     <string name="data">data</string>
     <string name="na">n/a</string>
-    
-    <!-- Adapter -->
-    <string name="view_holder">VIEW_HOLDER</string> <!-- unused -->
-    
-    <!-- Adapters layout-->
+
+    <!-- Adapters layout -->
     <string name="cast">Cast</string>
-    
+
     <!-- Search -->
     <string name="search_label">LETS_WATCH_SEARCH_LABEL</string>
     <string name="search_hint">Search movie...</string>
-    
 
 </resources>

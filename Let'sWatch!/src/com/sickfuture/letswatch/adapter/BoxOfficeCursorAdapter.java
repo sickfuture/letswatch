@@ -7,12 +7,16 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
+import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
+import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.FullScreenImageActivity;
 import com.sickfuture.letswatch.content.contract.Contract;
 
@@ -27,8 +31,11 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 	private static final int TEXT_VIEW_CAST = R.id.box_office_cast_text_view;
 	private static final int IMAGE_VIEW_POSTER = R.id.box_office_poster_image_view;
 
+    private SickImageLoader mImageLoader;
+
 	public BoxOfficeCursorAdapter(Context context, Cursor c) {
 		super(context, c);
+        mImageLoader = (SickImageLoader) AppUtils.get(ContextHolder.getInstance().getContext(), LetsWatchApplication.IMAGE_LOADER_SERVICE);
 	}
 
 	@Override
@@ -62,8 +69,8 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 					return;
 				}
 			});
-			SickImageLoader.getInstance(mContext).loadBitmap(
-					(RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER), posterUrl);
+            mImageLoader.loadBitmap((RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER), posterUrl);
+            ((RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER)).setScaleType(ImageView.ScaleType.CENTER_CROP);
 		}
 		((TextView) holder.getViewById(TEXT_VIEW_CAST)).setText(cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.CAST_IDS)));

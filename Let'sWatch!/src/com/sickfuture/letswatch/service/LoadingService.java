@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import java.security.AccessController;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.security.cert.LDAPCertStoreParameters;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
@@ -21,7 +20,7 @@ import com.android.sickfuture.sickcore.asynctask.ParamCallback;
 import com.android.sickfuture.sickcore.exceptions.BadRequestException;
 import com.android.sickfuture.sickcore.http.HttpManager;
 import com.android.sickfuture.sickcore.http.HttpManager.RequestType;
-import com.sickfuture.letswatch.processor.MovieProcessor;
+import com.sickfuture.letswatch.processor.BaseMovieProcessor;
 import com.sickfuture.letswatch.request.LoadingRequest;
 
 public class LoadingService extends Service implements ParamCallback<String> {
@@ -49,26 +48,26 @@ public class LoadingService extends Service implements ParamCallback<String> {
 			@Override
 			public Object load(final LoadingRequest d) {
 				try {
-					final String source = HttpManager.getInstance(
+					final String source = HttpManager.get(
 							getApplicationContext()).loadAsString(d.getUrl(),
 							RequestType.GET);
 					
 					Log.d(LOG_TAG, "processIntent: "+source);
-					Class<?> cl = MovieProcessor.class;
+					Class<?> cl = BaseMovieProcessor.class;
 					final Object processor = cl.newInstance();
 					final Method method = cl.getMethod(d.getProcessMethod(),
 							String.class, int.class);
-					ContentValues[] values = AccessController
-							.doPrivileged(new PrivilegedExceptionAction() {
-								public Object run() throws Exception {
-									if (!method.isAccessible()) {
-										method.setAccessible(true);
-									}
-									return method.invoke(processor, source,
-											d.getMarker());
-								}
-							});
-					getContentResolver().bulkInsert(d.getContentUri(), values);
+//					ContentValues[] values = AccessController
+//							.doPrivileged(new PrivilegedExceptionAction() {
+//								public Object run() throws Exception {
+//									if (!method.isAccessible()) {
+//										method.setAccessible(true);
+//									}
+//									return method.invoke(processor, source,
+//											d.getMarker());
+//								}
+//							});
+//					getContentResolver().bulkInsert(d.getContentUri(), values);
 					return null;
 				} catch (ClientProtocolException e) {
 					onError(e);
@@ -78,8 +77,8 @@ public class LoadingService extends Service implements ParamCallback<String> {
 					onError(e);
 				} catch (BadRequestException e) {
 					onError(e);
-				} catch (PrivilegedActionException e) {
-					onError(e);
+//				} catch (PrivilegedActionException e) {
+//					onError(e);
 				} catch (NoSuchMethodException e) {
 					onError(e);
 				} catch (InstantiationException e) {
