@@ -1,20 +1,31 @@
 package com.sickfuture.letswatch.processor;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import android.content.ContentValues;
+import android.content.Context;
 
+import com.android.sickfuture.sickcore.source.IProcessor;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.IOUtils;
 import com.android.sickfuture.sickcore.utils.L;
 import com.google.gson.Gson;
 import com.sickfuture.letswatch.bo.models.Movie;
 import com.sickfuture.letswatch.bo.models.MovieList;
+import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
-public class MovieProcessor {
+public abstract class BaseMovieProcessor implements IProcessor<InputStream, ContentValues[]>{
 
-	private static final String LOG_TAG = MovieProcessor.class.getSimpleName();
+	private static final String LOG_TAG = BaseMovieProcessor.class.getSimpleName();
+    private static final String UTF_8 = "UTF-8";
 
-	public static ContentValues[] parseMovieList (String source, int marker) {
+    public static ContentValues[] parseMovieList (String source, int marker) {
 		L.d(LOG_TAG, "parseList");
 		if(source!=null){
 			Gson gson = new Gson();
@@ -42,7 +53,7 @@ public class MovieProcessor {
 				values[i].put(MovieColumns.POSTERS_THUMBNAIL, movies.get(i).getPosters().getThumbnail());
 				//values[i].put(MovieColumns.CAST_IDS, movies.get(i));
 				values[i].put(MovieColumns.ALTERNATE_IDS, movies.get(i).getAlternateIds().getImdb());
-				values[i].put(MovieColumns.LINK_ALTRENATE, movies.get(i).getLinks().getAlternate());
+				values[i].put(MovieColumns.LINK_ALTERNATE, movies.get(i).getLinks().getAlternate());
 				values[i].put(MovieColumns.LINK_CAST, movies.get(i).getLinks().getCast());
 				values[i].put(MovieColumns.LINK_CLIPS, movies.get(i).getLinks().getClips());
 				values[i].put(MovieColumns.LINK_REVIEWS, movies.get(i).getLinks().getReviews());
@@ -62,7 +73,7 @@ public class MovieProcessor {
 			Movie movie = gson.fromJson(source, Movie.class);
 			ContentValues[] values = new ContentValues[1];
 			values[0] = new ContentValues();
-			values[0].put(MovieColumns._ID, movie.getId());
+			values[0].put(MovieColumns.MOVIE_ID, movie.getId());
 			values[0].put(MovieColumns.MOVIE_TITLE, movie.getTitle());
 			values[0].put(MovieColumns.YEAR, movie.getYear());
 			values[0].put(MovieColumns.MPAA, movie.getMpaaRating());
@@ -80,7 +91,7 @@ public class MovieProcessor {
 			values[0].put(MovieColumns.POSTERS_PROFILE, movie.getPosters().getProfile());
 			values[0].put(MovieColumns.POSTERS_THUMBNAIL, movie.getPosters().getThumbnail());
 			values[0].put(MovieColumns.ALTERNATE_IDS, movie.getAlternateIds().getImdb());
-			values[0].put(MovieColumns.LINK_ALTRENATE, movie.getLinks().getAlternate());
+			values[0].put(MovieColumns.LINK_ALTERNATE, movie.getLinks().getAlternate());
 			values[0].put(MovieColumns.LINK_CAST, movie.getLinks().getCast());
 			values[0].put(MovieColumns.LINK_CLIPS, movie.getLinks().getClips());
 			values[0].put(MovieColumns.LINK_REVIEWS, movie.getLinks().getReviews());
@@ -95,4 +106,40 @@ public class MovieProcessor {
 		return null;
 	}
 
+    private String getStringResponse(InputStream is) {
+        BufferedReader rd = null;
+        try {
+            rd = new BufferedReader(new InputStreamReader(is,
+                    Charset.forName(UTF_8)));
+            final StringBuilder sb = new StringBuilder();
+            int cp;
+            try {
+                while ((cp = rd.read()) != -1) {
+                    sb.append((char) cp);
+                }
+            } catch (IOException e) {
+                L.e(LOG_TAG, "can't get response string from source!");
+            }
+            final String jsonText = sb.toString();
+            L.d(LOG_TAG, "source = " + jsonText);
+            return jsonText;
+        } finally {
+            IOUtils.closeStream(is);
+            IOUtils.closeStream(rd);
+        }
+    }
+
+    @Override
+    public ContentValues[] process(InputStream data) {
+        String source = getStringResponse(data);
+        return processSource(source);
+    }
+
+    protected abstract ContentValues[] processSource(String source);
+
+    @Override
+    public boolean cache(ContentValues[] contentValues, Context context) {
+        context.getContentResolver().bulkInsert(ContractUtils.getProviderUriFromContract(Contract.MovieColumns.class), contentValues);
+        return true;
+    }
 }
