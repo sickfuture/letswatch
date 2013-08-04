@@ -15,20 +15,21 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
+import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class InfoFragment extends SherlockListFragment implements
 		LoaderCallbacks<Cursor> {
 
+    private SickImageLoader mImageLoader;
+
 	private View mInfoHeaderView;
-
 	private RecyclingImageView mPosterImageView;
-
 	private TextView mYearTextView, mMpaaTextView, mCriticsTextView,
 			mAudienceTextView, mDescripTextView, mRuntimeTextView;
-
 	private ListView mListView;
 
 	private int mSection, mId;
@@ -44,6 +45,7 @@ public class InfoFragment extends SherlockListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+        mImageLoader = (SickImageLoader) AppUtils.get(getActivity(), LetsWatchApplication.IMAGE_LOADER_SERVICE);
 		View view = inflater
 				.inflate(R.layout.fragment_movie_details_info, null);
 		mInfoHeaderView = inflater.inflate(R.layout.view_movie_details_header,
@@ -92,12 +94,8 @@ public class InfoFragment extends SherlockListFragment implements
 						.getColumnIndex(Contract.MovieColumns.RATING_CRITICS)));
 				mDescripTextView.setText(cursor.getString(cursor
 						.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
-				SickImageLoader
-						.getInstance(getActivity())
-						.loadBitmap(
-								mPosterImageView,
-								cursor.getString(cursor
-										.getColumnIndex(Contract.MovieColumns.POSTERS_DETAILED)));
+                mImageLoader.loadBitmap(mPosterImageView, cursor.getString(cursor
+                        .getColumnIndex(Contract.MovieColumns.POSTERS_DETAILED)));
 			}
 		}
 	}

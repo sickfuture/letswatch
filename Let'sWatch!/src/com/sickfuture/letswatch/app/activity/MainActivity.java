@@ -5,32 +5,51 @@ import java.util.Locale;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.BoxOfficeFragment;
+import com.sickfuture.letswatch.app.fragment.FavoritesFragment;
 import com.sickfuture.letswatch.app.fragment.OpeningFragment;
 import com.sickfuture.letswatch.app.fragment.TheatersFragment;
+import com.sickfuture.letswatch.app.fragment.TheatersPagerFragment;
 import com.sickfuture.letswatch.app.fragment.UpcomingFragment;
+import com.sickfuture.letswatch.app.fragment.common.PagerFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MainActivity extends SherlockFragmentActivity implements
-		ActionBar.TabListener, IListClickable {
+		IListClickable {
 
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+	private String[] mDrawerTitles;
+	private ListView mDrawerList;
+	private CharSequence mDrawerTitle;
+	private CharSequence mTitle;
+	private DrawerLayout mDrawerLayout;
+	private ActionBarDrawerToggle mDrawerToggle;
 
 	public static final String FRAGMENT = "FRAGMENT";
 	public static final String ARGUMENTS = "ARGS";
@@ -41,104 +60,108 @@ public class MainActivity extends SherlockFragmentActivity implements
 	public static final int FRAGMENT_OPENING = 3;
 
 	private InputMethodManager mKeyboard;
-	private SectionsPagerAdapter mSectionsPagerAdapter;
-	private ViewPager mViewPager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mKeyboard = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 		setContentView(R.layout.activity_main);
-		final ActionBar actBar = getSupportActionBar();
-		actBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		mSectionsPagerAdapter = new SectionsPagerAdapter(
-				getSupportFragmentManager());
 
-		mViewPager = (ViewPager) findViewById(R.id.pager);
-		mViewPager.setAdapter(mSectionsPagerAdapter);
+		mTitle = mDrawerTitle = getTitle();
+		mDrawerTitles = getResources().getStringArray(R.array.titles_drawer);
 
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actBar.setSelectedNavigationItem(position);
-					}
-				});
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		// Set the adapter for the list view
+		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, mDrawerTitles));
+		// Set the list's click listener
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
+            public void onDrawerClosed(View view) {
+            	ActionBar actionBar = getSupportActionBar();
+            	actionBar.setTitle(mTitle);
+            	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
 
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			actBar.addTab(actBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
+            public void onDrawerOpened(View drawerView) {
+            	ActionBar actionBar = getSupportActionBar();
+            	actionBar.setTitle(mDrawerTitle);
+            	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+//		FragmentManager fragmentManager = getSupportFragmentManager();
+//		fragmentManager.beginTransaction()
+//				.replace(R.id.content_frame, new TheatersPagerFragment())
+//				.commit();
+
+		mDrawerLayout.openDrawer(mDrawerList);
+
+		mKeyboard = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+		
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+	}
+	
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.menu_search).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
+    }
+    
+	private class DrawerItemClickListener implements
+			ListView.OnItemClickListener {
+		@Override
+		public void onItemClick(AdapterView parent, View view, int position,
+				long id) {
+			selectItem(position);
 		}
+	}
+
+	/** Swaps fragments in the main content view */
+	private void selectItem(int position) {
+
+		Fragment fragment = null;
+		switch (position) {
+		case 0:
+			fragment = new TheatersPagerFragment();
+			break;
+		case 1:
+			fragment = new TheatersPagerFragment();
+			break;
+		case 2:
+			fragment = new FavoritesFragment();
+			break;
+		default:
+			break;
+		}
+
+		Bundle args = new Bundle();
+		fragment.setArguments(args);
+
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		fragmentManager.beginTransaction()
+				.replace(R.id.content_frame, fragment).disallowAddToBackStack()
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+				.commit();
+
+		mDrawerList.setItemChecked(position, true);
+		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+		setTitle(mDrawerTitles[position]);
+		mDrawerLayout.closeDrawer(mDrawerList);
 	}
 
 	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		mViewPager.setCurrentItem(tab.getPosition());
-	}
-
-	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-		public SectionsPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			switch (position) {
-			case FRAGMENT_BOXOFFICE:
-				return new BoxOfficeFragment(new BoxOfficeCursorAdapter(
-						getApplicationContext(), null),
-						Contract.BOX_OFFICE_SECTION,
-						R.string.API_BOX_OFFICE_REQUEST_URL);
-			case FRAGMENT_UPCOMING:
-				return new UpcomingFragment();
-			case FRAGMENT_THEATERS:
-				return new TheatersFragment(new BoxOfficeCursorAdapter(
-						getApplicationContext(), null),
-						Contract.IN_THEATRES_SECTION,
-						R.string.API_IN_THEATERS_REQUEST_URL);
-			case FRAGMENT_OPENING:
-				return new OpeningFragment(new BoxOfficeCursorAdapter(
-						getApplicationContext(), null),
-						Contract.OPENING_SECTION,
-						R.string.API_OPENING_REQUEST_URL);
-			}
-			return null;
-		}
-
-		@Override
-		public int getCount() {
-			return 4;
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			Locale l = Locale.getDefault();
-			switch (position) {
-			case FRAGMENT_BOXOFFICE:
-				return getString(R.string.title_box_office).toUpperCase(l);
-			case FRAGMENT_UPCOMING:
-				return getString(R.string.title_upcoming).toUpperCase(l);
-			case FRAGMENT_THEATERS:
-				return getString(R.string.title_theaters).toUpperCase(l);
-			case FRAGMENT_OPENING:
-				return getString(R.string.title_opening).toUpperCase(l);
-			}
-			return null;
-		}
+	public void setTitle(CharSequence title) {
+		mTitle = title;
+		getSupportActionBar().setTitle(mTitle);
 	}
 
 	@Override
@@ -162,5 +185,25 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		return true;
 	}
+	
+
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
 
 }

@@ -26,8 +26,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+<<<<<<< HEAD
             <meta-data android:name="android.app.default_searchable"
                    android:value=".app.activity.SearchActivity" />
+=======
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".app.activity.SearchActivity" />
+>>>>>>> commonfragment
         </activity>
         <activity
             android:name=".app.activity.FullScreenImageActivity"

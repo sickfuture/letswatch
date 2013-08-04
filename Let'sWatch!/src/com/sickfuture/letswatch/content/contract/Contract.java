@@ -1,12 +1,13 @@
 package com.sickfuture.letswatch.content.contract;
 
+import android.provider.BaseColumns;
+
 import com.android.sickfuture.sickcore.annotations.ContentInfo;
 import com.android.sickfuture.sickcore.annotations.db.DBTableName;
 import com.android.sickfuture.sickcore.annotations.db.DBUnique;
 import com.android.sickfuture.sickcore.annotations.db.contract.DBContract;
 import com.android.sickfuture.sickcore.annotations.db.types.DBIntegerType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBVarcharType;
-import com.android.sickfuture.sickcore.db.BaseColumns;
 
 @DBContract
 public class Contract {
@@ -80,7 +81,7 @@ public class Contract {
 //		@DBVarcharType
 //		public static final String LINK_SELF = "LINK_SELF";
 		@DBVarcharType
-		public static final String LINK_ALTRENATE = "LINK_ALTRENATE";
+		public static final String LINK_ALTERNATE = "LINK_ALTERNATE";
 		@DBVarcharType
 		public static final String LINK_CAST = "LINK_CAST";
 		@DBVarcharType

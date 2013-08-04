@@ -11,9 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
+import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
+import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.FullScreenImageActivity;
 import com.sickfuture.letswatch.content.contract.Contract;
 
@@ -28,12 +31,20 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 	private static final int TEXT_VIEW_CAST = R.id.box_office_cast_text_view;
 	private static final int IMAGE_VIEW_POSTER = R.id.box_office_poster_image_view;
 
+<<<<<<< HEAD
 	private RecyclingImageView mPosterImageView;
 	private SickImageLoader mImageLoader;
 
 	public BoxOfficeCursorAdapter(Context context, Cursor c) {
 		super(context, c);
 		mImageLoader = SickImageLoader.getInstance(context);
+=======
+    private SickImageLoader mImageLoader;
+
+	public BoxOfficeCursorAdapter(Context context, Cursor c) {
+		super(context, c);
+        mImageLoader = (SickImageLoader) AppUtils.get(ContextHolder.getInstance().getContext(), LetsWatchApplication.IMAGE_LOADER_SERVICE);
+>>>>>>> commonfragment
 	}
 
 	@Override
@@ -70,8 +81,13 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 					return;
 				}
 			});
+<<<<<<< HEAD
 
 			mImageLoader.loadBitmap(mPosterImageView, posterUrl);
+=======
+            mImageLoader.loadBitmap((RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER), posterUrl);
+            ((RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER)).setScaleType(ImageView.ScaleType.CENTER_CROP);
+>>>>>>> commonfragment
 		}
 		((TextView) holder.getViewById(TEXT_VIEW_CAST)).setText(cursor
 				.getString(cursor
