@@ -31,26 +31,13 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 	private static final int TEXT_VIEW_CAST = R.id.box_office_cast_text_view;
 	private static final int IMAGE_VIEW_POSTER = R.id.box_office_poster_image_view;
 
-<<<<<<< HEAD
-	private RecyclingImageView mPosterImageView;
 	private SickImageLoader mImageLoader;
-
-	public BoxOfficeCursorAdapter(Context context, Cursor c) {
-		super(context, c);
-		mImageLoader = SickImageLoader.getInstance(context);
-=======
-    private SickImageLoader mImageLoader;
+	private RecyclingImageView mPosterImageView;
 
 	public BoxOfficeCursorAdapter(Context context, Cursor c) {
 		super(context, c);
         mImageLoader = (SickImageLoader) AppUtils.get(ContextHolder.getInstance().getContext(), LetsWatchApplication.IMAGE_LOADER_SERVICE);
->>>>>>> commonfragment
-	}
 
-	@Override
-	public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-		View view = View.inflate(context, R.layout.adapter_box_office, null);
-		return view;
 	}
 
 	@Override
@@ -81,13 +68,9 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 					return;
 				}
 			});
-<<<<<<< HEAD
-
-			mImageLoader.loadBitmap(mPosterImageView, posterUrl);
-=======
             mImageLoader.loadBitmap((RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER), posterUrl);
             ((RecyclingImageView) holder.getViewById(IMAGE_VIEW_POSTER)).setScaleType(ImageView.ScaleType.CENTER_CROP);
->>>>>>> commonfragment
+
 		}
 		((TextView) holder.getViewById(TEXT_VIEW_CAST)).setText(cursor
 				.getString(cursor
@@ -109,4 +92,11 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 				.getString(cursor.getColumnIndex(Contract.MovieColumns.MPAA)));
 
 	}
+
+	@Override
+	public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+		View view = View.inflate(context, R.layout.adapter_box_office, null);
+		return view;
+	}
+
 }

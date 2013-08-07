@@ -33,19 +33,11 @@ public class UpcomingCursorAdapter extends BaseCursorAdapter {
     private static final int TEXT_VIEW_CAST = R.id.upcoming_cast_text_view;
     private static final int IMAGE_VIEW_POSTER = R.id.upcoming_poster_image_view;
 
-<<<<<<< HEAD
+
 	private RecyclingImageView mPosterImageView;
 	private SickImageLoader mImageLoader;
 
-	public UpcomingCursorAdapter(Context context, Cursor c) {
-		super(context, c);
-		mImageLoader = SickImageLoader.getInstance(context);
-	}
-=======
-    private SickImageLoader mImageLoader;
->>>>>>> commonfragment
-
-    public UpcomingCursorAdapter(Context context, Cursor c) {
+   public UpcomingCursorAdapter(Context context, Cursor c) {
         super(context, c);
         mImageLoader = (SickImageLoader) AppUtils.get(context, LetsWatchApplication.IMAGE_LOADER_SERVICE);
     }
@@ -56,42 +48,6 @@ public class UpcomingCursorAdapter extends BaseCursorAdapter {
         return view;
     }
 
-<<<<<<< HEAD
-		final String posterUrl = cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.POSTERS_PROFILE));
-		final String original = cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.POSTERS_ORIGINAL));
-		mPosterImageView = (RecyclingImageView) holder
-				.getViewById(IMAGE_VIEW_POSTER);
-		if (!TextUtils.isEmpty(posterUrl)) {
-			mPosterImageView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context,
-							FullScreenImageActivity.class);
-					intent.putExtra(POSTERS_PROFILE, posterUrl);
-					intent.putExtra(POSTERS_ORIGINAL, original);
-					context.startActivity(intent);
-				}
-			});
-			mImageLoader.loadBitmap(mPosterImageView, posterUrl);
-		}
-		((TextView) holder.getViewById(TEXT_VIEW_TITLE)).setText(cursor
-				.getString(cursor
-						.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
-		((TextView) holder.getViewById(TEXT_VIEW_SYNOPSIS)).setText(cursor
-				.getString(cursor
-						.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
-		((TextView) holder.getViewById(TEXT_VIEW_MPAA)).setText(cursor
-				.getString(cursor.getColumnIndex(Contract.MovieColumns.MPAA)));
-		((TextView) holder.getViewById(TEXT_VIEW_RELEASE_DATE))
-				.setText(cursor.getString(cursor
-						.getColumnIndex(Contract.MovieColumns.RELEASE_DATE_THEATER)));
-		String cast = cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.CAST_IDS));
-		((TextView) holder.getViewById(TEXT_VIEW_CAST)).setText(cast);
-=======
     @Override
     public void bindData(View view, final Context context, Cursor cursor,
                          ViewHolder holder) {
@@ -103,7 +59,6 @@ public class UpcomingCursorAdapter extends BaseCursorAdapter {
         if (!TextUtils.isEmpty(posterUrl)) {
             holder.getViewById(IMAGE_VIEW_POSTER).setOnClickListener(
                     new OnClickListener() {
->>>>>>> commonfragment
 
                         @Override
                         public void onClick(View v) {

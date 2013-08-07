@@ -14,8 +14,10 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
+import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.custom.TouchImageView;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.uiutils.SystemUiHider;
 
 public class FullScreenImageActivity extends SherlockActivity {
@@ -23,24 +25,18 @@ public class FullScreenImageActivity extends SherlockActivity {
 	// private TouchImageView mFullScreenImageView;
 
 	private RecyclingImageView mFullScreenImageView;
-
 	private ProgressBar mProgressBar;
 
 	private Intent mIntent;
 
-	private SickImageLoader mImageLoader = SickImageLoader
-			.getInstance(FullScreenImageActivity.this);
+	private SickImageLoader mImageLoader;
 
 	public static final String POSTERS_PROFILE = "posters_profile";
-
 	public static final String POSTERS_ORIGINAL = "posters_original";
 
 	private static final boolean AUTO_HIDE = true;
-
 	private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
 	private static final boolean TOGGLE_ON_CLICK = true;
-
 	private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
 
 	private SystemUiHider mSystemUiHider;
@@ -50,6 +46,8 @@ public class FullScreenImageActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_full_screen_image_view);
 
+		mImageLoader = (SickImageLoader) AppUtils.get(this, LetsWatchApplication.IMAGE_LOADER_SERVICE);
+		
 		final View controlsView = findViewById(R.id.layout_fullscreen_controls);
 		final View contentView = findViewById(R.id.image_view_full_screen);
 
@@ -134,7 +132,7 @@ public class FullScreenImageActivity extends SherlockActivity {
 		// mProgressBar.setVisibility(View.GONE);
 		// }
 		// });
-		SickImageLoader.getInstance(this).loadBitmap(mFullScreenImageView,
+		mImageLoader.loadBitmap(mFullScreenImageView,
 				mIntent.getStringExtra(POSTERS_ORIGINAL));
 
 	}
