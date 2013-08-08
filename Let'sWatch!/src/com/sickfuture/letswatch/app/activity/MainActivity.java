@@ -71,27 +71,23 @@ public class MainActivity extends SherlockFragmentActivity implements
 
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		// Set the adapter for the list view
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, mDrawerTitles));
-		// Set the list's click listener
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
             public void onDrawerClosed(View view) {
             	ActionBar actionBar = getSupportActionBar();
             	actionBar.setTitle(mTitle);
-            	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
             	ActionBar actionBar = getSupportActionBar();
             	actionBar.setTitle(mDrawerTitle);
-            	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
+		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
 //		FragmentManager fragmentManager = getSupportFragmentManager();
 //		fragmentManager.beginTransaction()
 //				.replace(R.id.content_frame, new TheatersPagerFragment())
@@ -189,6 +185,9 @@ public class MainActivity extends SherlockFragmentActivity implements
 
     @Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+//    	if (mDrawerToggle.onOptionsItemSelected((android.view.MenuItem) item)) {
+//			return true;
+//		}
 		return super.onOptionsItemSelected(item);
 	}
 

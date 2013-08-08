@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,45 +13,34 @@ import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
 import com.sickfuture.letswatch.R;
 
 public abstract class PagerFragment extends SherlockFragment implements
 		TabListener {
 
+	private PagerSlidingTabStrip mTabs;
 	private FragmentPagerAdapter mSectionsPagerAdapter;
 	private ViewPager mViewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setHasOptionsMenu(true);
 	}	
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_pager, null);
-		final ActionBar actionBar = getSherlockActivity().getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		mSectionsPagerAdapter = getPagerAdapter();
+		mTabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 		mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		mViewPager
-				.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-					@Override
-					public void onPageSelected(int position) {
-						actionBar.setSelectedNavigationItem(position);
-					}
-				});
+		final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+				.getDisplayMetrics());
+		mViewPager.setPageMargin(pageMargin);
 
-		if (actionBar.getTabCount() > 0) {
-			actionBar.removeAllTabs();
-		}
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
+		mTabs.setViewPager(mViewPager);
 
 		return view;
 	}

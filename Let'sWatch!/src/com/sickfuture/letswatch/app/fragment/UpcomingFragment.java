@@ -43,31 +43,32 @@ import java.io.InputStream;
 
 public class UpcomingFragment extends CommonMovieListFragment {
 
-    private static final String LOG_TAG = UpcomingFragment.class.getSimpleName();
+	private static final String LOG_TAG = UpcomingFragment.class
+			.getSimpleName();
 
+	@Override
+	protected int getSection() {
+		return Contract.UPCOMING_SECTION;
+	}
 
-    @Override
-    protected int getSection() {
-        return Contract.UPCOMING_SECTION;
-    }
+	@Override
+	protected void loadData() {
+		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
+				getSherlockActivity().getString(
+						R.string.API_UPCOMING_REQUEST_URL));
+		request.setIsCacheable(true);
+		SourceService.execute(getSherlockActivity(), request,
+				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
+				LetsWatchApplication.UPCOMING_PROCESSOR_SERVICE);
+	}
 
-    @Override
-    protected void loadData() {
-        DataSourceRequest<InputStream, ContentValues[]> request = new
-                DataSourceRequest<InputStream, ContentValues[]>(getActivity().getString(R.string.API_UPCOMING_REQUEST_URL));
-        request.setIsCacheable(true);
-        SourceService.execute(getActivity(), request,
-                LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
-                LetsWatchApplication.UPCOMING_PROCESSOR_SERVICE);
-    }
+	@Override
+	public CursorAdapter cursorAdapter() {
+		return new BoxOfficeCursorAdapter(getSherlockActivity(), null);
+	}
 
-    @Override
-    public CursorAdapter cursorAdapter() {
-        return new BoxOfficeCursorAdapter(getActivity(), null);
-    }
+	@Override
+	public void onScroll(AbsListView absListView, int i, int i2, int i3) {
 
-    @Override
-    public void onScroll(AbsListView absListView, int i, int i2, int i3) {
-
-    }
+	}
 }

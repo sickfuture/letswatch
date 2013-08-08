@@ -87,7 +87,7 @@ public class TheatersPagerFragment extends PagerFragment {
 
 	@Override
 	protected FragmentPagerAdapter getPagerAdapter() {
-		return new SectionsPagerAdapter(getActivity(), getFragmentManager(),
+		return new SectionsPagerAdapter(getSherlockActivity(), getFragmentManager(),
 				mFragments, mTabTitles);
 	}
 
