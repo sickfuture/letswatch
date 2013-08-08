@@ -31,14 +31,14 @@ public class TheatersFragment extends CommonMovieListFragment {
         DataSourceRequest<InputStream, ContentValues[]> request = new
                 DataSourceRequest<InputStream, ContentValues[]>(getActivity().getString(R.string.API_IN_THEATERS_REQUEST_URL));
         request.setIsCacheable(true);
-        SourceService.execute(getActivity(), request,
+        SourceService.execute(this.getActivity(), request,
                 LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
                 LetsWatchApplication.THEATERS_PROCESSOR_SERVICE);
     }
 
     @Override
     public CursorAdapter cursorAdapter() {
-        return new BoxOfficeCursorAdapter(getActivity(), null);
+        return new BoxOfficeCursorAdapter(this.getActivity(), null);
     }
 
     @Override

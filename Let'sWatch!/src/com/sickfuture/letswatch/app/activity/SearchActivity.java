@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.app.activity;
 
+import java.io.InputStream;
+
 import android.app.SearchManager;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -11,14 +13,13 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.android.sickfuture.sickcore.service.DataSourceRequest;
 import com.android.sickfuture.sickcore.service.SourceService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
@@ -29,9 +30,7 @@ import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.provider.RecentMovieSuggestionsProvider;
 
-import java.io.InputStream;
-
-public class SearchActivity extends SherlockFragmentActivity implements
+public class SearchActivity extends ActionBarActivity implements
         LoaderCallbacks<Cursor> {
 
     private final Uri mUri = ContractUtils
@@ -43,13 +42,6 @@ public class SearchActivity extends SherlockFragmentActivity implements
     private int mLoaderId;
 
     private ListView mListView;
-
-    @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item) {
-        //
-        // searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        return super.onMenuItemSelected(featureId, item);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

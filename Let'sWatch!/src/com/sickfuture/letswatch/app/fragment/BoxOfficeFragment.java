@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.app.fragment;
 
+import java.io.InputStream;
+
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -10,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 
-import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.service.DataSourceRequest;
 import com.android.sickfuture.sickcore.service.SourceService;
 import com.sickfuture.letswatch.R;
@@ -18,8 +19,6 @@ import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.fragment.common.CommonMovieListFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
-
-import java.io.InputStream;
 
 public class BoxOfficeFragment extends CommonMovieListFragment {
 
@@ -40,14 +39,14 @@ public class BoxOfficeFragment extends CommonMovieListFragment {
         DataSourceRequest<InputStream, ContentValues[]> request = new
                 DataSourceRequest<InputStream, ContentValues[]>(getActivity().getString(R.string.API_BOX_OFFICE_REQUEST_URL));
         request.setIsCacheable(true);
-        SourceService.execute(getSherlockActivity(), request,
+        SourceService.execute(getActivity(), request,
                 LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
                 LetsWatchApplication.BOX_OFFICE_PROCESSOR_SERVICE);
     }
 
     @Override
     public CursorAdapter cursorAdapter() {
-        return new BoxOfficeCursorAdapter(getSherlockActivity(), null);
+        return new BoxOfficeCursorAdapter(getActivity(), null);
     }
 
     @Override

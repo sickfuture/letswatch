@@ -2,9 +2,8 @@ package com.sickfuture.letswatch.uiutils;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-
-import com.actionbarsherlock.app.SherlockActivity;
 
 /**
  * An API 11+ implementation of {@link SystemUiHider}. Uses APIs available in
@@ -42,7 +41,7 @@ public class SystemUiHiderHoneycomb extends SystemUiHiderBase {
 	 * Constructor not intended to be called by clients. Use
 	 * {@link SystemUiHider#getInstance} to obtain an instance.
 	 */
-	protected SystemUiHiderHoneycomb(SherlockActivity activity, View anchorView,
+	protected SystemUiHiderHoneycomb(ActionBarActivity activity, View anchorView,
 			int flags) {
 		super(activity, anchorView, flags);
 

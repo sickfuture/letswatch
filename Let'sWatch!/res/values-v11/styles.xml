@@ -8,13 +8,18 @@
         <!-- API 11 theme customizations can go here. -->
     </style>
 
-     <style name="FullscreenTheme" parent="android:Theme.Holo.Light">
+     <style name="FullscreenTheme" parent="@style/Theme.AppCompat.Light">
         <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@null</item>
+        
+         <item name="actionBarStyle">@style/FullscreenActionBarStyle</item>
+        <item name="windowActionBarOverlay">true</item>
     </style>
     
-     <style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
+     <style name="FullscreenActionBarStyle" parent="@style/Widget.AppCompat.ActionBar">
         <item name="android:background">@color/white_overlay</item>
+        
+        <item name="background">@color/white_overlay</item>
     </style>
 </resources>

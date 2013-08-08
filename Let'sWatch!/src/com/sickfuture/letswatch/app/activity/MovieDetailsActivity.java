@@ -8,18 +8,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.ActionBar.TabListener;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.fragment.InfoFragment;
 
-public class MovieDetailsActivity extends SherlockFragmentActivity implements
-		TabListener {
+public class MovieDetailsActivity extends ActionBarActivity {
 
 	private static final int FRAGMENTS_COUNT = 1;
 
@@ -69,7 +66,6 @@ public class MovieDetailsActivity extends SherlockFragmentActivity implements
 
 		};
 		final ActionBar actionBar = getSupportActionBar();
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		mViewPager = (ViewPager) findViewById(R.id.viewpager_fragment_movie_details);
 		mViewPager.setAdapter(mPagerAdapter);
@@ -80,11 +76,7 @@ public class MovieDetailsActivity extends SherlockFragmentActivity implements
 						actionBar.setSelectedNavigationItem(position);
 					}
 				});
-		for (int i = 0; i < mPagerAdapter.getCount(); i++) {
-			actionBar.addTab(actionBar.newTab()
-					.setText(mPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
+		
 	}
 
 	@Override
@@ -97,22 +89,6 @@ public class MovieDetailsActivity extends SherlockFragmentActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// TODO Auto-generated method stub
 		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		mViewPager.setCurrentItem(tab.getPosition());
-
-	}
-
-	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-
-	}
-
-	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-
 	}
 
 	@Override

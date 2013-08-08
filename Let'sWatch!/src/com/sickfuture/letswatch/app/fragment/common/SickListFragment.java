@@ -1,12 +1,9 @@
 package com.sickfuture.letswatch.app.fragment.common;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +13,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.android.sickfuture.sickcore.service.SourceResultReceiver;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 
-public abstract class SickListFragment extends SherlockFragment implements
+public abstract class SickListFragment extends Fragment implements
 		OnRefreshListener<ListView>, OnScrollListener,
 		OnItemClickListener {
 

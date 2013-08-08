@@ -13,14 +13,14 @@ public class TheatersPagerFragment extends PagerFragment {
 
 	private static final String LOG_TAG = TheatersPagerFragment.class
 			.getSimpleName();
-	
+
 	private String[] mFragments;
 	private String[] mTabTitles;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		Log.d(LOG_TAG, "onCreate: ");
 		mTabTitles = getResources().getStringArray(R.array.titles_theater);
 		mFragments = new String[] { BoxOfficeFragment.class.getName(),
@@ -32,7 +32,7 @@ public class TheatersPagerFragment extends PagerFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		// TODO Auto-generated method stub
-		
+
 		Log.d(LOG_TAG, "onAttach: ");
 		super.onAttach(activity);
 	}
@@ -40,7 +40,7 @@ public class TheatersPagerFragment extends PagerFragment {
 	@Override
 	public void onDetach() {
 		// TODO Auto-generated method stub
-		
+
 		Log.d(LOG_TAG, "onDetach: ");
 		super.onDetach();
 	}
@@ -48,7 +48,7 @@ public class TheatersPagerFragment extends PagerFragment {
 	@Override
 	public void onDestroy() {
 		// TODO Auto-generated method stub
-		
+
 		Log.d(LOG_TAG, "onDestroy: ");
 		super.onDestroy();
 	}
@@ -56,7 +56,7 @@ public class TheatersPagerFragment extends PagerFragment {
 	@Override
 	public void onPause() {
 		// TODO Auto-generated method stub
-		
+
 		Log.d(LOG_TAG, "onPause: ");
 		super.onPause();
 	}
@@ -64,7 +64,7 @@ public class TheatersPagerFragment extends PagerFragment {
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
-		
+
 		Log.d(LOG_TAG, "onResume: ");
 		super.onResume();
 	}
@@ -72,7 +72,7 @@ public class TheatersPagerFragment extends PagerFragment {
 	@Override
 	public void onStart() {
 		// TODO Auto-generated method stub
-		
+
 		Log.d(LOG_TAG, "onStart: ");
 		super.onStart();
 	}
@@ -80,14 +80,14 @@ public class TheatersPagerFragment extends PagerFragment {
 	@Override
 	public void onStop() {
 		// TODO Auto-generated method stub
-		
+
 		Log.d(LOG_TAG, "onStop: ");
 		super.onStop();
 	}
 
 	@Override
 	protected FragmentPagerAdapter getPagerAdapter() {
-		return new SectionsPagerAdapter(getSherlockActivity(), getFragmentManager(),
+		return new SectionsPagerAdapter(getActivity(), getFragmentManager(),
 				mFragments, mTabTitles);
 	}
 

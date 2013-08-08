@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
@@ -47,12 +46,12 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mSection = getSection();
-		mImageLoader = (SickImageLoader) AppUtils.get(getSherlockActivity(), LetsWatchApplication.IMAGE_LOADER_SERVICE);
+		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(), LetsWatchApplication.IMAGE_LOADER_SERVICE);
 	}
 
 	@Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getSherlockActivity(), mUri, null,
+        return new CursorLoader(getActivity(), mUri, null,
                 Contract.MovieColumns.SECTION + " = ?",
                 new String[]{String.valueOf(mSection)},
                 null);
@@ -74,8 +73,8 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
     public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 
         Log.d(LOG_TAG, "onRefresh: ");
-        if (InetChecker.checkInetConnection(getSherlockActivity())) {
-            getSherlockActivity().getContentResolver()
+        if (InetChecker.checkInetConnection(getActivity())) {
+            getActivity().getContentResolver()
                     .delete(mUri,
                             MovieColumns.SECTION + " = ?",
                             new String[]{String
@@ -131,7 +130,7 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
     @Override
     protected void error(Exception exception) {
         mListView.onRefreshComplete();
-        Toast.makeText(getSherlockActivity(), exception.getMessage(),
+        Toast.makeText(getActivity(), exception.getMessage(),
                 Toast.LENGTH_SHORT).show();
     }
 

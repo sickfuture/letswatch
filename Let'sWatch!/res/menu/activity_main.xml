@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:lwapp="http://schemas.android.com/apk/res-auto"     >
 
     <item
         android:id="@+id/menu_search"
-        android:actionViewClass="com.actionbarsherlock.widget.SearchView"
         android:icon="@android:drawable/ic_menu_search"
-        android:showAsAction="ifRoom|collapseActionView"
+        lwapp:actionViewClass="android.support.v7.widget.SearchView"
+        lwapp:showAsAction="ifRoom|collapseActionView"
         android:title="@string/menu_search"/>
     <item
         android:id="@+id/menu_settings"

@@ -3,6 +3,7 @@ package com.sickfuture.letswatch.app.fragment;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.android.sickfuture.sickcore.utils.AppUtils;
@@ -21,7 +21,7 @@ import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-public class InfoFragment extends SherlockListFragment implements
+public class InfoFragment extends ListFragment implements
 		LoaderCallbacks<Cursor> {
 
     private SickImageLoader mImageLoader;
@@ -67,7 +67,7 @@ public class InfoFragment extends SherlockListFragment implements
 		mPosterImageView = (RecyclingImageView) mInfoHeaderView
 				.findViewById(R.id.imageview_movie_details_header);
 		loadInfoValues();
-		mListView.setAdapter(new ArrayAdapter<String>(getSherlockActivity(),
+		mListView.setAdapter(new ArrayAdapter<String>(getActivity(),
 				R.layout.adapter_movie_details_critics_replies));
 		return view;
 	}
@@ -75,7 +75,7 @@ public class InfoFragment extends SherlockListFragment implements
 	private void loadInfoValues() {
 		Uri uri = ContractUtils
 				.getProviderUriFromContract(Contract.MovieColumns.class);
-		Cursor cursor = getSherlockActivity().getContentResolver().query(uri,
+		Cursor cursor = getActivity().getContentResolver().query(uri,
 				PROJECTION, Contract.MovieColumns.MOVIE_ID + " = ?",
 				new String[] { String.valueOf(mId) }, null);
 

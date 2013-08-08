@@ -5,22 +5,21 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.android.sickfuture.sickcore.utils.AppUtils;
-import com.custom.TouchImageView;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.uiutils.SystemUiHider;
 
-public class FullScreenImageActivity extends SherlockActivity {
+public class FullScreenImageActivity extends ActionBarActivity {
 
 	// private TouchImageView mFullScreenImageView;
 

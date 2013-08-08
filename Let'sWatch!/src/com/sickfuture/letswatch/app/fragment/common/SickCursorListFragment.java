@@ -15,7 +15,7 @@ public abstract class SickCursorListFragment extends SickListFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mLoaderId = getClass().hashCode();
-		getSherlockActivity().getSupportLoaderManager().initLoader(mLoaderId,
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId,
 				null, this);
 
 	}

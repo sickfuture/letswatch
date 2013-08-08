@@ -2,9 +2,8 @@ package com.sickfuture.letswatch.uiutils;
 
 import android.app.Activity;
 import android.os.Build;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-
-import com.actionbarsherlock.app.SherlockActivity;
 
 /**
  * A utility class that helps with showing and hiding system UI such as the
@@ -58,7 +57,7 @@ public abstract class SystemUiHider {
 	/**
 	 * The activity associated with this UI hider object.
 	 */
-	protected SherlockActivity mActivity;
+	protected ActionBarActivity mActivity;
 
 	/**
 	 * The view on which {@link View#setSystemUiVisibility(int)} will be called.
@@ -96,7 +95,7 @@ public abstract class SystemUiHider {
 	 *            {@link #FLAG_HIDE_NAVIGATION}, and
 	 *            {@link #FLAG_LAYOUT_IN_SCREEN_OLDER_DEVICES}.
 	 */
-	public static SystemUiHider getInstance(SherlockActivity activity, View anchorView,
+	public static SystemUiHider getInstance(ActionBarActivity activity, View anchorView,
 			int flags) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			return new SystemUiHiderHoneycomb(activity, anchorView, flags);
@@ -105,7 +104,7 @@ public abstract class SystemUiHider {
 		}
 	}
 
-	protected SystemUiHider(SherlockActivity activity, View anchorView, int flags) {
+	protected SystemUiHider(ActionBarActivity activity, View anchorView, int flags) {
 		mActivity = activity;
 		mAnchorView = anchorView;
 		mFlags = flags;

@@ -1,23 +1,18 @@
 package com.sickfuture.letswatch.app.fragment.common;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.ActionBar.TabListener;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
 import com.sickfuture.letswatch.R;
 
-public abstract class PagerFragment extends SherlockFragment implements
-		TabListener {
+public abstract class PagerFragment extends Fragment {
 
 	private PagerSlidingTabStrip mTabs;
 	private FragmentPagerAdapter mSectionsPagerAdapter;
@@ -26,7 +21,7 @@ public abstract class PagerFragment extends SherlockFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	}	
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,8 +31,9 @@ public abstract class PagerFragment extends SherlockFragment implements
 		mTabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 		mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);
-		final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
-				.getDisplayMetrics());
+		final int pageMargin = (int) TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 4, getResources()
+						.getDisplayMetrics());
 		mViewPager.setPageMargin(pageMargin);
 
 		mTabs.setViewPager(mViewPager);
@@ -46,21 +42,5 @@ public abstract class PagerFragment extends SherlockFragment implements
 	}
 
 	protected abstract FragmentPagerAdapter getPagerAdapter();
-
-	@Override
-	public void onTabSelected(Tab tab, FragmentTransaction ft) {
-		mViewPager.setCurrentItem(tab.getPosition());
-
-	}
-
-	@Override
-	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-
-	}
-
-	@Override
-	public void onTabReselected(Tab tab, FragmentTransaction ft) {
-
-	}
 
 }
