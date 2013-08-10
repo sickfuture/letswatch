@@ -20,60 +20,60 @@ import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 
 public abstract class SickListFragment extends Fragment implements
-		OnRefreshListener<ListView>, OnScrollListener,
-		OnItemClickListener {
+		OnRefreshListener<ListView>, OnScrollListener, OnItemClickListener {
 
 	private static final String LOG_TAG = SickListFragment.class
 			.getSimpleName();
 
 	protected PullToRefreshListView mListView;
 	private IListClickable mClickable;
-    private SourceResultReceiver mResultReceiver;
+	protected SourceResultReceiver mResultReceiver;
 	protected BaseAdapter mListViewAdapter;
 
-    protected SickListFragment() {
-    }
+	protected SickListFragment() {
+	}
 
-    @Override
+	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-    	mListViewAdapter = adapter();
+		mListViewAdapter = adapter();
 		View view = inflater.inflate(fragmentResource(), null);
-		mListView = (PullToRefreshListView) view.findViewById(listViewResource());
+		mListView = (PullToRefreshListView) view
+				.findViewById(listViewResource());
 		mListView.setAdapter(mListViewAdapter);
 		mListView.setOnItemClickListener(this);
 		mListView.setOnRefreshListener(this);
 
-        mResultReceiver  = new SourceResultReceiver(new Handler()) {
-            @Override
-            public void onStart(Bundle result) {
-                start(result);
-            }
+		mResultReceiver = new SourceResultReceiver(new Handler()) {
+			@Override
+			public void onStart(Bundle result) {
+				start(result);
+			}
 
-            @Override
-            public void onError(Exception exception) {
-                error(exception);
-            }
+			@Override
+			public void onError(Exception exception) {
+				error(exception);
+			}
 
-            @Override
-            public void onDone(Bundle result) {
-                done(result);
-            }
-        };
+			@Override
+			public void onDone(Bundle result) {
+				done(result);
+			}
+		};
 		return view;
 	}
 
-    public SourceResultReceiver getResultReceiver() {
-    	return mResultReceiver;
-    }
-    
-    protected abstract void start(Bundle bundle);
+	public SourceResultReceiver getResultReceiver() {
+		return mResultReceiver;
+	}
 
-    protected abstract void error(Exception exception);
+	protected abstract void start(Bundle bundle);
 
-    protected abstract void done(Bundle result);
+	protected abstract void error(Exception exception);
 
-    @Override
+	protected abstract void done(Bundle result);
+
+	@Override
 	public void onAttach(Activity activity) {
 		if (!(activity instanceof IListClickable))
 			throw new IllegalArgumentException(
@@ -88,18 +88,6 @@ public abstract class SickListFragment extends Fragment implements
 		onListItemClick(list, view, position, id, mClickable);
 	}
 
-//	@Override
-//	public void onPause() {
-//		getSherlockActivity().unregisterReceiver(mBroadcastReceiver);
-//		super.onPause();
-//	}
-//
-//	@Override
-//	public void onResume() {
-//		getSherlockActivity().registerReceiver(mBroadcastReceiver, filter());
-//		super.onResume();
-//	}
-//
 	protected int fragmentResource() {
 		return R.layout.fragment_common;
 	}
@@ -110,7 +98,7 @@ public abstract class SickListFragment extends Fragment implements
 
 	public abstract BaseAdapter adapter();
 
-	public abstract void onListItemClick(AdapterView<?> list, View view, int position,
-			long id, IListClickable clickable);
+	public abstract void onListItemClick(AdapterView<?> list, View view,
+			int position, long id, IListClickable clickable);
 
 }

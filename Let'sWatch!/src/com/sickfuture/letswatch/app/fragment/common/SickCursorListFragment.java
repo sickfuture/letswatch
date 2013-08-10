@@ -7,16 +7,17 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.widget.BaseAdapter;
 
-public abstract class SickCursorListFragment extends SickListFragment implements LoaderCallbacks<Cursor>{
+public abstract class SickCursorListFragment extends SickListFragment implements
+		LoaderCallbacks<Cursor> {
 
-    private int mLoaderId;
+	private int mLoaderId;
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mLoaderId = getClass().hashCode();
-		getActivity().getSupportLoaderManager().initLoader(mLoaderId,
-				null, this);
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId, null,
+				this);
 
 	}
 
@@ -25,11 +26,10 @@ public abstract class SickCursorListFragment extends SickListFragment implements
 		return cursorAdapter();
 	}
 
-    public int getmLoaderId() {
-        return mLoaderId;
-    }
+	public int getmLoaderId() {
+		return mLoaderId;
+	}
 
-    public abstract CursorAdapter cursorAdapter();
-
+	public abstract CursorAdapter cursorAdapter();
 
 }

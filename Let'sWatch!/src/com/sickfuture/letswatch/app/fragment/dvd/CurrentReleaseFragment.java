@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.app.fragment;
+package com.sickfuture.letswatch.app.fragment.dvd;
 
 import java.io.InputStream;
 
@@ -14,24 +14,27 @@ import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.fragment.common.CommonMovieListFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-public class UpcomingFragment extends CommonMovieListFragment {
+public class CurrentReleaseFragment extends CommonMovieListFragment {
 
-	private static final String LOG_TAG = UpcomingFragment.class
-			.getSimpleName();
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+	}
 
 	@Override
 	protected int getSection() {
-		return Contract.UPCOMING_SECTION;
+		return Contract.CURRENT_RELEASE_SECTION;
 	}
 
 	@Override
 	protected void loadData() {
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
-				getActivity().getString(R.string.API_UPCOMING_REQUEST_URL));
+				getActivity().getString(R.string.API_CURRENT_RELEASES_REQUEST_URL));
 		request.setIsCacheable(true);
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
-				LetsWatchApplication.UPCOMING_PROCESSOR_SERVICE);
+				LetsWatchApplication.CURRENT_RELEASE_PROCESSOR_SERVICE,
+				mResultReceiver);
 	}
 
 	@Override
@@ -39,8 +42,4 @@ public class UpcomingFragment extends CommonMovieListFragment {
 		return new BoxOfficeCursorAdapter(getActivity(), null);
 	}
 
-	@Override
-	public void onScroll(AbsListView absListView, int i, int i2, int i3) {
-
-	}
 }

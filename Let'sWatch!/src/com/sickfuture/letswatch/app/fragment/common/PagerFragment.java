@@ -20,6 +20,7 @@ public abstract class PagerFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		mSectionsPagerAdapter = getPagerAdapter();
 		super.onCreate(savedInstanceState);
 	}
 
@@ -27,7 +28,6 @@ public abstract class PagerFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_pager, null);
-		mSectionsPagerAdapter = getPagerAdapter();
 		mTabs = (PagerSlidingTabStrip) view.findViewById(R.id.tabs);
 		mViewPager = (ViewPager) view.findViewById(R.id.viewPager);
 		mViewPager.setAdapter(mSectionsPagerAdapter);

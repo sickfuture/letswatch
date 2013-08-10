@@ -1,13 +1,14 @@
 package com.sickfuture.letswatch.content.contract;
 
-import android.provider.BaseColumns;
-
 import com.android.sickfuture.sickcore.annotations.ContentInfo;
 import com.android.sickfuture.sickcore.annotations.db.DBTableName;
 import com.android.sickfuture.sickcore.annotations.db.DBUnique;
 import com.android.sickfuture.sickcore.annotations.db.contract.DBContract;
 import com.android.sickfuture.sickcore.annotations.db.types.DBIntegerType;
+import com.android.sickfuture.sickcore.annotations.db.types.DBLongType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBVarcharType;
+import com.android.sickfuture.sickcore.content.contract.CoreBaseColumns;
+import com.android.sickfuture.sickcore.content.contract.CoreContracts;
 
 @DBContract
 public class Contract {
@@ -35,7 +36,7 @@ public class Contract {
 
 	@DBTableName(tableName = "MOVIES_TABLE")
 	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.MoviesProvider/MOVIES_TABLE")
-	public static final class MovieColumns implements BaseColumns {
+	public static final class MovieColumns implements CoreBaseColumns {
 
 		public MovieColumns() {
 		}
@@ -78,8 +79,8 @@ public class Contract {
 		public static final String CAST_IDS = "CAST_IDS";
 		@DBVarcharType
 		public static final String ALTERNATE_IDS = "ALTERNATE_IDS";
-//		@DBVarcharType
-//		public static final String LINK_SELF = "LINK_SELF";
+		// @DBVarcharType
+		// public static final String LINK_SELF = "LINK_SELF";
 		@DBVarcharType
 		public static final String LINK_ALTERNATE = "LINK_ALTERNATE";
 		@DBVarcharType
@@ -100,7 +101,16 @@ public class Contract {
 		public static final String STUDIO = "STUDIO";
 		@DBVarcharType
 		public static final String DIRECTORS = "DIRECTORS";
+
+	}
+	
+	@DBTableName(tableName = "FAVORITES_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/FAVORITES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.FavoritesProvider/FAVORITES_TABLE")
+	public static final class FavoriteColumns implements CoreBaseColumns{
+		
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
 		
 	}
-
 }

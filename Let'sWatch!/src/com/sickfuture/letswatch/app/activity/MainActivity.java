@@ -25,7 +25,8 @@ import android.widget.ListView;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.FavoritesFragment;
-import com.sickfuture.letswatch.app.fragment.TheatersPagerFragment;
+import com.sickfuture.letswatch.app.fragment.pager.DvdPagerFragment;
+import com.sickfuture.letswatch.app.fragment.pager.TheatersPagerFragment;
 
 public class MainActivity extends ActionBarActivity implements IListClickable {
 
@@ -65,14 +66,14 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 			public void onDrawerClosed(View view) {
 				ActionBar actionBar = getSupportActionBar();
 				actionBar.setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to
+//				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				ActionBar actionBar = getSupportActionBar();
 				actionBar.setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to
+//				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 		};
@@ -91,7 +92,6 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-//		startSupportActionMode(null);
 	}
 
 	@Override
@@ -121,7 +121,7 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 			fragment = new TheatersPagerFragment();
 			break;
 		case 1:
-			fragment = new TheatersPagerFragment();
+			fragment = new DvdPagerFragment();
 			break;
 		case 2:
 			fragment = new FavoritesFragment();
@@ -135,12 +135,10 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment).disallowAddToBackStack()
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+				.replace(R.id.content_frame, fragment)//.disallowAddToBackStack()
 				.commit();
 
 		mDrawerList.setItemChecked(position, true);
-		// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
 		setTitle(mDrawerTitles[position]);
 		mDrawerLayout.closeDrawer(mDrawerList);
 	}

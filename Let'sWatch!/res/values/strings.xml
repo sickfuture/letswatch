@@ -44,8 +44,8 @@
 
     <string-array name="titles_dvd">
         <item>@string/title_top_rentals</item>
-        <item>@string/title_current_releases</item>
         <item>@string/title_new_releases</item>
+        <item>@string/title_current_releases</item>
         <item>@string/title_opening</item>
     </string-array>
     

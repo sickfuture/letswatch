@@ -9,23 +9,24 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.app.fragment.BoxOfficeFragment;
-import com.sickfuture.letswatch.app.fragment.OpeningFragment;
-import com.sickfuture.letswatch.app.fragment.TheatersFragment;
-import com.sickfuture.letswatch.app.fragment.UpcomingFragment;
 import com.sickfuture.letswatch.app.fragment.common.PagerFragment;
+import com.sickfuture.letswatch.app.fragment.theaters.BoxOfficeFragment;
+import com.sickfuture.letswatch.app.fragment.theaters.OpeningFragment;
+import com.sickfuture.letswatch.app.fragment.theaters.TheatersFragment;
+import com.sickfuture.letswatch.app.fragment.theaters.UpcomingFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 	private static final String LOG_TAG = SectionsPagerAdapter.class
 			.getSimpleName();
-	
+
 	private String[] mTabTitles;
 	private String[] mFragments;
 	private Context mContext;
-	
-	public SectionsPagerAdapter(Context context, FragmentManager fm, String[] fragments, String[] tabTitles) {
+
+	public SectionsPagerAdapter(Context context, FragmentManager fm,
+			String[] fragments, String[] tabTitles) {
 		super(fm);
 		mContext = context;
 		mFragments = fragments;
@@ -34,8 +35,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int position) {
-		
-		Log.d(LOG_TAG, "getItem: ");
+
+		Log.d(LOG_TAG, "getItem: " + mFragments[position]);
 		return Fragment.instantiate(mContext, mFragments[position]);
 	}
 

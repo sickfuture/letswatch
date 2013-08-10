@@ -59,7 +59,7 @@ public abstract class BaseMovieProcessor implements IProcessor<InputStream, Cont
 				values[i].put(MovieColumns.LINK_REVIEWS, movies.get(i).getLinks().getReviews());
 				values[i].put(MovieColumns.LINK_SIMILAR, movies.get(i).getLinks().getSimilar());
 				values[i].put(MovieColumns.SECTION, marker);
-				L.d(LOG_TAG, i+"");
+//				L.d(LOG_TAG, i+"");
 			}
 			return values;
 		}
