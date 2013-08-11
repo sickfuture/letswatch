@@ -61,8 +61,48 @@
             android:exported="false" >
         </provider>
         <provider
-            android:name=".content.provider.FavoritesProvider"
-            android:authorities="com.sickfuture.letswatch.content.provider.FavoritesProvider"
+            android:name=".content.provider.dvd.CurrentReleaseProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.dvd.CurrentReleaseProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.dvd.TopRentalsProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.dvd.TopRentalsProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.dvd.NewReleaseProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.dvd.NewReleaseProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.dvd.UpcomingDvdProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.dvd.UpcomingDvdProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.theaters.BoxOfficeProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.theaters.BoxOfficeProvider"
+            android:exported="false" >
+        </provider>
+         <provider
+            android:name=".content.provider.theaters.InTheatersProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.theaters.InTheatersProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.theaters.OpeningProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.theaters.OpeningProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.theaters.UpcomingProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.theaters.UpcomingProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.theaters.UpcomingProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.theaters.UpcomingProvider"
             android:exported="false" >
         </provider>
         <provider
@@ -70,6 +110,14 @@
             android:authorities="com.sickfuture.letswatch.content.provider.RecentMovieSuggestionsProvider"
             android:exported="false" >
         </provider>
+        <provider
+            android:name=".content.provider.SearchProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.SearchProvider"
+            android:exported="false" >
+        </provider>
+        <provider android:name="com.android.sickfuture.sickcore.provider.AppRequestsProvider"
+            android:authorities="com.android.sickfuture.sickcore.provider.AppRequestsProvider"
+            android:exported="false"></provider>
     </application>
 
 </manifest>

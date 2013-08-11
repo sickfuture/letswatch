@@ -15,11 +15,9 @@ import android.widget.Toast;
 
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.utils.AppUtils;
-import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.InetChecker;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
-import com.sickfuture.letswatch.app.activity.MainActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
@@ -29,32 +27,30 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 	private static final String LOG_TAG = CommonMovieListFragment.class
 			.getSimpleName();
 
-	private final Uri mUri = ContractUtils
-			.getProviderUriFromContract(Contract.MovieColumns.class);
-	private int mSection;
+	private Uri mUri;
+	// private int mSection;
 	private SickImageLoader mImageLoader;
 
 	public CommonMovieListFragment() {
 		super();
 	}
 
-	protected abstract int getSection();
+	protected abstract Uri getUri();
 
 	protected abstract void loadData();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mSection = getSection();
+		// mSection = getSection();
+		mUri = getUri();
 		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), mUri, null,
-				Contract.MovieColumns.SECTION + " = ?",
-				new String[] { String.valueOf(mSection) }, null);
+		return new CursorLoader(getActivity(), mUri, null, null, null, null);
 	}
 
 	@Override
@@ -74,17 +70,7 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 
 		Log.d(LOG_TAG, "onRefresh: ");
 		if (InetChecker.checkInetConnection(getActivity())) {
-			getActivity().getContentResolver().delete(mUri,
-					MovieColumns.SECTION + " = ?",
-					new String[] { String.valueOf(mSection) });
-			// Intent intent = new Intent(getSherlockActivity(),
-			// LoadingService.class);
-			// LoadingRequest request = new LoadingRequest(RequestType.GET,
-			// getString(mUrlResource),
-			// mSection,
-			// RequestHelper.PROCESS_MOVIE_LIST, mUri);
-			// intent.putExtra("request", request);
-			// getSherlockActivity().startService(intent);
+			getActivity().getContentResolver().delete(mUri, null, null);
 			loadData();
 		} else {
 			refreshView.onRefreshComplete();
@@ -111,11 +97,10 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 			long id, IListClickable clickable) {
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
 		Bundle arguments = new Bundle();
-		arguments.putInt(Contract.SECTION, mSection);
 		arguments.putInt(Contract.ID,
 				cursor.getInt(cursor.getColumnIndex(MovieColumns.MOVIE_ID)));
-		arguments.putInt(MainActivity.FRAGMENT, mSection);
-		clickable.onItemListClick(arguments);
+//		arguments.putInt(MainActivity.FRAGMENT, mSection);
+//		clickable.onItemListClick(arguments);
 
 	}
 
@@ -135,25 +120,5 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 	protected void done(Bundle result) {
 		mListView.onRefreshComplete();
 	}
-	// @Override
-	// public IntentFilter filter() {
-	// IntentFilter filter = new IntentFilter();
-	// filter.addAction(LoadingService.ACTION_ON_ERROR);
-	// filter.addAction(LoadingService.ACTION_ON_SUCCESS);
-	// return filter;
-	// }
-	//
-	// @Override
-	// public void handleOnRecieve(Context context, Intent intent) {
-	// String action = intent.getAction();
-	// if (action.equals(LoadingService.ACTION_ON_ERROR)) {
-	// mListView.onRefreshComplete();
-	// Toast.makeText(getSherlockActivity(),
-	// intent.getStringExtra(LoadingService.EXTRA_KEY_MESSAGE),
-	// Toast.LENGTH_SHORT).show();
-	// } else if (action.equals(LoadingService.ACTION_ON_SUCCESS)) {
-	// mListView.onRefreshComplete();
-	// }
-	// }
 
 }

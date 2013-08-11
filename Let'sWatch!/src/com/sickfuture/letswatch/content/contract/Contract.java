@@ -4,6 +4,7 @@ import com.android.sickfuture.sickcore.annotations.ContentInfo;
 import com.android.sickfuture.sickcore.annotations.db.DBTableName;
 import com.android.sickfuture.sickcore.annotations.db.DBUnique;
 import com.android.sickfuture.sickcore.annotations.db.contract.DBContract;
+import com.android.sickfuture.sickcore.annotations.db.types.DBBooleanType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBIntegerType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBLongType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBVarcharType;
@@ -38,9 +39,7 @@ public class Contract {
 	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.MoviesProvider/MOVIES_TABLE")
 	public static final class MovieColumns implements CoreBaseColumns {
 
-		public MovieColumns() {
-		}
-
+		@DBUnique
 		@DBIntegerType
 		public static final String MOVIE_ID = "MOVIE_ID";
 		@DBVarcharType
@@ -91,9 +90,11 @@ public class Contract {
 		public static final String LINK_REVIEWS = "LINK_REVIEWS";
 		@DBVarcharType
 		public static final String LINK_SIMILAR = "LINK_SIMILAR";
-		@DBIntegerType
-		public static final String SECTION = "SECTION";
-		@DBVarcharType
+
+		// @DBIntegerType
+		// public static final String SECTION = "SECTION";
+
+		@DBBooleanType
 		public static final String IS_FAVORITE = "IS_FAVORITE";
 		@DBVarcharType
 		public static final String GENRES = "GENRES";
@@ -103,14 +104,95 @@ public class Contract {
 		public static final String DIRECTORS = "DIRECTORS";
 
 	}
-	
-	@DBTableName(tableName = "FAVORITES_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/FAVORITES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.FavoritesProvider/FAVORITES_TABLE")
-	public static final class FavoriteColumns implements CoreBaseColumns{
-		
+
+	@DBTableName(tableName = "BOX_OFFICE_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/BOX_OFFICE_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.theaters.BoxOfficeProvider/BOX_OFFICE_TABLE")
+	public static final class BoxOfficeColumns implements CoreBaseColumns {
+
 		@DBUnique
 		@DBLongType
 		public static final String MOVIE_ID = "MOVIE_ID";
-		
+
 	}
+
+	@DBTableName(tableName = "CURRENT_RELEASE_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/CURRENT_RELEASE_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.dvd.CurrentReleaseProvider/CURRENT_RELEASE_TABLE")
+	public static final class CurrentReleaseColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
+	@DBTableName(tableName = "NEW_RELEASE_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/NEW_RELEASE_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.dvd.NewReleaseProvider/NEW_RELEASE_TABLE")
+	public static final class NewReleaseColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
+	@DBTableName(tableName = "OPENING_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/OPENING_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.theaters.OpeningProvider/OPENING_TABLE")
+	public static final class OpeningColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
+	@DBTableName(tableName = "SEARCH_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/SEARCH_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.SearchProvider/SEARCH_TABLE")
+	public static final class SearchColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
+	@DBTableName(tableName = "THEATERS_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/THEATERS_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.theaters.InTheatersProvider/THEATERS_TABLE")
+	public static final class TheatersColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
+	@DBTableName(tableName = "TOP_RENTALS_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/TOP_RENTALS_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.dvd.TopRentalsProvider/TOP_RENTALS_TABLE")
+	public static final class TopRentalsColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
+	@DBTableName(tableName = "UPCOMING_DVD_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/UPCOMING_DVD_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.dvd.UpcomingDvdProvider/UPCOMING_DVD_TABLE")
+	public static final class UpcomingDvdColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
+	@DBTableName(tableName = "UPCOMING_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/UPCOMING_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.theaters.UpcomingProvider/UPCOMING_TABLE")
+	public static final class UpcomingColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_ID = "MOVIE_ID";
+
+	}
+
 }

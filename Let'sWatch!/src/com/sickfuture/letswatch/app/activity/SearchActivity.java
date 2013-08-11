@@ -34,11 +34,11 @@ public class SearchActivity extends ActionBarActivity implements
         LoaderCallbacks<Cursor> {
 
     private final Uri mUri = ContractUtils
-            .getProviderUriFromContract(Contract.MovieColumns.class);
+            .getProviderUriFromContract(Contract.SearchColumns.class);
     private CursorAdapter mAdapter;
-    private String mSelection = Contract.MovieColumns.SECTION + " = ?";
-    private String[] mSelectionArgs = new String[]{String
-            .valueOf(Contract.SEARCH)};
+//    private String mSelection = Contract.MovieColumns.SECTION + " = ?";
+//    private String[] mSelectionArgs = new String[]{String
+//            .valueOf(Contract.SEARCH)};
     private int mLoaderId;
 
     private ListView mListView;
@@ -81,16 +81,8 @@ public class SearchActivity extends ActionBarActivity implements
         String searchUrl = getString(R.string.API_SEARCH_REQUEST_URL, query);
         if (InetChecker.checkInetConnection(this)) {
             getContentResolver()
-                    .delete(mUri, mSelection,
-                            mSelectionArgs);
-//			Intent intent = new Intent(this,
-//					LoadingService.class);
-//			LoadingRequest request = new LoadingRequest(RequestType.GET,
-//					searchUrl,
-//					Contract.SEARCH,
-//					RequestHelper.PROCESS_MOVIE_LIST, mUri);
-//			intent.putExtra("request", request);
-//			startService(intent);
+                    .delete(mUri, null,
+                            null);
             DataSourceRequest<InputStream, ContentValues[]> request = new
                     DataSourceRequest<InputStream, ContentValues[]>(searchUrl);
             request.setIsCacheable(true);
@@ -109,7 +101,7 @@ public class SearchActivity extends ActionBarActivity implements
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(this, mUri, null, mSelection, mSelectionArgs, null);
+        return new CursorLoader(this, mUri, null, null, null, null);
     }
 
     @Override
