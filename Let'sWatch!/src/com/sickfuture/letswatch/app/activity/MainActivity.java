@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -66,14 +67,14 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 			public void onDrawerClosed(View view) {
 				ActionBar actionBar = getSupportActionBar();
 				actionBar.setTitle(mTitle);
-//				invalidateOptionsMenu(); // creates call to
+				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				ActionBar actionBar = getSupportActionBar();
 				actionBar.setTitle(mDrawerTitle);
-//				invalidateOptionsMenu(); // creates call to
+				invalidateOptionsMenu(); // creates call to
 											// onPrepareOptionsMenu()
 			}
 		};
@@ -124,14 +125,12 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 			fragment = new DvdPagerFragment();
 			break;
 		case 2:
+			Log.d(LOG_TAG, "selectItem: fav");
 			fragment = new FavoritesFragment();
 			break;
 		default:
 			break;
 		}
-
-		Bundle args = new Bundle();
-		fragment.setArguments(args);
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction()

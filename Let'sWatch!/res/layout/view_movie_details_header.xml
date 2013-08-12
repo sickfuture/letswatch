@@ -5,6 +5,12 @@
     android:layout_margin="8dp"
     android:orientation="vertical" >
 
+    <Button 
+        android:id="@+id/button_movie_details_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_star_big_off"
+        android:layout_margin="@dimen/dim_small"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

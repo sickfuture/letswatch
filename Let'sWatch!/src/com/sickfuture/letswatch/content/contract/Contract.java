@@ -94,7 +94,7 @@ public class Contract {
 		// @DBIntegerType
 		// public static final String SECTION = "SECTION";
 
-		@DBBooleanType
+		@DBIntegerType
 		public static final String IS_FAVORITE = "IS_FAVORITE";
 		@DBVarcharType
 		public static final String GENRES = "GENRES";

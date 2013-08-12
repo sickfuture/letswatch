@@ -1,5 +1,6 @@
 package com.sickfuture.letswatch.app.fragment;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,8 +9,10 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,17 +25,18 @@ import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class InfoFragment extends ListFragment implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, OnClickListener {
 
-    private SickImageLoader mImageLoader;
+	private SickImageLoader mImageLoader;
 
 	private View mInfoHeaderView;
 	private RecyclingImageView mPosterImageView;
 	private TextView mYearTextView, mMpaaTextView, mCriticsTextView,
 			mAudienceTextView, mDescripTextView, mRuntimeTextView;
 	private ListView mListView;
+	private Button mFavButton;
 
-	private int mSection, mId;
+	private int mId, mIsFavorite;
 
 	private static final String[] PROJECTION = new String[] {
 			Contract.MovieColumns.MOVIE_ID, Contract.MovieColumns.MOVIE_TITLE,
@@ -45,7 +49,8 @@ public class InfoFragment extends ListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-        mImageLoader = (SickImageLoader) AppUtils.get(getActivity(), LetsWatchApplication.IMAGE_LOADER_SERVICE);
+		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
+				LetsWatchApplication.IMAGE_LOADER_SERVICE);
 		View view = inflater
 				.inflate(R.layout.fragment_movie_details_info, null);
 		mInfoHeaderView = inflater.inflate(R.layout.view_movie_details_header,
@@ -66,6 +71,9 @@ public class InfoFragment extends ListFragment implements
 				.findViewById(R.id.textview_runtime_movie_details_header);
 		mPosterImageView = (RecyclingImageView) mInfoHeaderView
 				.findViewById(R.id.imageview_movie_details_header);
+		mFavButton = (Button) mInfoHeaderView
+				.findViewById(R.id.button_movie_details_favorite);
+		mFavButton.setOnClickListener(this);
 		loadInfoValues();
 		mListView.setAdapter(new ArrayAdapter<String>(getActivity(),
 				R.layout.adapter_movie_details_critics_replies));
@@ -94,8 +102,16 @@ public class InfoFragment extends ListFragment implements
 						.getColumnIndex(Contract.MovieColumns.RATING_CRITICS)));
 				mDescripTextView.setText(cursor.getString(cursor
 						.getColumnIndex(Contract.MovieColumns.SYNOPSIS)));
-                mImageLoader.loadBitmap(mPosterImageView, cursor.getString(cursor
-                        .getColumnIndex(Contract.MovieColumns.POSTERS_DETAILED)));
+				mIsFavorite = cursor.getInt(cursor
+						.getColumnIndex(Contract.MovieColumns.IS_FAVORITE));
+				mFavButton
+						.setBackgroundResource(mIsFavorite == 1 ? android.R.drawable.star_big_on
+								: android.R.drawable.star_big_off);
+				mImageLoader
+						.loadBitmap(
+								mPosterImageView,
+								cursor.getString(cursor
+										.getColumnIndex(Contract.MovieColumns.POSTERS_DETAILED)));
 			}
 		}
 	}
@@ -103,31 +119,40 @@ public class InfoFragment extends ListFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		mId = getArguments().getInt(Contract.ID);
-		mSection = getArguments().getInt(Contract.SECTION);
 		super.onCreate(savedInstanceState);
 	}
 
 	@Override
-	public void onDestroy() {
-		// TODO Auto-generated method stub
-		super.onDestroy();
-	}
-
-	@Override
-	public Loader<Cursor> onCreateLoader(int arg0, Bundle arg1) {
+	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> arg0, Cursor arg1) {
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onLoaderReset(Loader<Cursor> arg0) {
+	public void onLoaderReset(Loader<Cursor> loader) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onClick(View v) {
+		Uri uri = ContractUtils
+				.getProviderUriFromContract(Contract.MovieColumns.class);
+		int newVal = mIsFavorite == 1 ? 0 : 1;
+		ContentValues values = new ContentValues();
+		values.put(Contract.MovieColumns.IS_FAVORITE, newVal);
+		String where = Contract.MovieColumns.MOVIE_ID + " = " + mId;
+		getActivity().getContentResolver().update(uri, values, where, null);
+		mIsFavorite = newVal;
+		mFavButton
+				.setBackgroundResource(mIsFavorite == 1 ? android.R.drawable.star_big_on
+						: android.R.drawable.star_big_off);
 
 	}
 
