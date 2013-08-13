@@ -28,7 +28,6 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 			.getSimpleName();
 
 	private Uri mUri;
-	// private int mSection;
 	private SickImageLoader mImageLoader;
 
 	public CommonMovieListFragment() {
@@ -42,7 +41,6 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// mSection = getSection();
 		mUri = getUri();
 		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
@@ -56,13 +54,11 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		((CursorAdapter) mListViewAdapter).swapCursor(data);
-
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
 		((CursorAdapter) mListViewAdapter).swapCursor(null);
-
 	}
 
 	@Override
@@ -99,7 +95,6 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.ID,
 				cursor.getInt(cursor.getColumnIndex(MovieColumns.MOVIE_ID)));
-//		arguments.putInt(MainActivity.FRAGMENT, mSection);
 		clickable.onItemListClick(arguments);
 
 	}

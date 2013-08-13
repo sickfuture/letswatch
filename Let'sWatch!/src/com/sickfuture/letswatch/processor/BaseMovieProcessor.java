@@ -5,16 +5,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 
 import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.IOUtils;
 import com.android.sickfuture.sickcore.utils.L;
+import com.android.sickfuture.sickcore.utils.StringsUtils;
 import com.google.gson.Gson;
 import com.sickfuture.letswatch.bo.models.Movie;
 import com.sickfuture.letswatch.bo.models.MovieList;
@@ -27,6 +31,8 @@ public abstract class BaseMovieProcessor implements
 	private static final String LOG_TAG = BaseMovieProcessor.class
 			.getSimpleName();
 	private static final String UTF_8 = "UTF-8";
+	private static final Uri mMoviesUri = ContractUtils
+			.getProviderUriFromContract(Contract.MovieColumns.class);
 
 	public ContentValues[] parseMovieList(String source) {
 		L.d(LOG_TAG, "parseList");
@@ -35,74 +41,61 @@ public abstract class BaseMovieProcessor implements
 			MovieList movieList = gson.fromJson(source, MovieList.class);
 			List<Movie> movies = movieList.getMovies();
 			ContentValues[] values = new ContentValues[movies.size()];
-			ContentValues[] values2 = new ContentValues[movies.size()];
+			ArrayList<ContentValues> values2 = new ArrayList<ContentValues>();
 			for (int i = 0; i < movies.size(); i++) {
 				values[i] = new ContentValues();
 				values[i].put(MovieColumns.MOVIE_ID, movies.get(i).getId());
 
-				values2[i] = new ContentValues();
-				values2[i].put(MovieColumns.MOVIE_ID, movies.get(i).getId());
-				values2[i].put(MovieColumns.MOVIE_TITLE, movies.get(i)
-						.getTitle());
-				values2[i].put(MovieColumns.YEAR, movies.get(i).getYear());
-				values2[i]
-						.put(MovieColumns.MPAA, movies.get(i).getMpaaRating());
-				values2[i]
-						.put(MovieColumns.RUNTIME, movies.get(i).getRuntime());
-				values2[i].put(MovieColumns.RELEASE_DATE_THEATER, movies.get(i)
+				ContentValues value = new ContentValues();
+				value.put(MovieColumns.MOVIE_ID, movies.get(i).getId());
+				value.put(MovieColumns.MOVIE_TITLE, movies.get(i).getTitle());
+				value.put(MovieColumns.YEAR, movies.get(i).getYear());
+				value.put(MovieColumns.MPAA, movies.get(i).getMpaaRating());
+				value.put(MovieColumns.RUNTIME, movies.get(i).getRuntime());
+				value.put(MovieColumns.RELEASE_DATE_THEATER, movies.get(i)
 						.getReleaseDates().getTheater());
-				values2[i].put(MovieColumns.RELEASE_DATE_DVD, movies.get(i)
+				value.put(MovieColumns.RELEASE_DATE_DVD, movies.get(i)
 						.getReleaseDates().getDvd());
-				values2[i].put(MovieColumns.CRITICS_CONSENSUS, movies.get(i)
+				value.put(MovieColumns.CRITICS_CONSENSUS, movies.get(i)
 						.getCriticsConsensus());
-				values2[i].put(MovieColumns.SYNOPSIS, movies.get(i)
-						.getSynopsis());
-				values2[i].put(MovieColumns.RATING_CRITICS, movies.get(i)
+				value.put(MovieColumns.SYNOPSIS, movies.get(i).getSynopsis());
+				value.put(MovieColumns.RATING_CRITICS, movies.get(i)
 						.getRatings().getCriticsRating());
-				values2[i].put(MovieColumns.RATING_CRITICS_SCORE, movies.get(i)
+				value.put(MovieColumns.RATING_CRITICS_SCORE, movies.get(i)
 						.getRatings().getCriticsScore());
-				values2[i].put(MovieColumns.RATING_AUDIENCE, movies.get(i)
+				value.put(MovieColumns.RATING_AUDIENCE, movies.get(i)
 						.getRatings().getAudienceRating());
-				values2[i].put(MovieColumns.RATING_AUDIENCE_SCORE, movies
-						.get(i).getRatings().getAudienceScore());
-				values2[i].put(MovieColumns.POSTERS_DETAILED, movies.get(i)
+				value.put(MovieColumns.RATING_AUDIENCE_SCORE, movies.get(i)
+						.getRatings().getAudienceScore());
+				value.put(MovieColumns.POSTERS_DETAILED, movies.get(i)
 						.getPosters().getDetailed());
-				values2[i].put(MovieColumns.POSTERS_ORIGINAL, movies.get(i)
+				value.put(MovieColumns.POSTERS_ORIGINAL, movies.get(i)
 						.getPosters().getOriginal());
-				values2[i].put(MovieColumns.POSTERS_PROFILE, movies.get(i)
+				value.put(MovieColumns.POSTERS_PROFILE, movies.get(i)
 						.getPosters().getProfile());
-				values2[i].put(MovieColumns.POSTERS_THUMBNAIL, movies.get(i)
+				value.put(MovieColumns.POSTERS_THUMBNAIL, movies.get(i)
 						.getPosters().getThumbnail());
 				// values[i].put(MovieColumns.CAST_IDS, movies.get(i));
-				values2[i].put(MovieColumns.ALTERNATE_IDS, movies.get(i)
+				value.put(MovieColumns.ALTERNATE_IDS, movies.get(i)
 						.getAlternateIds().getImdb());
-				values2[i].put(MovieColumns.LINK_ALTERNATE, movies.get(i)
-						.getLinks().getAlternate());
-				values2[i].put(MovieColumns.LINK_CAST, movies.get(i).getLinks()
+				value.put(MovieColumns.LINK_ALTERNATE, movies.get(i).getLinks()
+						.getAlternate());
+				value.put(MovieColumns.LINK_CAST, movies.get(i).getLinks()
 						.getCast());
-				values2[i].put(MovieColumns.LINK_CLIPS, movies.get(i)
-						.getLinks().getClips());
-				values2[i].put(MovieColumns.LINK_REVIEWS, movies.get(i)
-						.getLinks().getReviews());
-				values2[i].put(MovieColumns.LINK_SIMILAR, movies.get(i)
-						.getLinks().getSimilar());
+				value.put(MovieColumns.LINK_CLIPS, movies.get(i).getLinks()
+						.getClips());
+				value.put(MovieColumns.LINK_REVIEWS, movies.get(i).getLinks()
+						.getReviews());
+				value.put(MovieColumns.LINK_SIMILAR, movies.get(i).getLinks()
+						.getSimilar());
 				// values[i].put(MovieColumns.SECTION, marker);
 				// L.d(LOG_TAG, i+"");
+				values2.add(value);
 			}
 			processNewMovies(values2);
 			return values;
 		}
 		return null;
-	}
-
-	private void processNewMovies(ContentValues[] values2) {
-		// TODO put to db only new movies
-		Context context = ContextHolder.getInstance().getContext();
-		context.getContentResolver()
-				.bulkInsert(
-						ContractUtils
-								.getProviderUriFromContract(Contract.MovieColumns.class),
-						values2);
 	}
 
 	public static ContentValues[] parseMovie(String source) {
@@ -158,6 +151,77 @@ public abstract class BaseMovieProcessor implements
 			return values;
 		}
 		return null;
+	}
+
+	private void processNewMovies(ArrayList<ContentValues> array) {
+		String ids = StringsUtils.join(array, Contract.MovieColumns.MOVIE_ID,
+				",");
+		Uri uri = ContractUtils
+				.getProviderUriFromContract(Contract.MovieColumns.class);
+		String field = Contract.MovieColumns.MOVIE_ID;
+		Cursor cursor = ContextHolder.getInstance().getContext()
+				.getContentResolver()
+				.query(uri, null, field + " IN (" + ids + ")", null, null);
+		ArrayList<Long> toUpdate = new ArrayList<Long>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				Long id = Long.valueOf(cursor.getString(cursor
+						.getColumnIndex(Contract.MovieColumns.MOVIE_ID)));
+				toUpdate.add(id);
+				cursor.moveToNext();
+			}
+		}
+		cursor.close();
+
+		updateOldAndPutNew(array, toUpdate);
+	}
+
+	private void updateOldAndPutNew(ArrayList<ContentValues> array,
+			ArrayList<Long> toUpdate) {
+		if (toUpdate.size() > 0) {
+			ArrayList<ContentValues> forUpdate = new ArrayList<ContentValues>();
+			for (Long id : toUpdate) {
+				ContentValues toRemove = null;
+				for (ContentValues v : array) {
+					int i = (Integer) v.get(Contract.MovieColumns.MOVIE_ID);
+					if (i == id) {
+						forUpdate.add(v);
+						toRemove = v;
+						break;
+					}
+				}
+				if (toRemove != null) {
+					array.remove(toRemove);
+				}
+			}
+
+			insertToDb(array);
+			updateInDb(forUpdate);
+		} else {
+			insertToDb(array);
+		}
+	}
+
+	private void updateInDb(ArrayList<ContentValues> forUpdate) {
+		forUpdate.trimToSize();
+		Context context = ContextHolder.getInstance().getContext();
+		for (int i = 0; i < forUpdate.size(); i++) {
+			String where = Contract.MovieColumns.MOVIE_ID
+					+ " = "
+					+ forUpdate.get(i).getAsString(
+							Contract.MovieColumns.MOVIE_ID);
+			context.getContentResolver().update(mMoviesUri, forUpdate.get(i),
+					where, null);
+		}
+
+	}
+
+	private void insertToDb(ArrayList<ContentValues> forInsert) {
+		ContentValues[] values = forInsert.toArray(new ContentValues[forInsert
+				.size()]);
+		Context context = ContextHolder.getInstance().getContext();
+		context.getContentResolver().bulkInsert(mMoviesUri, values);
 	}
 
 	private String getStringResponse(InputStream is) {

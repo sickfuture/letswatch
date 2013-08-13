@@ -19,7 +19,8 @@
             android:id="@+id/text_view_movie_title_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dim_normal" />
+            android:layout_margin="@dimen/dim_micro"
+            android:textStyle="italic" />
     </LinearLayout>
 
 </LinearLayout>

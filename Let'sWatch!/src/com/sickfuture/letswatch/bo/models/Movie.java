@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Movie {
 
-	private int id, year;
-	private String title, mpaa_rating, critics_consensus, studio, runtime;
+	private int id;
+	private String title, mpaa_rating, critics_consensus, studio, runtime, year;
 	private List<String> genres;
 	private ReleaseDates release_dates;
 	private Ratings ratings;
@@ -23,7 +23,7 @@ public class Movie {
 		return id;
 	}
 
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 
