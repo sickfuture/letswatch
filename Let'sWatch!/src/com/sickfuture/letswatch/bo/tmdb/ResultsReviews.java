@@ -1,6 +1,6 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
-public class Reviews {
+public class ResultsReviews {
 
 	private int page, total_pages, total_results;
 	private Review[] results;

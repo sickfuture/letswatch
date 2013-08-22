@@ -3,9 +3,10 @@ package com.sickfuture.letswatch.bo.tmdb;
 public class Movie {
 
 	private boolean adult;
-	private String backdrop_path, belongs_to_collection, homepage, imdb_id,
+	private String backdrop_path, homepage, imdb_id,
 			original_title, overview, poster_path, release_date, status,
 			tagline, title;
+	private Collection belongs_to_collection;
 	private int budget, id, revenue, runtime, vote_count;
 	private IdName[] genres;
 	private float popularity, vote_average;
@@ -21,7 +22,7 @@ public class Movie {
 	private Trailers trailers;
 	private Translations translations;
 	private ResultsMovies similar_movies;
-	private Reviews reviews;
+	private ResultsReviews reviews;
 	private ResultsLists lists;
 	// another
 	private boolean favorite, watchlist;
@@ -59,7 +60,7 @@ public class Movie {
 		return similar_movies;
 	}
 
-	public Reviews getReviews() {
+	public ResultsReviews getReviews() {
 		return reviews;
 	}
 
@@ -87,7 +88,7 @@ public class Movie {
 		return backdrop_path;
 	}
 
-	public String getBelongs_to_collection() {
+	public Collection getBelongs_to_collection() {
 		return belongs_to_collection;
 	}
 

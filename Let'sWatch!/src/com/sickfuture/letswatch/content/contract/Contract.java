@@ -39,13 +39,54 @@ public class Contract {
 	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.MoviesProvider/MOVIES_TABLE")
 	public static final class MovieColumns implements CoreBaseColumns {
 
-		@DBUnique
 		@DBIntegerType
-		public static final String MOVIE_ID = "MOVIE_ID";
+		public static final String ROTTEN_ID = "ROTTEN_ID";
+		@DBIntegerType
+		public static final String TMDB_ID = "TMDB_ID";
 		@DBVarcharType
-		public static final String MOVIE_TITLE = "MOVIE_TITLE";
+		public static final String TITLE = "TITLE";
+		@DBVarcharType
+		public static final String TITLE_ORIGINAL = "TITLE_ORIGINAL";
 		@DBIntegerType
 		public static final String YEAR = "YEAR";
+		@DBIntegerType
+		public static final String ADULT = "ADULT";
+		@DBIntegerType
+		public static final String BUDGET = "BUDGET";
+		@DBIntegerType
+		public static final String REVENUE = "REVENUE";
+		@DBIntegerType
+		public static final String VOTE_COUNT = "VOTE_COUNT";
+		@DBVarcharType
+		public static final String VOTE_AVERAGE = "VOTE_AVERAGE";
+		@DBIntegerType
+		public static final String COLLECTION_ID = "COLLECTION_ID";
+		@DBVarcharType
+		public static final String POPULARITY = "POPULARITY";
+		@DBVarcharType
+		public static final String GENRES_IDS = "GENRES_IDS";
+		@DBVarcharType
+		public static final String COMPANY_IDS = "COMPANY_IDS";
+		@DBVarcharType
+		public static final String COUNTRY_IDS = "COUNTRY_IDS";
+		@DBVarcharType
+		public static final String SIMILAR_IDS = "SIMILAR_IDS";
+		@DBVarcharType
+		public static final String LIST_IDS = "LIST_IDS";
+		@DBVarcharType
+		public static final String SPOKEN_LANGS = "SPOKEN_LANGS";
+		@DBVarcharType
+		public static final String BACKDROP_PATH = "BACKDROP_PATH";
+		@DBVarcharType
+		public static final String POSTER_PATH = "POSTER_PATH";
+		@DBVarcharType
+		public static final String TAGLINE = "TAGLINE";
+		@DBVarcharType
+		public static final String HOMEPAGE = "HOMEPAGE";
+		@DBVarcharType
+		public static final String IMDB_ID = "IMDB_ID";
+		@DBVarcharType
+		public static final String TAGS = "TAGS";
 		@DBVarcharType
 		public static final String MPAA = "MPAA";
 		@DBIntegerType
@@ -58,6 +99,8 @@ public class Contract {
 		public static final String CRITICS_CONSENSUS = "CRITICS_CONSENSUS";
 		@DBVarcharType
 		public static final String SYNOPSIS = "SYNOPSIS";
+		@DBVarcharType
+		public static final String OVERVIEW = "OVERVIEW";
 		@DBVarcharType
 		public static final String RATING_CRITICS = "RATING_CRITICS";
 		@DBVarcharType
@@ -96,6 +139,10 @@ public class Contract {
 
 		@DBIntegerType
 		public static final String IS_FAVORITE = "IS_FAVORITE";
+		@DBIntegerType
+		public static final String IN_WATCHLIST = "IN_WATCHLIST";
+		@DBIntegerType
+		public static final String USER_RATE = "USER_RATE";
 		@DBVarcharType
 		public static final String GENRES = "GENRES";
 		@DBVarcharType
@@ -195,4 +242,172 @@ public class Contract {
 
 	}
 
+	// TODO provider
+	@DBTableName(tableName = "ALT_TITLES_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/ALT_TITLES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./ALT_TITLES_TABLE")
+	public static final class AltTitlesColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String TMDB_ID = "TMDB_ID";
+		@DBVarcharType
+		public static final String ISO_3166_1 = "ISO_3166_1";
+		@DBVarcharType
+		public static final String TITLE = "TITLE";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "PERSON_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/PERSON_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./PERSON_TABLE")
+	public static final class PersonColumns implements CoreBaseColumns {
+
+		@DBIntegerType
+		public static final String ADULT = "ADULT";
+		@DBUnique
+		@DBLongType
+		public static final String TMDB_ID = "TMDB_ID";
+		@DBVarcharType
+		public static final String NAME = "NAME";
+		@DBVarcharType
+		public static final String BIIOGRAPHY = "BIIOGRAPHY";
+		@DBVarcharType
+		public static final String BIRTHDAY = "BIRTHDAY";
+		@DBVarcharType
+		public static final String DEATHDAY = "DEATHDAY";
+		@DBVarcharType
+		public static final String HOMEPAGE = "HOMEPAGE";
+		@DBVarcharType
+		public static final String PROFILE_PATH = "PROFILE_PATH";
+		@DBVarcharType
+		public static final String PLACE_OF_BIRTH = "PLACE_OF_BIRTH";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "CAST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/CAST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./CAST_TABLE")
+	public static final class CastColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String TMDB_PERSON_ID = "TMDB_PERSON_ID";
+		@DBUnique
+		@DBLongType
+		public static final String TMDB_MOVIE_ID = "TMDB_MOVIE_ID";
+		@DBVarcharType
+		public static final String NAME = "NAME";
+		@DBVarcharType
+		public static final String CHARACTER = "CHARACTER";
+		@DBVarcharType
+		public static final String PROFILE_PATH = "PROFILE_PATH";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "CREW_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/CREW_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./CREW_TABLE")
+	public static final class CrewColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String TMDB_PERSON_ID = "TMDB_PERSON_ID";
+		@DBUnique
+		@DBLongType
+		public static final String TMDB_MOVIE_ID = "TMDB_MOVIE_ID";
+		@DBVarcharType
+		public static final String NAME = "NAME";
+		@DBVarcharType
+		public static final String DEPARTMENT = "DEPARTMENT";
+		@DBVarcharType
+		public static final String JOB = "JOB";
+		@DBVarcharType
+		public static final String PROFILE_PATH = "PROFILE_PATH";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "IMAGES_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/IMAGES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./IMAGES_TABLE")
+	public static final class ImageColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String TMDB_PERSON_ID = "TMDB_PERSON_ID";
+		@DBLongType
+		public static final String TMDB_MOVIE_ID = "TMDB_MOVIE_ID";
+		@DBVarcharType
+		public static final String TYPE = "TYPE";
+		@DBVarcharType
+		public static final String WIDTH = "WIDTH";
+		@DBVarcharType
+		public static final String HEIGHT = "HEIGHT";
+		@DBVarcharType
+		public static final String FILE_PATH = "FILE_PATH";
+		@DBVarcharType
+		public static final String ISO_639_1 = "ISO_639_1";
+		@DBIntegerType
+		public static final String VOTE_COUNT = "VOTE_COUNT";
+		@DBVarcharType
+		public static final String VOTE_AVERAGE = "VOTE_AVERAGE";
+		@DBVarcharType
+		public static final String ASPECT_RATIO = "ASPECT_RATIO";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "VIDEO_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/VIDEO_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./VIDEO_TABLE")
+	public static final class VideoColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String TMDB_MOVIE_ID = "TMDB_MOVIE_ID";
+		@DBVarcharType
+		public static final String NAME = "NAME";
+		@DBVarcharType
+		public static final String SIZE = "SIZE";
+		@DBVarcharType
+		public static final String SOURCE = "SOURCE";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "REVIEW_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/REVIEW_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./REVIEW_TABLE")
+	public static final class ReviewColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String TMDB_ID = "TMDB_ID";
+		@DBLongType
+		public static final String TMDB_MEDIA_ID = "TMDB_MEDIA_ID";
+		@DBVarcharType
+		public static final String AUTHOR = "AUTHOR";
+		@DBVarcharType
+		public static final String CONTENT = "CONTENT";
+		@DBVarcharType
+		public static final String URL = "URL";
+		@DBVarcharType
+		public static final String ISO_639_1 = "ISO_639_1";
+		@DBVarcharType
+		public static final String MEDIA_TYPE = "MEDIA_TYPE";
+		@DBIntegerType
+		public static final String MEDIA_ID = "MEDIA_ID";
+		@DBVarcharType
+		public static final String MEDIA_TITLE = "MEDIA_TITLE";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "LIST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/LISTTABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./LIST_TABLE")
+	public static final class ListColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String TMDB_ID = "TMDB_ID";
+		@DBLongType
+		public static final String TMDB_MEDIA_ID = "TMDB_MEDIA_ID";
+		@DBVarcharType
+		public static final String AUTHOR = "AUTHOR";
+		@DBVarcharType
+		public static final String DESCRIPTION = "DESCRIPTION";
+		@DBVarcharType
+		public static final String TYPE = "TYPE";
+		@DBVarcharType
+		public static final String ISO_639_1 = "ISO_639_1";
+		@DBVarcharType
+		public static final String NAME = "NAME";
+		@DBVarcharType
+		public static final String POSTER_PATH = "POSTER_PATH";
+	}
 }

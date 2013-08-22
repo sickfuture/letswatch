@@ -2,7 +2,8 @@ package com.sickfuture.letswatch.bo.tmdb;
 
 public class List {
 
-	private String description, id, iso_639_1, list_type, name, poster_path, created_by;
+	private String description, id, iso_639_1, list_type, name, poster_path,
+			created_by;
 	private int favorite_count, item_count;
 	private Movie[] items;
 	// additional

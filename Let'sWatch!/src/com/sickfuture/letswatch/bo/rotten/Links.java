@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.bo.models;
+package com.sickfuture.letswatch.bo.rotten;
 
 public class Links {
 	private String self, alternate, cast, clips, reviews, similar, next,

@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.bo.models;
+package com.sickfuture.letswatch.bo.rotten;
 
 import java.util.List;
 

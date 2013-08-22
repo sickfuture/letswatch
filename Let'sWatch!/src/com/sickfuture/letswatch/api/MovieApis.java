@@ -1142,7 +1142,7 @@ public class MovieApis {
 		 * @return url
 		 * 
 		 */
-		public static String discovery(int page, String language,
+		public static String discover(int page, String language,
 				String sort_by, boolean include_adult, int year,
 				int primary_release_year, int vote_count_gte,
 				float vote_average_gte, String with_genres,

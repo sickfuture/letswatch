@@ -20,8 +20,8 @@ import com.android.sickfuture.sickcore.utils.IOUtils;
 import com.android.sickfuture.sickcore.utils.L;
 import com.android.sickfuture.sickcore.utils.StringsUtils;
 import com.google.gson.Gson;
-import com.sickfuture.letswatch.bo.models.Movie;
-import com.sickfuture.letswatch.bo.models.MovieList;
+import com.sickfuture.letswatch.bo.rotten.Movie;
+import com.sickfuture.letswatch.bo.rotten.MovieList;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
