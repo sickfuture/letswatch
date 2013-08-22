@@ -243,6 +243,61 @@ public class Contract {
 	}
 
 	// TODO provider
+	@DBTableName(tableName = "UPCOMING_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/UPCOMING_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./UPCOMING_TMDB_TABLE")
+	public static final class UpcomingTmdbColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "NOW_PLAYING_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/NOW_PLAYING_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./NOW_PLAYING_TMDB_TABLE")
+	public static final class NowPlayingTmdbColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "POPULAR_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/POPULAR_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./POPULAR_TMDB_TABLE")
+	public static final class PopularTmdbColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "TOP_RATED_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/TOP_RATED_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./TOP_RATED_TMDB_TABLE")
+	public static final class TopRatedTmdbColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "POPULAR_PEOPLE_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/POPULAR_PEOPLE_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./POPULAR_PEOPLE_TMDB_TABLE")
+	public static final class PopularPeopleTmdbColumns implements
+			CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String PERSON_TMDB_ID = "PERSON_TMDB_ID";
+
+	} // TODO provider
+
 	@DBTableName(tableName = "ALT_TITLES_TABLE")
 	@ContentInfo(contentType = "vnd.android.cursor.dir/ALT_TITLES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./ALT_TITLES_TABLE")
 	public static final class AltTitlesColumns implements CoreBaseColumns {
