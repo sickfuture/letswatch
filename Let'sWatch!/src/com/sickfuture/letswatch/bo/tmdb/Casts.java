@@ -1,15 +1,17 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Casts {
 
-	private Cast[] cast;
-	private Crew[] crew;
+	private List<Cast> cast;
+	private List<Crew> crew;
 
-	public Cast[] getCast() {
+	public List<Cast> getCast() {
 		return cast;
 	}
 
-	public Crew[] getCrew() {
+	public List<Crew> getCrew() {
 		return crew;
 	}
 

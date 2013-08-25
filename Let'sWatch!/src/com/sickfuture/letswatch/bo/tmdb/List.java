@@ -1,11 +1,10 @@
 package com.sickfuture.letswatch.bo.tmdb;
-
 public class List {
 
 	private String description, id, iso_639_1, list_type, name, poster_path,
 			created_by;
 	private int favorite_count, item_count;
-	private Movie[] items;
+	private java.util.List<Movie> items;
 	// additional
 	private boolean item_present;
 
@@ -13,7 +12,7 @@ public class List {
 		return created_by;
 	}
 
-	public Movie[] getItems() {
+	public java.util.List<Movie> getItems() {
 		return items;
 	}
 

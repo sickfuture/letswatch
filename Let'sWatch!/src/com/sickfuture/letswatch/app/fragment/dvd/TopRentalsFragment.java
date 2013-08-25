@@ -10,8 +10,8 @@ import android.widget.AbsListView;
 import com.android.sickfuture.sickcore.service.DataSourceRequest;
 import com.android.sickfuture.sickcore.service.SourceService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
-import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
+import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.fragment.common.CommonMovieListFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
@@ -30,8 +30,8 @@ public class TopRentalsFragment extends CommonMovieListFragment {
 
 	@Override
 	protected void loadData() {
-		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
-				getActivity().getString(R.string.API_TOP_RENTALS_REQUEST_URL));
+		String url = MovieApis.RottenApi.topRentalsDvds(0, null);
+		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(url);
 		request.setIsCacheable(true);
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,

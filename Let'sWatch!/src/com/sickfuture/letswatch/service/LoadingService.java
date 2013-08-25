@@ -2,15 +2,11 @@ package com.sickfuture.letswatch.service;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 
 import org.apache.http.client.ClientProtocolException;
 import org.json.JSONException;
 
 import android.app.Service;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -20,7 +16,7 @@ import com.android.sickfuture.sickcore.asynctask.ParamCallback;
 import com.android.sickfuture.sickcore.exceptions.BadRequestException;
 import com.android.sickfuture.sickcore.http.HttpManager;
 import com.android.sickfuture.sickcore.http.HttpManager.RequestType;
-import com.sickfuture.letswatch.processor.BaseMovieProcessor;
+import com.sickfuture.letswatch.processor.rotten.RottenMovieProcessor;
 import com.sickfuture.letswatch.request.LoadingRequest;
 
 public class LoadingService extends Service implements ParamCallback<String> {
@@ -53,7 +49,7 @@ public class LoadingService extends Service implements ParamCallback<String> {
 							RequestType.GET);
 					
 					Log.d(LOG_TAG, "processIntent: "+source);
-					Class<?> cl = BaseMovieProcessor.class;
+					Class<?> cl = RottenMovieProcessor.class;
 					final Object processor = cl.newInstance();
 					final Method method = cl.getMethod(d.getProcessMethod(),
 							String.class, int.class);

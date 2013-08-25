@@ -1,18 +1,19 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Movie {
 
 	private boolean adult;
-	private String backdrop_path, homepage, imdb_id,
-			original_title, overview, poster_path, release_date, status,
-			tagline, title;
+	private String backdrop_path, homepage, imdb_id, original_title, overview,
+			poster_path, release_date, status, tagline, title;
 	private Collection belongs_to_collection;
 	private int budget, id, revenue, runtime, vote_count;
-	private IdName[] genres;
+	private List<IdName> genres;
 	private float popularity, vote_average;
-	private Company[] production_companies;
-	private Country[] production_countries;
-	private Language[] spoken_languages;
+	private List<Company> production_companies;
+	private List<Country> production_countries;
+	private List<Language> spoken_languages;
 	// additional
 	private AltTitles alternative_titles;
 	private Casts casts;
@@ -27,6 +28,20 @@ public class Movie {
 	// another
 	private boolean favorite, watchlist;
 	private Rate rated;
+	//
+	private String character, department, job;
+
+	public String getCharacter() {
+		return character;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public String getJob() {
+		return job;
+	}
 
 	public AltTitles getAlternative_titles() {
 		return alternative_titles;
@@ -148,7 +163,7 @@ public class Movie {
 		return vote_count;
 	}
 
-	public IdName[] getGenres() {
+	public List<IdName> getGenres() {
 		return genres;
 	}
 
@@ -160,15 +175,15 @@ public class Movie {
 		return vote_average;
 	}
 
-	public Company[] getProduction_companies() {
+	public List<Company> getProduction_companies() {
 		return production_companies;
 	}
 
-	public Country[] getProduction_countries() {
+	public List<Country> getProduction_countries() {
 		return production_countries;
 	}
 
-	public Language[] getSpoken_languages() {
+	public List<Language> getSpoken_languages() {
 		return spoken_languages;
 	}
 

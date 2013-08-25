@@ -1,10 +1,12 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Trailers {
 
-	private Video[] youtube;
+	private List<Video> youtube;
 
-	public Video[] getYoutube() {
+	public List<Video> getYoutube() {
 		return youtube;
 	}
 

@@ -1,10 +1,12 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Genres {
 
-	private IdName[] genres;
+	private List<IdName> genres;
 
-	public IdName[] getGenres() {
+	public List<IdName> getGenres() {
 		return genres;
 	}
 }

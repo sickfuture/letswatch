@@ -146,7 +146,7 @@ public class MovieApis {
 			return builder.toString();
 		}
 
-		public static String UpcomingDvds(int limit, int page, String country) {
+		public static String upcomingDvds(int limit, int page, String country) {
 			StringBuilder builder = getBuilder(DVDS, UPCOMING);
 			if (limit > 0) {
 				builder.append("&").append(String.format(PAGE_LIMIT, limit));

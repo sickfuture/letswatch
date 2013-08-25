@@ -41,7 +41,7 @@ public class FavoritesGridAdapter extends BaseCursorAdapter {
 		Log.d(LOG_TAG, "bindData: ");
 		TextView title = (TextView) holder.getViewById(TEXT_VIEW_MOVIE_TITLE);
 		title.setText(cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
+				.getColumnIndex(Contract.MovieColumns.TITLE)));
 
 		mPosterImageView = (RecyclingImageView) holder
 				.getViewById(IMAGE_VIEW_POSTER);

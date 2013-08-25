@@ -94,7 +94,7 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.ID,
-				cursor.getInt(cursor.getColumnIndex(MovieColumns.MOVIE_ID)));
+				cursor.getInt(cursor.getColumnIndex(MovieColumns.ROTTEN_ID)));
 		clickable.onItemListClick(arguments);
 
 	}

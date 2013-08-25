@@ -1,10 +1,12 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Collection {
 
 	private int id;
 	private String backdrop_path, name, poster_path;
-	private Movie[] parts;
+	private List<Movie> parts;
 	private Images images;
 
 	public Images getImages() {
@@ -27,7 +29,7 @@ public class Collection {
 		return poster_path;
 	}
 
-	public Movie[] getParts() {
+	public List<Movie> getParts() {
 		return parts;
 	}
 

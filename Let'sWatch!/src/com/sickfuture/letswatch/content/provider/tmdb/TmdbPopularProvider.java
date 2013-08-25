@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.content.provider;
+package com.sickfuture.letswatch.content.provider.tmdb;
 
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,7 +9,7 @@ import com.android.sickfuture.sickcore.utils.DatabaseUtils;
 import com.android.sickfuture.sickcore.utils.SQLQueryBuilder;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-public abstract class CommonSectionProvider extends CommonProvider {
+public class TmdbPopularProvider extends CommonProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection,
@@ -21,15 +21,20 @@ public abstract class CommonSectionProvider extends CommonProvider {
 		String sql = new SQLQueryBuilder()
 				.select(null, "*")
 				.from(moviesTable, childTable)
-				.where(//selection + 
-						String.format("%s.%s = %s.%s", moviesTable,
-								Contract.MovieColumns.ROTTEN_ID, childTable,
-								Contract.MovieColumns.ROTTEN_ID))
-//				.orderBy(sortOrder)
+				.where(// selection +
+				String.format("%s.%s = %s.%s", moviesTable,
+								Contract.MovieColumns.TMDB_ID, childTable,
+								Contract.MovieColumns.TMDB_ID))
+				// .orderBy(sortOrder)
 				.getSql();
 
 		Log.d(LOG_TAG, "query: " + sql);
 		return rawQuery(getContractClass(), uri, sql, selectionArgs);
+	}
+
+	@Override
+	protected Class<?> getContractClass() {
+		return Contract.PopularTmdbColumns.class;
 	}
 
 }

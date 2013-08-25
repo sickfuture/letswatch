@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.processor;
+package com.sickfuture.letswatch.processor.rotten;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,15 +24,13 @@ import com.sickfuture.letswatch.bo.rotten.Movie;
 import com.sickfuture.letswatch.bo.rotten.MovieList;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.processor.BaseMovieListProcessor;
 
-public abstract class BaseMovieProcessor implements
-		IProcessor<InputStream, ContentValues[]> {
+public abstract class RottenMovieProcessor extends BaseMovieListProcessor<InputStream, ContentValues[]> {
 
-	private static final String LOG_TAG = BaseMovieProcessor.class
+	private static final String LOG_TAG = RottenMovieProcessor.class
 			.getSimpleName();
 	private static final String UTF_8 = "UTF-8";
-	private static final Uri mMoviesUri = ContractUtils
-			.getProviderUriFromContract(Contract.MovieColumns.class);
 
 	public ContentValues[] parseMovieList(String source) {
 		L.d(LOG_TAG, "parseList");
@@ -44,11 +42,11 @@ public abstract class BaseMovieProcessor implements
 			ArrayList<ContentValues> values2 = new ArrayList<ContentValues>();
 			for (int i = 0; i < movies.size(); i++) {
 				values[i] = new ContentValues();
-				values[i].put(MovieColumns.MOVIE_ID, movies.get(i).getId());
+				values[i].put(MovieColumns.ROTTEN_ID, movies.get(i).getId());
 
 				ContentValues value = new ContentValues();
-				value.put(MovieColumns.MOVIE_ID, movies.get(i).getId());
-				value.put(MovieColumns.MOVIE_TITLE, movies.get(i).getTitle());
+				value.put(MovieColumns.ROTTEN_ID, movies.get(i).getId());
+				value.put(MovieColumns.TITLE, movies.get(i).getTitle());
 				value.put(MovieColumns.YEAR, movies.get(i).getYear());
 				value.put(MovieColumns.MPAA, movies.get(i).getMpaaRating());
 				value.put(MovieColumns.RUNTIME, movies.get(i).getRuntime());
@@ -105,8 +103,8 @@ public abstract class BaseMovieProcessor implements
 			Movie movie = gson.fromJson(source, Movie.class);
 			ContentValues[] values = new ContentValues[1];
 			values[0] = new ContentValues();
-			values[0].put(MovieColumns.MOVIE_ID, movie.getId());
-			values[0].put(MovieColumns.MOVIE_TITLE, movie.getTitle());
+			values[0].put(MovieColumns.ROTTEN_ID, movie.getId());
+			values[0].put(MovieColumns.TITLE, movie.getTitle());
 			values[0].put(MovieColumns.YEAR, movie.getYear());
 			values[0].put(MovieColumns.MPAA, movie.getMpaaRating());
 			values[0].put(MovieColumns.RUNTIME, movie.getRuntime());
@@ -153,75 +151,10 @@ public abstract class BaseMovieProcessor implements
 		return null;
 	}
 
-	private void processNewMovies(ArrayList<ContentValues> array) {
-		String ids = StringsUtils.join(array, Contract.MovieColumns.MOVIE_ID,
-				",");
-		Uri uri = ContractUtils
-				.getProviderUriFromContract(Contract.MovieColumns.class);
-		String field = Contract.MovieColumns.MOVIE_ID;
-		Cursor cursor = ContextHolder.getInstance().getContext()
-				.getContentResolver()
-				.query(uri, null, field + " IN (" + ids + ")", null, null);
-		ArrayList<Long> toUpdate = new ArrayList<Long>();
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			while (!cursor.isAfterLast()) {
-				Long id = Long.valueOf(cursor.getString(cursor
-						.getColumnIndex(Contract.MovieColumns.MOVIE_ID)));
-				toUpdate.add(id);
-				cursor.moveToNext();
-			}
-		}
-		cursor.close();
 
-		updateOldAndPutNew(array, toUpdate);
-	}
-
-	private void updateOldAndPutNew(ArrayList<ContentValues> array,
-			ArrayList<Long> toUpdate) {
-		if (toUpdate.size() > 0) {
-			ArrayList<ContentValues> forUpdate = new ArrayList<ContentValues>();
-			for (Long id : toUpdate) {
-				ContentValues toRemove = null;
-				for (ContentValues v : array) {
-					int i = (Integer) v.get(Contract.MovieColumns.MOVIE_ID);
-					if (i == id) {
-						forUpdate.add(v);
-						toRemove = v;
-						break;
-					}
-				}
-				if (toRemove != null) {
-					array.remove(toRemove);
-				}
-			}
-
-			insertToDb(array);
-			updateInDb(forUpdate);
-		} else {
-			insertToDb(array);
-		}
-	}
-
-	private void updateInDb(ArrayList<ContentValues> forUpdate) {
-		forUpdate.trimToSize();
-		Context context = ContextHolder.getInstance().getContext();
-		for (int i = 0; i < forUpdate.size(); i++) {
-			String where = Contract.MovieColumns.MOVIE_ID
-					+ " = "
-					+ forUpdate.get(i).getAsString(
-							Contract.MovieColumns.MOVIE_ID);
-			context.getContentResolver().update(mMoviesUri, forUpdate.get(i),
-					where, null);
-		}
-
-	}
-
-	private void insertToDb(ArrayList<ContentValues> forInsert) {
-		ContentValues[] values = forInsert.toArray(new ContentValues[forInsert
-				.size()]);
-		Context context = ContextHolder.getInstance().getContext();
-		context.getContentResolver().bulkInsert(mMoviesUri, values);
+	@Override
+	protected String getMovieIdField() {
+		return Contract.MovieColumns.ROTTEN_ID;
 	}
 
 	private String getStringResponse(InputStream is) {
@@ -250,10 +183,6 @@ public abstract class BaseMovieProcessor implements
 	@Override
 	public ContentValues[] process(InputStream data) {
 		String source = getStringResponse(data);
-		return processSource(source);
-	}
-
-	protected ContentValues[] processSource(String source) {
 		return parseMovieList(source);
 	}
 

@@ -38,13 +38,13 @@ public class InfoFragment extends ListFragment implements
 
 	private int mId, mIsFavorite;
 
-	private static final String[] PROJECTION = new String[] {
-			Contract.MovieColumns.MOVIE_ID, Contract.MovieColumns.MOVIE_TITLE,
-			Contract.MovieColumns.YEAR, Contract.MovieColumns.RUNTIME,
-			Contract.MovieColumns.RATING_CRITICS,
-			Contract.MovieColumns.RATING_AUDIENCE,
-			Contract.MovieColumns.SYNOPSIS,
-			Contract.MovieColumns.POSTERS_DETAILED };
+//	private static final String[] PROJECTION = new String[] {
+//			Contract.MovieColumns.MOVIE_ID, Contract.MovieColumns.MOVIE_TITLE,
+//			Contract.MovieColumns.YEAR, Contract.MovieColumns.RUNTIME,
+//			Contract.MovieColumns.RATING_CRITICS,
+//			Contract.MovieColumns.RATING_AUDIENCE,
+//			Contract.MovieColumns.SYNOPSIS,
+//			Contract.MovieColumns.POSTERS_DETAILED };
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -84,7 +84,7 @@ public class InfoFragment extends ListFragment implements
 		Uri uri = ContractUtils
 				.getProviderUriFromContract(Contract.MovieColumns.class);
 		Cursor cursor = getActivity().getContentResolver().query(uri,
-				PROJECTION, Contract.MovieColumns.MOVIE_ID + " = ?",
+				null, Contract.MovieColumns.ROTTEN_ID + " = ?",
 				new String[] { String.valueOf(mId) }, null);
 
 		if (cursor != null) {
@@ -147,7 +147,7 @@ public class InfoFragment extends ListFragment implements
 		int newVal = mIsFavorite == 1 ? 0 : 1;
 		ContentValues values = new ContentValues();
 		values.put(Contract.MovieColumns.IS_FAVORITE, newVal);
-		String where = Contract.MovieColumns.MOVIE_ID + " = " + mId;
+		String where = Contract.MovieColumns.ROTTEN_ID + " = " + mId;
 		getActivity().getContentResolver().update(uri, values, where, null);
 		mIsFavorite = newVal;
 		mFavButton

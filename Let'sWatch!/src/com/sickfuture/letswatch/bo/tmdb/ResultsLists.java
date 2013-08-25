@@ -1,9 +1,11 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.ArrayList;
+
 public class ResultsLists {
 
 	private int page, total_pages, total_results;
-	private List[] results;
+	private ArrayList<List> results;
 
 	public int getPage() {
 		return page;
@@ -17,7 +19,7 @@ public class ResultsLists {
 		return total_results;
 	}
 
-	public List[] getResults() {
+	public ArrayList<List> getResults() {
 		return results;
 	}
 

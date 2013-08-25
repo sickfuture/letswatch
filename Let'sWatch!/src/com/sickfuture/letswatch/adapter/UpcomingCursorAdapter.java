@@ -74,7 +74,7 @@ public class UpcomingCursorAdapter extends BaseCursorAdapter {
         }
         ((TextView) holder.getViewById(TEXT_VIEW_TITLE)).setText(cursor
                 .getString(cursor
-                        .getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
+                        .getColumnIndex(Contract.MovieColumns.TITLE)));
         ((TextView) holder.getViewById(TEXT_VIEW_SYNOPSIS)).setText(cursor
                 .getString(cursor
                         .getColumnIndex(Contract.MovieColumns.SYNOPSIS)));

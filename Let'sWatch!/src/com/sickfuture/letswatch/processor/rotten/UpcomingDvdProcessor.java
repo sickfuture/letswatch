@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.processor;
+package com.sickfuture.letswatch.processor.rotten;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,11 +10,11 @@ import com.sickfuture.letswatch.content.contract.Contract;
 /**
  * Created by Alex on 4.8.13.
  */
-public class CurrentReleaseProcessor extends BaseMovieProcessor {
+public class UpcomingDvdProcessor extends RottenMovieProcessor {
 
 	@Override
 	public String getKey() {
-		return LetsWatchApplication.CURRENT_RELEASE_PROCESSOR_SERVICE;
+		return LetsWatchApplication.UPCOMING_DVD_PROCESSOR_SERVICE;
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class CurrentReleaseProcessor extends BaseMovieProcessor {
 		context.getContentResolver()
 				.bulkInsert(
 						ContractUtils
-								.getProviderUriFromContract(Contract.CurrentReleaseColumns.class),
+								.getProviderUriFromContract(Contract.UpcomingDvdColumns.class),
 						result);
 		return true;
 	}

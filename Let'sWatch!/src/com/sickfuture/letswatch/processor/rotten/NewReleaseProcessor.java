@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.processor;
+package com.sickfuture.letswatch.processor.rotten;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,7 +10,7 @@ import com.sickfuture.letswatch.content.contract.Contract;
 /**
  * Created by Alex on 4.8.13.
  */
-public class NewReleaseProcessor extends BaseMovieProcessor {
+public class NewReleaseProcessor extends RottenMovieProcessor {
 
 	@Override
 	public String getKey() {

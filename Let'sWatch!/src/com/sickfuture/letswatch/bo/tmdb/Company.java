@@ -3,7 +3,7 @@ package com.sickfuture.letswatch.bo.tmdb;
 public class Company {
 
 	private int id;
-	private String name,description,headquarters,logo_path,parent_company;
+	private String name, description, headquarters, logo_path, parent_company;
 
 	public int getId() {
 		return id;
@@ -28,12 +28,12 @@ public class Company {
 	public String getParent_company() {
 		return parent_company;
 	}
-	
-//	 "description": null,
-//	    "headquarters": "San Francisco, California",
-//	    "homepage": "http://www.lucasfilm.com",
-//	    "id": 1,
-//	    "logo_path": "/8rUnVMVZjlmQsJ45UGotD0Uznxj.png",
-//	    "name": "Lucasfilm",
-//	    "parent_company": null
+
+	// "description": null,
+	// "headquarters": "San Francisco, California",
+	// "homepage": "http://www.lucasfilm.com",
+	// "id": 1,
+	// "logo_path": "/8rUnVMVZjlmQsJ45UGotD0Uznxj.png",
+	// "name": "Lucasfilm",
+	// "parent_company": null
 }

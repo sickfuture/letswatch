@@ -1,10 +1,12 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Tags {
 
-	private IdName[] keywords;
+	private List<IdName> keywords;
 
-	public IdName[] getKeywords() {
+	public List<IdName> getKeywords() {
 		return keywords;
 	}
 }

@@ -19,10 +19,8 @@ import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -37,6 +35,7 @@ import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.InetChecker;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
+import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
@@ -111,7 +110,7 @@ public class SearchActivity extends ActionBarActivity implements
 		query = query.trim().replace(" ", "+");
 		if (TextUtils.isEmpty(query))
 			return;
-		String searchUrl = getString(R.string.API_SEARCH_REQUEST_URL, query);
+		String searchUrl = MovieApis.RottenApi.searchMovies(query, -1, -1);
 		if (InetChecker.checkInetConnection(this)) {
 			getContentResolver().delete(mUri, null, null);
 			DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
@@ -163,7 +162,7 @@ public class SearchActivity extends ActionBarActivity implements
 		Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.ID,
-				cursor.getInt(cursor.getColumnIndex(MovieColumns.MOVIE_ID)));
+				cursor.getInt(cursor.getColumnIndex(MovieColumns.ROTTEN_ID)));
 		details.putExtra(MainActivity.ARGUMENTS, arguments);
 		startActivity(details);
 		

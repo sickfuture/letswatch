@@ -1,21 +1,23 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Person {
 
 	private boolean adult;
-	private String[] also_known_as;
+	private List<String> also_known_as;
 	private String biography, birthday, deathday, homepage, name,
 			place_of_birth, profile_path;
 	private int id;
 	// additional
-	private Casts credits;
+	private Credits credits;
 	private Images images;
 
 	public boolean isAdult() {
 		return adult;
 	}
 
-	public String[] getAlso_known_as() {
+	public List<String> getAlso_known_as() {
 		return also_known_as;
 	}
 

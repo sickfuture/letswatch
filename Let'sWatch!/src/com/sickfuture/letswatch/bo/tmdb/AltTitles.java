@@ -1,10 +1,12 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class AltTitles {
 
-	private Title[] titles;
+	private List<Title> titles;
 
-	public Title[] getTitles() {
+	public List<Title> getTitles() {
 		return titles;
 	}
 

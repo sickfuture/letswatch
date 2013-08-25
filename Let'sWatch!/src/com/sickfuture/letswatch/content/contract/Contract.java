@@ -4,12 +4,10 @@ import com.android.sickfuture.sickcore.annotations.ContentInfo;
 import com.android.sickfuture.sickcore.annotations.db.DBTableName;
 import com.android.sickfuture.sickcore.annotations.db.DBUnique;
 import com.android.sickfuture.sickcore.annotations.db.contract.DBContract;
-import com.android.sickfuture.sickcore.annotations.db.types.DBBooleanType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBIntegerType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBLongType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBVarcharType;
 import com.android.sickfuture.sickcore.content.contract.CoreBaseColumns;
-import com.android.sickfuture.sickcore.content.contract.CoreContracts;
 
 @DBContract
 public class Contract {
@@ -39,8 +37,10 @@ public class Contract {
 	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.MoviesProvider/MOVIES_TABLE")
 	public static final class MovieColumns implements CoreBaseColumns {
 
+		@DBUnique
 		@DBIntegerType
 		public static final String ROTTEN_ID = "ROTTEN_ID";
+		@DBUnique
 		@DBIntegerType
 		public static final String TMDB_ID = "TMDB_ID";
 		@DBVarcharType
@@ -55,20 +55,22 @@ public class Contract {
 		public static final String BUDGET = "BUDGET";
 		@DBIntegerType
 		public static final String REVENUE = "REVENUE";
+		@DBVarcharType
+		public static final String STATUS = "STATUS";
 		@DBIntegerType
 		public static final String VOTE_COUNT = "VOTE_COUNT";
 		@DBVarcharType
 		public static final String VOTE_AVERAGE = "VOTE_AVERAGE";
-		@DBIntegerType
-		public static final String COLLECTION_ID = "COLLECTION_ID";
+		// @DBIntegerType
+		// public static final String COLLECTION_ID = "COLLECTION_ID";
 		@DBVarcharType
 		public static final String POPULARITY = "POPULARITY";
 		@DBVarcharType
 		public static final String GENRES_IDS = "GENRES_IDS";
-		@DBVarcharType
-		public static final String COMPANY_IDS = "COMPANY_IDS";
-		@DBVarcharType
-		public static final String COUNTRY_IDS = "COUNTRY_IDS";
+		// @DBVarcharType
+		// public static final String COMPANY_IDS = "COMPANY_IDS";
+		// @DBVarcharType
+		// public static final String COUNTRY_IDS = "COUNTRY_IDS";
 		@DBVarcharType
 		public static final String SIMILAR_IDS = "SIMILAR_IDS";
 		@DBVarcharType
@@ -91,6 +93,8 @@ public class Contract {
 		public static final String MPAA = "MPAA";
 		@DBIntegerType
 		public static final String RUNTIME = "RUNTIME";
+		@DBVarcharType
+		public static final String RELEASE_DATE = "RELEASE_DATE";
 		@DBVarcharType
 		public static final String RELEASE_DATE_THEATER = "RELEASE_DATE_THEATER";
 		@DBVarcharType
@@ -249,7 +253,7 @@ public class Contract {
 
 		@DBUnique
 		@DBLongType
-		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		public static final String MOVIE_TMDB_ID = "TMDB_ID";
 
 	}
 
@@ -260,18 +264,17 @@ public class Contract {
 
 		@DBUnique
 		@DBLongType
-		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		public static final String MOVIE_TMDB_ID = "TMDB_ID";
 
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "POPULAR_TMDB_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/POPULAR_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./POPULAR_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/POPULAR_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.TmdbPopularProvider/POPULAR_TMDB_TABLE")
 	public static final class PopularTmdbColumns implements CoreBaseColumns {
 
 		@DBUnique
 		@DBLongType
-		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		public static final String MOVIE_TMDB_ID = "TMDB_ID";
 
 	}
 
@@ -282,7 +285,7 @@ public class Contract {
 
 		@DBUnique
 		@DBLongType
-		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		public static final String MOVIE_TMDB_ID = "TMDB_ID";
 
 	}
 
@@ -385,6 +388,8 @@ public class Contract {
 		public static final String TMDB_PERSON_ID = "TMDB_PERSON_ID";
 		@DBLongType
 		public static final String TMDB_MOVIE_ID = "TMDB_MOVIE_ID";
+		@DBLongType
+		public static final String TMDB_COLLECTION_ID = "TMDB_COLLECTION_ID";
 		@DBVarcharType
 		public static final String TYPE = "TYPE";
 		@DBVarcharType
@@ -445,7 +450,7 @@ public class Contract {
 
 	// TODO provider
 	@DBTableName(tableName = "LIST_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/LISTTABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./LIST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/LIST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./LIST_TABLE")
 	public static final class ListColumns implements CoreBaseColumns {
 
 		@DBLongType
@@ -464,5 +469,81 @@ public class Contract {
 		public static final String NAME = "NAME";
 		@DBVarcharType
 		public static final String POSTER_PATH = "POSTER_PATH";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "COLLECTOIN_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/COLLECTOIN_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./COLLECTOIN_TABLE")
+	public static final class CollectoinColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String TMDB_ID = "TMDB_ID";
+		@DBVarcharType
+		public static final String NAME = "NAME";
+		@DBVarcharType
+		public static final String POSTER_PATH = "POSTER_PATH";
+		@DBVarcharType
+		public static final String BACKDROP_PATH = "BACKDROP_PATH";
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "MOVIE_TO_COLLECTION_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_COLLECTION_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_COLLECTION_TABLE")
+	public static final class MovieToCollectionColumns implements
+			CoreBaseColumns {
+
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		@DBLongType
+		public static final String COLLECTION_TMDB_ID = "COLLECTION_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "MOVIE_TO_LIST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_LIST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_LIST_TABLE")
+	public static final class MovieToListColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		@DBLongType
+		public static final String LIST_TMDB_ID = "LIST_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "MOVIE_TO_CAST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_CAST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_CAST_TABLE")
+	public static final class MovieToCastColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		@DBLongType
+		public static final String CAST_TMDB_ID = "CAST_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "MOVIE_TO_CREW_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_CREW_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_CREW_TABLE")
+	public static final class MovieToCrewColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		@DBLongType
+		public static final String CREW_TMDB_ID = "CREW_TMDB_ID";
+
+	}
+
+	// TODO provider
+	@DBTableName(tableName = "MOVIE_TO_COMPANY_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_COMPANY_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_COMPANY_TABLE")
+	public static final class MovieToCompanyColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String MOVIE_TMDB_ID = "MOVIE_TMDB_ID";
+		@DBLongType
+		public static final String COMPANY_TMDB_ID = "COMPANY_TMDB_ID";
+
 	}
 }

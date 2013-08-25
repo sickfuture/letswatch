@@ -8,14 +8,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.util.Log;
 
-import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.app.fragment.common.PagerFragment;
-import com.sickfuture.letswatch.app.fragment.theaters.BoxOfficeFragment;
-import com.sickfuture.letswatch.app.fragment.theaters.OpeningFragment;
-import com.sickfuture.letswatch.app.fragment.theaters.TheatersFragment;
-import com.sickfuture.letswatch.app.fragment.theaters.UpcomingFragment;
-import com.sickfuture.letswatch.content.contract.Contract;
-
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 	private static final String LOG_TAG = SectionsPagerAdapter.class

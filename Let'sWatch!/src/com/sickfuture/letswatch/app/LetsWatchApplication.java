@@ -3,16 +3,17 @@ package com.sickfuture.letswatch.app;
 import com.android.sickfuture.sickcore.app.SickApp;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.source.implemented.HttpInputStreamDataSource;
-import com.sickfuture.letswatch.processor.BoxOfficeProcessor;
-import com.sickfuture.letswatch.processor.CurrentReleaseProcessor;
-import com.sickfuture.letswatch.processor.InfoProcessor;
-import com.sickfuture.letswatch.processor.NewReleaseProcessor;
-import com.sickfuture.letswatch.processor.OpeningProcessor;
-import com.sickfuture.letswatch.processor.SearchProcessor;
-import com.sickfuture.letswatch.processor.TheatersProcessor;
-import com.sickfuture.letswatch.processor.TopRentalsProcessor;
-import com.sickfuture.letswatch.processor.UpcomingDvdProcessor;
-import com.sickfuture.letswatch.processor.UpcomingProcessor;
+import com.sickfuture.letswatch.processor.rotten.BoxOfficeProcessor;
+import com.sickfuture.letswatch.processor.rotten.CurrentReleaseProcessor;
+import com.sickfuture.letswatch.processor.rotten.InfoProcessor;
+import com.sickfuture.letswatch.processor.rotten.NewReleaseProcessor;
+import com.sickfuture.letswatch.processor.rotten.OpeningProcessor;
+import com.sickfuture.letswatch.processor.rotten.SearchProcessor;
+import com.sickfuture.letswatch.processor.rotten.TheatersProcessor;
+import com.sickfuture.letswatch.processor.rotten.TopRentalsProcessor;
+import com.sickfuture.letswatch.processor.rotten.UpcomingDvdProcessor;
+import com.sickfuture.letswatch.processor.rotten.UpcomingProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
 
 public class LetsWatchApplication extends SickApp {
 
@@ -27,6 +28,8 @@ public class LetsWatchApplication extends SickApp {
     public static final String NEW_RELEASE_PROCESSOR_SERVICE = "sickcore:NewReleaseProcessor";
     public static final String SEARCH_PROCESSOR_SERVICE = "sickcore:SearchProcessor";
     public static final String INFO_PROCESSOR_SERVICE = "sickcore:InfoProcessor";
+    
+    public static final String TMDB_MOVIE_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
 
     @Override
     public void register() {
@@ -49,5 +52,6 @@ public class LetsWatchApplication extends SickApp {
         registerAppService(new NewReleaseProcessor());
         registerAppService(new SearchProcessor());
         registerAppService(new InfoProcessor());
+        registerAppService(new TmdbMovieProcessor());
     }
 }

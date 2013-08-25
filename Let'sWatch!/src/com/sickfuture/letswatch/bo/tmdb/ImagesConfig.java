@@ -1,9 +1,11 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class ImagesConfig {
 
 	private String base_url, secure_base_url;
-	private String[] poster_sizes, backdrop_sizes, profile_sizes, logo_sizes;
+	private List<String> poster_sizes, backdrop_sizes, profile_sizes, logo_sizes;
 	
 	public String getBase_url() {
 		return base_url;
@@ -11,16 +13,16 @@ public class ImagesConfig {
 	public String getSecure_base_url() {
 		return secure_base_url;
 	}
-	public String[] getPoster_sizes() {
+	public List<String> getPoster_sizes() {
 		return poster_sizes;
 	}
-	public String[] getBackdrop_sizes() {
+	public List<String> getBackdrop_sizes() {
 		return backdrop_sizes;
 	}
-	public String[] getProfile_sizes() {
+	public List<String> getProfile_sizes() {
 		return profile_sizes;
 	}
-	public String[] getLogo_sizes() {
+	public List<String> getLogo_sizes() {
 		return logo_sizes;
 	}
 	

@@ -1,18 +1,20 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Images {
 
-	private Image[] backdrops, posters, profiles;
+	private List<Image> backdrops, posters, profiles;
 
-	public Image[] getProfiles() {
+	public List<Image> getProfiles() {
 		return profiles;
 	}
 
-	public Image[] getPosters() {
+	public List<Image> getPosters() {
 		return posters;
 	}
 
-	public Image[] getBackdrops() {
+	public List<Image> getBackdrops() {
 		return backdrops;
 	}
 	

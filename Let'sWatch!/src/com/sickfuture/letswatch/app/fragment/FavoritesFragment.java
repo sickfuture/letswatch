@@ -92,7 +92,7 @@ public class FavoritesFragment extends Fragment implements
 		Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 		Bundle arguments = new Bundle();
 		arguments.putInt(Contract.ID,
-				cursor.getInt(cursor.getColumnIndex(MovieColumns.MOVIE_ID)));
+				cursor.getInt(cursor.getColumnIndex(MovieColumns.ROTTEN_ID)));
 		mActivity.onItemListClick(arguments);
 	}
 

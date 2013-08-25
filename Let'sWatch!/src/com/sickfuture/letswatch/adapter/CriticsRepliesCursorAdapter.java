@@ -1,14 +1,5 @@
 package com.sickfuture.letswatch.adapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import android.content.Context;
-import android.database.Cursor;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.sickfuture.letswatch.R;
 
 //public class CriticsRepliesCursorAdapter extends ViewHolderCursorAdapter {
 //

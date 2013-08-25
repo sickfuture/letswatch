@@ -77,7 +77,7 @@ public class BoxOfficeCursorAdapter extends BaseCursorAdapter {
 						.getColumnIndex(Contract.MovieColumns.CAST_IDS)));
 		((TextView) holder.getViewById(TEXT_VIEW_TITLE)).setText(cursor
 				.getString(cursor
-						.getColumnIndex(Contract.MovieColumns.MOVIE_TITLE)));
+						.getColumnIndex(Contract.MovieColumns.ROTTEN_ID)));
 		String consensus = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.CRITICS_CONSENSUS));
 		TextView synopsis = (TextView) holder.getViewById(TEXT_VIEW_SYNOPSIS);

@@ -1,10 +1,12 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import java.util.List;
+
 public class Translations {
 
-	private Language[] translations;
+	private List<Language> translations;
 
-	public Language[] getTranslations() {
+	public List<Language> getTranslations() {
 		return translations;
 	}
 	

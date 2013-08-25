@@ -1,6 +1,6 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
-public class Creds {
+public class Credentials {
 	
 	private String expires_at, request_token;
 	private boolean success;
