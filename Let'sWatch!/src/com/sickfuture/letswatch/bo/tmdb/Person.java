@@ -53,7 +53,7 @@ public class Person {
 		return id;
 	}
 
-	public Casts getCredits() {
+	public Credits getCredits() {
 		return credits;
 	}
 

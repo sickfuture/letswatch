@@ -27,6 +27,7 @@ import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.FavoritesFragment;
 import com.sickfuture.letswatch.app.fragment.pager.DvdPagerFragment;
 import com.sickfuture.letswatch.app.fragment.pager.TheatersPagerFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.PopularMoviesFragment;
 
 public class MainActivity extends ActionBarActivity implements IListClickable {
 
@@ -79,10 +80,6 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-		// FragmentManager fragmentManager = getSupportFragmentManager();
-		// fragmentManager.beginTransaction()
-		// .replace(R.id.content_frame, new TheatersPagerFragment())
-		// .commit();
 
 		mDrawerLayout.openDrawer(mDrawerList);
 
@@ -98,8 +95,8 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content
 		// view
-//		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-//		menu.findItem(R.id.menu_search).setVisible(!drawerOpen);
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		menu.findItem(R.id.menu_refresh).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -124,8 +121,11 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 			fragment = new DvdPagerFragment();
 			break;
 		case 2:
-			Log.d(LOG_TAG, "selectItem: fav");
 			fragment = new FavoritesFragment();
+			break;
+		case 3:
+			Log.d(LOG_TAG, "selectItem: popular");
+			fragment = new PopularMoviesFragment();
 			break;
 		default:
 			break;

@@ -7,9 +7,11 @@
     <!-- App -->
     <string name="app_name">Let\'s Watch!</string>
     <string name="hello_world">Hello world!</string>
+    <string name="content_description">poster image</string>
+    <!-- Menu -->
     <string name="menu_settings">Settings</string>
     <string name="menu_search">Search</string>
-    <string name="content_description">poster image</string>
+	<string name="menu_refresh">Refresh</string>
 
     <!-- MainActivity -->
 
@@ -17,11 +19,13 @@
 	<string name="drawer_theaters">Theaters</string>
 	<string name="drawer_dvd">Dvd</string>
 	<string name="drawer_favorites">Favorites</string>
+	<string name="drawer_popular">Popular</string>
 
 	<string-array name="titles_drawer">
 	    <item >@string/drawer_theaters</item>
 	    <item >@string/drawer_dvd</item>
 	    <item >@string/drawer_favorites</item>
+	    <item >@string/drawer_popular</item>
 	</string-array>
 	
     <!-- Page titles -->

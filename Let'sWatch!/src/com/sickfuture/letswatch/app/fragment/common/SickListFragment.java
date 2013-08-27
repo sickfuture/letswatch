@@ -7,30 +7,51 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
+import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.service.SourceResultReceiver;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 
 public abstract class SickListFragment extends Fragment implements
-		OnRefreshListener<ListView>, OnScrollListener, OnItemClickListener {
+		OnScrollListener, OnItemClickListener {
 
 	private static final String LOG_TAG = SickListFragment.class
 			.getSimpleName();
 
-	protected PullToRefreshListView mListView;
+	protected ListView mListView;
 	private IListClickable mClickable;
 	protected SourceResultReceiver mResultReceiver;
 	protected BaseAdapter mListViewAdapter;
 
+	private SickImageLoader mImageLoader;
+
 	protected SickListFragment() {
+		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
+				LetsWatchApplication.IMAGE_LOADER_SERVICE);
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+			mImageLoader.setPauseWork(true);
+		} else {
+			mImageLoader.setPauseWork(false);
+		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		mImageLoader.setPauseWork(false);
 	}
 
 	@Override
@@ -38,11 +59,10 @@ public abstract class SickListFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		mListViewAdapter = adapter();
 		View view = inflater.inflate(fragmentResource(), null);
-		mListView = (PullToRefreshListView) view
+		mListView = (ListView) view
 				.findViewById(listViewResource());
 		mListView.setAdapter(mListViewAdapter);
 		mListView.setOnItemClickListener(this);
-		mListView.setOnRefreshListener(this);
 
 		mResultReceiver = new SourceResultReceiver(new Handler()) {
 			@Override

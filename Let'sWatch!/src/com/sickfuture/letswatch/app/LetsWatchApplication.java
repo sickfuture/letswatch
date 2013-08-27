@@ -13,6 +13,7 @@ import com.sickfuture.letswatch.processor.rotten.TheatersProcessor;
 import com.sickfuture.letswatch.processor.rotten.TopRentalsProcessor;
 import com.sickfuture.letswatch.processor.rotten.UpcomingDvdProcessor;
 import com.sickfuture.letswatch.processor.rotten.UpcomingProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.PopularProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
 
 public class LetsWatchApplication extends SickApp {
@@ -30,6 +31,7 @@ public class LetsWatchApplication extends SickApp {
     public static final String INFO_PROCESSOR_SERVICE = "sickcore:InfoProcessor";
     
     public static final String TMDB_MOVIE_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
+	public static final String TMDB_POPULAR_PROCESSOR = "sickcore:TmdbPopularProcessor";
 
     @Override
     public void register() {
@@ -53,5 +55,6 @@ public class LetsWatchApplication extends SickApp {
         registerAppService(new SearchProcessor());
         registerAppService(new InfoProcessor());
         registerAppService(new TmdbMovieProcessor());
+        registerAppService(new PopularProcessor());
     }
 }

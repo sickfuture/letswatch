@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:lwapp="http://schemas.android.com/apk/res-auto"     >
+    xmlns:lwapp="http://schemas.android.com/apk/res-auto" >
 
+    <item
+        android:id="@+id/menu_refresh"
+        lwapp:actionViewClass="com.manuelpeinado.refreshactionitem.RefreshActionItem"
+        lwapp:showAsAction="always"
+        android:title="@string/menu_refresh"/>
     <item
         android:id="@+id/menu_search"
         android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/menu_search"
         lwapp:actionViewClass="android.support.v7.widget.SearchView"
-        lwapp:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/menu_search"/>
+        lwapp:showAsAction="ifRoom|collapseActionView"/>
     <item
         android:id="@+id/menu_settings"
         android:orderInCategory="100"

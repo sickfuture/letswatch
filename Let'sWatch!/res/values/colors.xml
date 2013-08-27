@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="blackish">#99000000</color>
+    <color name="blackish">#e000</color>
     <color name="graish">#99A9A9A9</color>
     <color name="asphaltgraish">#9931312e</color>
     <color name="black_overlay">#66000000</color>

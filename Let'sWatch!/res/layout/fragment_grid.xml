@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grid_view_fragment_grid"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnWidth="260dp"
+    android:gravity="center_horizontal"
+    android:padding="@dimen/dim_micro"
+    android:horizontalSpacing="@dimen/dim_normal"
+    android:verticalSpacing="@dimen/dim_normal"
+    android:stretchMode="columnWidth"
+    android:numColumns="auto_fit" >
+    
+
+</GridView>

@@ -689,15 +689,14 @@ public class MovieApis {
 		 * maximum number of items this list will include is 100. Required
 		 * Parameters id
 		 * 
-		 * @param id
 		 * @param language
 		 *            ISO 639-1 code.
 		 * @param page
 		 * @return url
 		 */
-		public static String getUpcomingMovies(String id, String language,
+		public static String getUpcomingMovies(String language,
 				int page) {
-			StringBuilder builder = getMovieBuilder(UPCOMING, id);
+			StringBuilder builder = getMovieBuilder(UPCOMING, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
 			return builder.toString();
@@ -709,14 +708,13 @@ public class MovieApis {
 		 * Required Parameters api_key Optional Parameters page language ISO
 		 * 639-1 code.
 		 * 
-		 * @param id
 		 * @param language
 		 * @param page
 		 * @return url
 		 */
-		public static String getNowPlayingMovies(String id, String language,
+		public static String getNowPlayingMovies(String language,
 				int page) {
-			StringBuilder builder = getMovieBuilder(NOW_PLAYING, id);
+			StringBuilder builder = getMovieBuilder(NOW_PLAYING, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
 			return builder.toString();
@@ -727,14 +725,13 @@ public class MovieApis {
 		 * refreshes every day. Required Parameters api_key Optional Parameters
 		 * page language ISO 639-1 code.
 		 * 
-		 * @param id
 		 * @param language
 		 * @param page
 		 * @return
 		 */
-		public static String getPopularMovies(String id, String language,
+		public static String getPopularMovies(String language,
 				int page) {
-			StringBuilder builder = getMovieBuilder(POPULAR, id);
+			StringBuilder builder = getMovieBuilder(POPULAR, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
 			return builder.toString();
@@ -746,14 +743,13 @@ public class MovieApis {
 		 * day. Required Parameters api_key Optional Parameters page language
 		 * ISO 639-1 code.
 		 * 
-		 * @param id
 		 * @param language
 		 * @param page
 		 * @return
 		 */
-		public static String getTopRatedMovies(String id, String language,
+		public static String getTopRatedMovies(String language,
 				int page) {
-			StringBuilder builder = getMovieBuilder(TOP_RATED, id);
+			StringBuilder builder = getMovieBuilder(TOP_RATED, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
 			return builder.toString();
@@ -1402,11 +1398,11 @@ public class MovieApis {
 		private static StringBuilder getUrlBuilder(String content,
 				String method, String itemId) {
 			if (TextUtils.isEmpty(itemId)) {
-				throw new IllegalArgumentException("Invalid list id");
+				return new StringBuilder(String.format(
+						URL_TEMPLATE, content+method));
 			}
 			StringBuilder builder = new StringBuilder(String.format(
-					URL_TEMPLATE, content));
-			builder.append(String.format("/&s" + method, itemId));
+					URL_TEMPLATE, content+String.format("/&s" + method, itemId)));
 			return builder;
 		}
 

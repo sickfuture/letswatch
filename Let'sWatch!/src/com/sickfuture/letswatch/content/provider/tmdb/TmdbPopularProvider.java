@@ -24,7 +24,7 @@ public class TmdbPopularProvider extends CommonProvider {
 				.where(// selection +
 				String.format("%s.%s = %s.%s", moviesTable,
 								Contract.MovieColumns.TMDB_ID, childTable,
-								Contract.MovieColumns.TMDB_ID))
+								Contract.PopularTmdbColumns.MOVIE_TMDB_ID))
 				// .orderBy(sortOrder)
 				.getSql();
 

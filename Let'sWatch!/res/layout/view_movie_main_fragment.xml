@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+        android:id="@+id/image_view_section_backdrop"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/AntiqueWhite" />
+
+    <TextView
+        android:id="@+id/text_view_section_title"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@id/image_view_section_backdrop"
+        android:layout_alignTop="@id/image_view_section_backdrop"
+        android:background="@drawable/background_gradient_dark"
+        android:gravity="bottom|left"
+        android:padding="8dp"
+        android:shadowColor="@color/Black"
+        android:shadowDx="1"
+        android:shadowRadius="1"
+        android:text="@string/app_name"
+        android:textColor="@color/Gray"
+        android:textSize="17sp"
+        android:textStyle="italic" />
+
+</RelativeLayout>

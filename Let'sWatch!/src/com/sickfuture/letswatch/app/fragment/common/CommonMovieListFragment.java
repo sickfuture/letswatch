@@ -16,19 +16,19 @@ import android.widget.Toast;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.android.sickfuture.sickcore.utils.InetChecker;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
+//import com.handmark.pulltorefresh.library.PullToRefreshBase;
+//import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
-public abstract class CommonMovieListFragment extends SickCursorListFragment {
+public abstract class CommonMovieListFragment extends SickCursorListFragment {// implements OnRefreshListener<ListView> {
 
 	private static final String LOG_TAG = CommonMovieListFragment.class
 			.getSimpleName();
 
 	private Uri mUri;
-	private SickImageLoader mImageLoader;
 
 	public CommonMovieListFragment() {
 		super();
@@ -42,8 +42,7 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mUri = getUri();
-		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
-				LetsWatchApplication.IMAGE_LOADER_SERVICE);
+		
 	}
 
 	@Override
@@ -61,31 +60,20 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 		((CursorAdapter) mListViewAdapter).swapCursor(null);
 	}
 
-	@Override
-	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-
-		Log.d(LOG_TAG, "onRefresh: ");
-		if (InetChecker.checkInetConnection(getActivity())) {
-			getActivity().getContentResolver().delete(mUri, null, null);
-			loadData();
-		} else {
-			refreshView.onRefreshComplete();
-		}
-	}
+//	@Override
+//	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+//
+//		Log.d(LOG_TAG, "onRefresh: ");
+//		if (InetChecker.checkInetConnection(getActivity())) {
+//			getActivity().getContentResolver().delete(mUri, null, null);
+//			loadData();
+//		} else {
+//			refreshView.onRefreshComplete();
+//		}
+//	}
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-			mImageLoader.setPauseWork(true);
-		} else {
-			mImageLoader.setPauseWork(false);
-		}
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		mImageLoader.setPauseWork(false);
 	}
 
 	@Override
@@ -106,14 +94,14 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {
 
 	@Override
 	protected void error(Exception exception) {
-		mListView.onRefreshComplete();
+//		mListView.onRefreshComplete();
 		Toast.makeText(getActivity(), exception.getMessage(),
 				Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	protected void done(Bundle result) {
-		mListView.onRefreshComplete();
+//		mListView.onRefreshComplete();
 	}
 
 }

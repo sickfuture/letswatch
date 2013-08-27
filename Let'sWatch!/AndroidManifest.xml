@@ -118,6 +118,9 @@
         <provider android:name="com.android.sickfuture.sickcore.provider.AppRequestsProvider"
             android:authorities="com.android.sickfuture.sickcore.provider.AppRequestsProvider"
             android:exported="false"></provider>
+        <provider android:name=".content.provider.tmdb.TmdbPopularProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TmdbPopularProvider"
+            android:exported="false"></provider>
     </application>
 
 </manifest>
