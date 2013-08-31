@@ -12,9 +12,7 @@
 
         <com.android.sickfuture.sickcore.image.view.RecyclingImageView
             android:id="@+id/box_office_poster_image_view"
-            style="@style/styleViewPosterOnMainScreen"
-            android:layout_width="@dimen/dim_poster_width"
-            android:layout_height="@dimen/dim_poster_height" />
+            style="@style/styleImageViewPosterOnMainScreen" />
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -76,5 +76,6 @@
     <!-- Search -->
     <string name="search_label">LETS_WATCH_SEARCH_LABEL</string>
     <string name="search_hint">Search movie...</string>
+    <string name="storyline">Storyline</string>
 
 </resources>

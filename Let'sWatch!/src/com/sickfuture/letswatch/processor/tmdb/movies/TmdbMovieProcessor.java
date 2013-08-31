@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
@@ -12,9 +13,10 @@ import com.google.gson.Gson;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.Movie;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.processor.tmdb.InsertOrUpdateProcessor;
+import com.sickfuture.letswatch.processor.tmdb.ProcessorHelper;
 
-public class TmdbMovieProcessor implements
-		IProcessor<InputStream, ContentValues> {
+public class TmdbMovieProcessor extends InsertOrUpdateProcessor<InputStream> {
 
 	@Override
 	public String getKey() {
@@ -32,12 +34,14 @@ public class TmdbMovieProcessor implements
 	}
 
 	@Override
-	public boolean cache(ContentValues result, Context context) {
-		context.getContentResolver()
-				.insert(ContractUtils
-						.getProviderUriFromContract(Contract.MovieColumns.class),
-						result);
-		return true;
+	public Uri getUri() {
+		return ContractUtils
+		.getProviderUriFromContract(Contract.MovieColumns.class);
+	}
+
+	@Override
+	public String getMovieIdField() {
+		return Contract.MovieColumns.TMDB_ID;
 	}
 
 }

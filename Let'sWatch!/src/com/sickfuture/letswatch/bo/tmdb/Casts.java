@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Casts {
 
+	private int id;
 	private List<Cast> cast;
 	private List<Crew> crew;
 
@@ -13,6 +14,14 @@ public class Casts {
 
 	public List<Crew> getCrew() {
 		return crew;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

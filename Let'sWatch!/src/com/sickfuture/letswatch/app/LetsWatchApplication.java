@@ -13,6 +13,15 @@ import com.sickfuture.letswatch.processor.rotten.TheatersProcessor;
 import com.sickfuture.letswatch.processor.rotten.TopRentalsProcessor;
 import com.sickfuture.letswatch.processor.rotten.UpcomingDvdProcessor;
 import com.sickfuture.letswatch.processor.rotten.UpcomingProcessor;
+import com.sickfuture.letswatch.processor.tmdb.CastsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.ImagesProcessor;
+import com.sickfuture.letswatch.processor.tmdb.KeywordsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.ListsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.ReleasesProcessor;
+import com.sickfuture.letswatch.processor.tmdb.ReviewsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.TitlesProcessor;
+import com.sickfuture.letswatch.processor.tmdb.TrailersProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.MovieResultsProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.PopularProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
 
@@ -31,7 +40,16 @@ public class LetsWatchApplication extends SickApp {
     public static final String INFO_PROCESSOR_SERVICE = "sickcore:InfoProcessor";
     
     public static final String TMDB_MOVIE_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
-	public static final String TMDB_POPULAR_PROCESSOR = "sickcore:TmdbPopularProcessor";
+	public static final String TMDB_POPULAR_PROCESSOR_SERVICE = "sickcore:TmdbPopularProcessor";
+	public static final String TMDB_TITLES_PROCESSOR_SERVICE = "sickcore:TmdbTitlesProcessor";
+	public static final String TMDB_CASTS_PROCESSOR_SERVICE = "sickcore:TmdbCastsProcessor";
+	public static final String TMDB_IMAGES_PROCESSOR_SERVICE = "sickcore:TmdbImagesProcessor";
+	public static final String TMDB_KEYWORDS_PROCESSOR_SERVICE = "sickcore:TmdbKeywordsProcessor";
+	public static final String TMDB_RELEASES_PROCESSOR_SERVICE = "sickcore:TmdbReleasesProcessor";
+	public static final String TMDB_TRAILERS_PROCESSOR_SERVICE = "sickcore:TmdbTrailersProcessor";
+	public static final String TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
+	public static final String TMDB_REVIEWS_PROCESSOR_SERVICE = "sickcore:TmdbReviewsProcessor";
+	public static final String TMDB_LISTS_PROCESSOR_SERVICE = "sickcore:TmdbListsProcessor";
 
     @Override
     public void register() {
@@ -56,5 +74,14 @@ public class LetsWatchApplication extends SickApp {
         registerAppService(new InfoProcessor());
         registerAppService(new TmdbMovieProcessor());
         registerAppService(new PopularProcessor());
+        registerAppService(new TitlesProcessor());
+        registerAppService(new CastsProcessor());
+        registerAppService(new ImagesProcessor());
+        registerAppService(new KeywordsProcessor());
+        registerAppService(new ReleasesProcessor());
+        registerAppService(new TrailersProcessor());
+        registerAppService(new MovieResultsProcessor());
+        registerAppService(new ReviewsProcessor());
+        registerAppService(new ListsProcessor());
     }
 }

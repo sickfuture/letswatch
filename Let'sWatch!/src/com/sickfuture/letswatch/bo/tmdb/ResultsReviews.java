@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ResultsReviews {
 
+	private int id;
 	private int page, total_pages, total_results;
 	private List<Review> results;
 
@@ -22,4 +23,13 @@ public class ResultsReviews {
 	public List<Review> getResults() {
 		return results;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 }

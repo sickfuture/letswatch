@@ -32,6 +32,7 @@ import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.common.CommonMovieListFragment;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
+import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.PopularTmdbColumns;
 
 public class PopularMoviesFragment extends SickGridCursorFragment implements RefreshActionListener {
@@ -58,7 +59,7 @@ public class PopularMoviesFragment extends SickGridCursorFragment implements Ref
 		request.setIsCacheable(true);
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
-				LetsWatchApplication.TMDB_POPULAR_PROCESSOR, mResultReceiver);
+				LetsWatchApplication.TMDB_POPULAR_PROCESSOR_SERVICE, mResultReceiver);
 	}
 
 	@Override
@@ -110,27 +111,6 @@ public class PopularMoviesFragment extends SickGridCursorFragment implements Ref
 		mRefreshActionItem.showProgress(false);
 	}
 
-//	@Override
-//	public boolean onContextItemSelected(MenuItem item) {
-//		if (item.getItemId() == R.id.menu_refresh) {
-//			loadData();
-//			Log.d(LOG_TAG, "onOptionsItemSelected: refresh");
-//			return true;
-//		}
-//		return super.onContextItemSelected(item);
-//	}
-//
-
-//	@Override
-//	public boolean onOptionsItemSelected(MenuItem item) {
-//		if (item.getItemId() == R.id.menu_refresh) {
-//			loadData();
-//			Log.d(LOG_TAG, "onOptionsItemSelected: refresh");
-//			return true;
-//		}
-//		return super.onOptionsItemSelected(item);
-//	}
-
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_refresh);
@@ -154,8 +134,11 @@ public class PopularMoviesFragment extends SickGridCursorFragment implements Ref
 	@Override
 	public void onListItemClick(AdapterView<?> list, View view, int position,
 			long id, IListClickable clickable) {
+		String key = Contract.MovieColumns.TMDB_ID;
+		Cursor cursor = (Cursor) list.getItemAtPosition(position);
+		long mid = cursor.getLong(cursor.getColumnIndex(key));
 		Bundle arguments = new Bundle();
-		// TODO put args
+		arguments.putString(key, String.valueOf(mid));
 		clickable.onItemListClick(arguments);
 
 	}

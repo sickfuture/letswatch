@@ -1,25 +1,23 @@
-package com.sickfuture.letswatch.processor.tmdb.movies;
+package com.sickfuture.letswatch.processor.tmdb;
 
 import android.content.ContentValues;
+import android.content.Context;
 
-import com.sickfuture.letswatch.bo.tmdb.Cast;
-import com.sickfuture.letswatch.bo.tmdb.Collection;
-import com.sickfuture.letswatch.bo.tmdb.Crew;
-import com.sickfuture.letswatch.bo.tmdb.Image;
-import com.sickfuture.letswatch.bo.tmdb.List;
-import com.sickfuture.letswatch.bo.tmdb.Movie;
-import com.sickfuture.letswatch.bo.tmdb.Person;
-import com.sickfuture.letswatch.bo.tmdb.Review;
-import com.sickfuture.letswatch.bo.tmdb.Title;
-import com.sickfuture.letswatch.bo.tmdb.Video;
+import com.android.sickfuture.sickcore.context.ContextHolder;
+import com.android.sickfuture.sickcore.utils.AppUtils;
+import com.android.sickfuture.sickcore.utils.StringsUtils;
+import com.sickfuture.letswatch.app.LetsWatchApplication;
+import com.sickfuture.letswatch.bo.tmdb.*;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.contract.Contract.*;
+import com.sickfuture.letswatch.processor.tmdb.movies.MovieResultsProcessor;
 
-class ProcessorHelper {
+public class ProcessorHelper {
 
 	public static ContentValues processMovie(Movie movie) {
 		ContentValues value = new ContentValues();
-		value.put(MovieColumns.TMDB_ID, movie.getId());
+		int id = movie.getId();
+		value.put(MovieColumns.TMDB_ID, id);
 		value.put(MovieColumns.TITLE, movie.getTitle());
 		value.put(MovieColumns.TITLE_ORIGINAL, movie.getOriginal_title());
 		value.put(MovieColumns.RELEASE_DATE, movie.getRelease_date());
@@ -38,33 +36,71 @@ class ProcessorHelper {
 		put(value, MovieColumns.BUDGET, movie.getBudget());
 		put(value, MovieColumns.REVENUE, movie.getRevenue());
 		if (movie.getAlternative_titles() != null) {
-			// TODO process
+			AltTitles alternative_titles = movie.getAlternative_titles();
+			alternative_titles.setId(id);
+			TitlesProcessor tProc = (TitlesProcessor) AppUtils.get(getCtx(),
+					LetsWatchApplication.TMDB_TITLES_PROCESSOR_SERVICE);
+			tProc.cache(tProc.processTitles(alternative_titles), getCtx());
 		}
 		if (movie.getCasts() != null) {
-			// TODO process
+			Casts casts = movie.getCasts();
+			casts.setId(id);
+			CastsProcessor castsProcessor = (CastsProcessor) AppUtils
+					.get(getCtx(),
+							LetsWatchApplication.TMDB_CASTS_PROCESSOR_SERVICE);
+			castsProcessor.cache(castsProcessor.processCasts(casts), getCtx());
 		}
 		if (movie.getImages() != null) {
-			// TODO process
+			Images images = movie.getImages();
+			processImages(images);
 		}
 		if (movie.getKeywords() != null) {
-			// TODO process
+			Keywords tags = movie.getKeywords();
+			value.put(Contract.MovieColumns.KEYWORDS_IDS,
+					tags.getIdsString(","));
+			KeywordsProcessor kProc = (KeywordsProcessor) AppUtils.get(
+					getCtx(),
+					LetsWatchApplication.TMDB_KEYWORDS_PROCESSOR_SERVICE);
+			kProc.cache(kProc.processKeywords(tags), getCtx());
 		}
 		if (movie.getReleases() != null) {
-			// TODO process
+			Releases releases = movie.getReleases();
+			releases.setId(id);
+			ReleasesProcessor rProc = (ReleasesProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_RELEASES_PROCESSOR_SERVICE);
+			rProc.cache(rProc.processReleases(releases), getCtx());
 		}
 		if (movie.getTrailers() != null) {
-			// TODO process
+			Trailers trailers = movie.getTrailers();
+			trailers.setId(id);
+			TrailersProcessor tProc = (TrailersProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_TRAILERS_PROCESSOR_SERVICE);
+			tProc.cache(tProc.processTrailers(trailers), getCtx());
 		}
 		if (movie.getSimilar_movies() != null) {
-			// TODO process
+			value.put(Contract.MovieColumns.SIMILAR_IDS, movie.getSimilarIds());
+			MovieResultsProcessor processor = (MovieResultsProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE);
+			processor.processMovieList(movie.getSimilar_movies());
 		}
 		if (movie.getReviews() != null) {
-			// TODO process
+			ResultsReviews reviews = movie.getReviews();
+			reviews.setId(id);
+			ReviewsProcessor processor = (ReviewsProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_REVIEWS_PROCESSOR_SERVICE);
+			processor.cache(processor.processReviews(reviews), getCtx());
 		}
 		if (movie.getLists() != null) {
 			// TODO process
 		}
 		return value;
+	}
+
+	private static void processImages(Images images) {
+		ImagesProcessor iProc = (ImagesProcessor) AppUtils.get(getCtx(),
+				LetsWatchApplication.TMDB_IMAGES_PROCESSOR_SERVICE);
+		iProc.cache(iProc.processImages(images), getCtx());
+		// TODO put id
+	}
+
+	private static Context getCtx() {
+		return ContextHolder.getInstance().getContext();
 	}
 
 	public static ContentValues processPerson(Person person) {
@@ -123,6 +159,7 @@ class ProcessorHelper {
 		value.put(Contract.ImageColumns.VOTE_AVERAGE, image.getVote_average());
 		value.put(Contract.ImageColumns.VOTE_COUNT, image.getVote_count());
 		value.put(Contract.ImageColumns.WIDTH, image.getWidth());
+		// value.put(Contract.ImageColumns.TMDB_MOVIE_ID, id);
 		return value;
 	}
 
@@ -138,12 +175,12 @@ class ProcessorHelper {
 		ContentValues value = new ContentValues();
 		value.put(Contract.ReviewColumns.AUTHOR, review.getAuthor());
 		value.put(Contract.ReviewColumns.CONTENT, review.getContent());
-		value.put(Contract.ReviewColumns.ISO_639_1, review.getIso_639_1());
-		value.put(Contract.ReviewColumns.MEDIA_ID, review.getMedia_id());
-		value.put(Contract.ReviewColumns.MEDIA_TITLE, review.getMedia_title());
-		value.put(Contract.ReviewColumns.MEDIA_TYPE, review.getMedia_type());
 		value.put(Contract.ReviewColumns.TMDB_ID, review.getId());
 		value.put(Contract.ReviewColumns.URL, review.getUrl());
+		put(value, Contract.ReviewColumns.ISO_639_1, review.getIso_639_1());
+		put(value, Contract.ReviewColumns.MEDIA_ID, review.getMedia_id());
+		put(value, Contract.ReviewColumns.MEDIA_TITLE, review.getMedia_title());
+		put(value, Contract.ReviewColumns.MEDIA_TYPE, review.getMedia_type());
 		return value;
 	}
 
@@ -179,6 +216,13 @@ class ProcessorHelper {
 		return value;
 	}
 
+	public static ContentValues processKeywords(IdName keyword) {
+		ContentValues value = new ContentValues();
+		value.put(Contract.KeywordsColumns.TMDB_ID, keyword.getId());
+		value.put(Contract.KeywordsColumns.NAME, keyword.getName());
+		return value;
+	}
+
 	private static void put(ContentValues values, String key, String value) {
 		if (value != null && !value.equals("null")) {
 			values.put(key, value);
@@ -189,6 +233,14 @@ class ProcessorHelper {
 		if (value > 0) {
 			values.put(key, value);
 		}
+	}
+
+	public static ContentValues processRelease(Country country) {
+		ContentValues value = new ContentValues();
+		value.put(Contract.ReleasesColumns.CERTIFICATION, country.getCertification());
+		value.put(Contract.ReleasesColumns.ISO_3166_1, country.getIso_3166_1());
+		value.put(Contract.ReleasesColumns.RELEASE_DATE, country.getRelease_date());
+		return value;
 	}
 
 }

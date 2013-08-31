@@ -7,7 +7,7 @@
 
     <com.android.sickfuture.sickcore.image.view.RecyclingImageView
         android:id="@+id/image_view_full_screen"
-        style="@style/styleViewPosterOnMainScreen"
+        style="@style/styleImageViewPosterOnMainScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"

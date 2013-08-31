@@ -12,7 +12,7 @@
 
         <com.android.sickfuture.sickcore.image.view.RecyclingImageView
             android:id="@+id/upcoming_poster_image_view"
-            style="@style/styleViewPosterOnMainScreen"
+            style="@style/styleImageViewPosterOnMainScreen"
             android:layout_width="88dip"
             android:layout_height="128dip" />
 

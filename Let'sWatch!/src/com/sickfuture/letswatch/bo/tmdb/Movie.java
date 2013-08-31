@@ -18,7 +18,7 @@ public class Movie {
 	private AltTitles alternative_titles;
 	private Casts casts;
 	private Images images;
-	private Tags keywords;
+	private Keywords keywords;
 	private Releases releases;
 	private Trailers trailers;
 	private Translations translations;
@@ -55,7 +55,7 @@ public class Movie {
 		return images;
 	}
 
-	public Tags getKeywords() {
+	public Keywords getKeywords() {
 		return keywords;
 	}
 
@@ -73,6 +73,14 @@ public class Movie {
 
 	public ResultsMovies getSimilar_movies() {
 		return similar_movies;
+	}
+
+	public String getSimilarIds() {
+		StringBuilder builder = new StringBuilder();
+		for (Movie movie : similar_movies.getResults()) {
+			builder.append(movie.getId()).append(",");
+		}
+		return builder.substring(0, builder.length() - 1);
 	}
 
 	public ResultsReviews getReviews() {

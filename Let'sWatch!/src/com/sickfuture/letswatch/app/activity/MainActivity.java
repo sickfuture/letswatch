@@ -27,7 +27,9 @@ import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.FavoritesFragment;
 import com.sickfuture.letswatch.app.fragment.pager.DvdPagerFragment;
 import com.sickfuture.letswatch.app.fragment.pager.TheatersPagerFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.MovieFragment;
 import com.sickfuture.letswatch.app.fragment.tmdb.PopularMoviesFragment;
+import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MainActivity extends ActionBarActivity implements IListClickable {
 
@@ -133,7 +135,7 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment)//.disallowAddToBackStack()
+				.replace(R.id.content_frame, fragment).addToBackStack(null)
 				.commit();
 
 		mDrawerList.setItemChecked(position, true);
@@ -149,9 +151,18 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 
 	@Override
 	public void onItemListClick(Bundle arguments) {
+		if(arguments.containsKey(Contract.MovieColumns.TMDB_ID)){
+			Fragment fragment = new MovieFragment();
+			fragment.setArguments(arguments);
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			fragmentManager.beginTransaction()
+					.replace(R.id.content_frame, fragment)
+					.commit();
+		} else {
 		Intent details = new Intent(this, MovieDetailsActivity.class);
 		details.putExtra(MainActivity.ARGUMENTS, arguments);
 		startActivity(details);
+		}
 	}
 
 	@Override

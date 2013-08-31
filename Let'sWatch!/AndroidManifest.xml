@@ -85,7 +85,7 @@
             android:authorities="com.sickfuture.letswatch.content.provider.theaters.BoxOfficeProvider"
             android:exported="false" >
         </provider>
-         <provider
+        <provider
             android:name=".content.provider.theaters.InTheatersProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.theaters.InTheatersProvider"
             android:exported="false" >
@@ -115,12 +115,61 @@
             android:authorities="com.sickfuture.letswatch.content.provider.SearchProvider"
             android:exported="false" >
         </provider>
-        <provider android:name="com.android.sickfuture.sickcore.provider.AppRequestsProvider"
+        <provider
+            android:name="com.android.sickfuture.sickcore.provider.AppRequestsProvider"
             android:authorities="com.android.sickfuture.sickcore.provider.AppRequestsProvider"
-            android:exported="false"></provider>
-        <provider android:name=".content.provider.tmdb.TmdbPopularProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.TmdbPopularProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TmdbPopularProvider"
-            android:exported="false"></provider>
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.TitlesProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TitlesProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.CastProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.CastProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.CrewProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.CrewProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.ImagesProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ImagesProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.KeywordsProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.KeywordsProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.ReleasesProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ReleasesProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.TrailersProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TrailersProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.ReviewsProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ReviewsProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name="com.sickfuture.letswatch.content.provider.tmdb.ListsProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ListsProvider"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>

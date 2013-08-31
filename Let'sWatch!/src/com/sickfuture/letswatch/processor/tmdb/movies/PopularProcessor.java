@@ -19,7 +19,7 @@ public class PopularProcessor extends TmdbMovieListProcessor {
 
 	@Override
 	public String getKey() {
-		return LetsWatchApplication.TMDB_POPULAR_PROCESSOR;
+		return LetsWatchApplication.TMDB_POPULAR_PROCESSOR_SERVICE;
 	}
 
 }

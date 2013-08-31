@@ -18,18 +18,25 @@ public abstract class CommonSectionProvider extends CommonProvider {
 				.getTableNameFromContract(Contract.MovieColumns.class);
 		String childTable = DatabaseUtils
 				.getTableNameFromContract(getContractClass());
-		String sql = new SQLQueryBuilder()
-				.select(null, "*")
-				.from(moviesTable, childTable)
-				.where(//selection + 
-						String.format("%s.%s = %s.%s", moviesTable,
-								Contract.MovieColumns.ROTTEN_ID, childTable,
-								Contract.MovieColumns.ROTTEN_ID))
-//				.orderBy(sortOrder)
-				.getSql();
+		if (uri.getEncodedFragment() != null) {
+			String temp = uri.toString();
+			uri = Uri.parse(temp.substring(0, temp.indexOf("#")));
+			return super.query(uri, projection, selection, selectionArgs,
+					sortOrder);
+		} else {
+			String sql = new SQLQueryBuilder()
+					.select(null, "*")
+					.from(moviesTable, childTable)
+					.where(// selection +
+					String.format("%s.%s = %s.%s", moviesTable,
+							Contract.MovieColumns.ROTTEN_ID, childTable,
+							Contract.MovieColumns.ROTTEN_ID))
+					// .orderBy(sortOrder)
+					.getSql();
 
-		Log.d(LOG_TAG, "query: " + sql);
-		return rawQuery(getContractClass(), uri, sql, selectionArgs);
+			Log.d(LOG_TAG, "query: " + sql);
+			return rawQuery(getContractClass(), uri, sql, selectionArgs);
+		}
 	}
 
 }

@@ -32,8 +32,12 @@
         <item name="android:headerDividersEnabled">false</item>
         <item name="android:smoothScrollbar">true</item>
     </style>
-    <style name="styleViewPosterOnMainScreen">
+    <style name="styleImageViewPosterOnMainScreen">
         <item name="android:contentDescription">@string/content_description</item>
+        <item name="android:layout_width">@dimen/dim_poster_width</item>
+        <item name="android:layout_height">@dimen/dim_poster_height</item>
+        <item name="android:scaleType">centerCrop</item>
+        
     </style>
     <style name="styleFilmTitleOnMainScreen" parent="android:Widget.Holo.Light.TextView">
         <item name="android:layout_marginLeft">8dip</item>
