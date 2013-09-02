@@ -36,11 +36,11 @@ public class TmdbMovieProcessor extends InsertOrUpdateProcessor<InputStream> {
 	@Override
 	public Uri getUri() {
 		return ContractUtils
-		.getProviderUriFromContract(Contract.MovieColumns.class);
+				.getProviderUriFromContract(Contract.MovieColumns.class);
 	}
 
 	@Override
-	public String getMovieIdField() {
+	public String getIdField() {
 		return Contract.MovieColumns.TMDB_ID;
 	}
 

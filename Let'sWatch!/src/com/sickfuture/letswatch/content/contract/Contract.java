@@ -141,10 +141,6 @@ public class Contract {
 		public static final String LINK_REVIEWS = "LINK_REVIEWS";
 		@DBVarcharType
 		public static final String LINK_SIMILAR = "LINK_SIMILAR";
-
-		// @DBIntegerType
-		// public static final String SECTION = "SECTION";
-
 		@DBIntegerType
 		public static final String IS_FAVORITE = "IS_FAVORITE";
 		@DBIntegerType
@@ -304,9 +300,8 @@ public class Contract {
 		public static final String TITLE = "TITLE";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "PERSON_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/PERSON_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./PERSON_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/PERSON_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.PersonProvider/PERSON_TABLE")
 	public static final class PersonColumns implements CoreBaseColumns {
 
 		@DBIntegerType
@@ -441,9 +436,8 @@ public class Contract {
 		public static final String LAST_UPDATE = "LAST_UPDATE";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "LIST_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/LIST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./LIST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/LIST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.ListProvider/LIST_TABLE")
 	public static final class ListColumns implements CoreBaseColumns {
 
 		@DBUnique
@@ -467,9 +461,8 @@ public class Contract {
 		public static final String LAST_UPDATE = "LAST_UPDATE";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "COLLECTOIN_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/COLLECTOIN_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./COLLECTOIN_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/COLLECTOIN_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.CollectionProvider/COLLECTOIN_TABLE")
 	public static final class CollectoinColumns implements CoreBaseColumns {
 
 		@DBUnique
@@ -485,9 +478,8 @@ public class Contract {
 		public static final String LAST_UPDATE = "LAST_UPDATE";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "MOVIE_TO_COLLECTION_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_COLLECTION_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_COLLECTION_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_COLLECTION_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.MovieToCollectionProvider/MOVIE_TO_COLLECTION_TABLE")
 	public static final class MovieToCollectionColumns implements
 			CoreBaseColumns {
 
@@ -498,9 +490,8 @@ public class Contract {
 
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "MOVIE_TO_LIST_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_LIST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_LIST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_LIST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.MovieToListProvider/MOVIE_TO_LIST_TABLE")
 	public static final class MovieToListColumns implements CoreBaseColumns {
 
 		@DBLongType
@@ -510,9 +501,8 @@ public class Contract {
 
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "MOVIE_TO_CAST_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_CAST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_CAST_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_CAST_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.MovieToCastProvider/MOVIE_TO_CAST_TABLE")
 	public static final class MovieToCastColumns implements CoreBaseColumns {
 
 		@DBLongType
@@ -522,9 +512,8 @@ public class Contract {
 
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "MOVIE_TO_CREW_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_CREW_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_CREW_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_CREW_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.MovieToCrewProvider/MOVIE_TO_CREW_TABLE")
 	public static final class MovieToCrewColumns implements CoreBaseColumns {
 
 		@DBLongType
@@ -534,9 +523,8 @@ public class Contract {
 
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "MOVIE_TO_COMPANY_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_COMPANY_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./MOVIE_TO_COMPANY_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/MOVIE_TO_COMPANY_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.MovieToCompanyProvider/MOVIE_TO_COMPANY_TABLE")
 	public static final class MovieToCompanyColumns implements CoreBaseColumns {
 
 		@DBLongType

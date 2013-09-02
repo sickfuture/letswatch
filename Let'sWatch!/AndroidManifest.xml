@@ -166,8 +166,48 @@
             android:exported="false" >
         </provider>
         <provider
-            android:name="com.sickfuture.letswatch.content.provider.tmdb.ListsProvider"
+            android:name=".content.provider.tmdb.ListsProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ListsProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.MovieToCollectionProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.MovieToCollectionProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.MovieToCompanyProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.MovieToCompanyProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.MovieToCastProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.MovieToCastProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.MovieToCrewProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.MovieToCrewProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.ListProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ListProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.CollectionProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.CollectionProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.ListProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ListProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.PersonProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.PersonProvider"
             android:exported="false" >
         </provider>
     </application>

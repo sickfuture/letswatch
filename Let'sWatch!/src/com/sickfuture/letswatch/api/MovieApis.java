@@ -242,6 +242,7 @@ public class MovieApis {
 
 	public static class TmdbApi {
 
+		private static final String POSTER_W92 = "w92";
 		private static final String REVIEW = "/review";
 		private static final String QUERY = "query=%s";
 		private static final String SEARCH_TYPE = "search_type=%s";
@@ -694,8 +695,7 @@ public class MovieApis {
 		 * @param page
 		 * @return url
 		 */
-		public static String getUpcomingMovies(String language,
-				int page) {
+		public static String getUpcomingMovies(String language, int page) {
 			StringBuilder builder = getMovieBuilder(UPCOMING, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
@@ -712,8 +712,7 @@ public class MovieApis {
 		 * @param page
 		 * @return url
 		 */
-		public static String getNowPlayingMovies(String language,
-				int page) {
+		public static String getNowPlayingMovies(String language, int page) {
 			StringBuilder builder = getMovieBuilder(NOW_PLAYING, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
@@ -729,8 +728,7 @@ public class MovieApis {
 		 * @param page
 		 * @return
 		 */
-		public static String getPopularMovies(String language,
-				int page) {
+		public static String getPopularMovies(String language, int page) {
 			StringBuilder builder = getMovieBuilder(POPULAR, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
@@ -747,8 +745,7 @@ public class MovieApis {
 		 * @param page
 		 * @return
 		 */
-		public static String getTopRatedMovies(String language,
-				int page) {
+		public static String getTopRatedMovies(String language, int page) {
 			StringBuilder builder = getMovieBuilder(TOP_RATED, null);
 			addLanguage(language, builder);
 			addPage(page, builder);
@@ -1132,9 +1129,9 @@ public class MovieApis {
 		 *            lower. Expected value is a valid certification for the
 		 *            specified 'certification_country'.
 		 * @param with_companies
-		 *            Filter movies to include a specific company. Expected value
-		 *            is an integer (the id of a company). They can be comma
-		 *            separated to indicate an 'AND' query.
+		 *            Filter movies to include a specific company. Expected
+		 *            value is an integer (the id of a company). They can be
+		 *            comma separated to indicate an 'AND' query.
 		 * @return url
 		 * 
 		 */
@@ -1398,11 +1395,12 @@ public class MovieApis {
 		private static StringBuilder getUrlBuilder(String content,
 				String method, String itemId) {
 			if (TextUtils.isEmpty(itemId)) {
-				return new StringBuilder(String.format(
-						URL_TEMPLATE, content+method));
+				return new StringBuilder(String.format(URL_TEMPLATE, content
+						+ method));
 			}
 			StringBuilder builder = new StringBuilder(String.format(
-					URL_TEMPLATE, content+String.format("/&s" + method, itemId)));
+					URL_TEMPLATE,
+					content + String.format("/&s" + method, itemId)));
 			return builder;
 		}
 
@@ -1472,6 +1470,87 @@ public class MovieApis {
 						"Session id must be not null");
 			}
 		}
+
+		private static final String secure_base_url = "https://d3gtl9l2a4fn1j.cloudfront.net/t/p/%s%s";
+
+		public enum POSTER {
+			W92("w92"), W154("w154"), W185("w185"), W342("w342"), W500("w500"), ORIGINAL(
+					"original");
+
+			private final String size;
+
+			POSTER(String path) {
+				this.size = path;
+			}
+
+			public String getPath() {
+				return size;
+			}
+
+		}
+
+		public enum BACKDROP {
+			W300("w300"), W780("w780"), W1280("w1280"), ORIGINAL("original");
+
+			private final String size;
+
+			BACKDROP(String path) {
+				this.size = path;
+			}
+
+			public String getPath() {
+				return size;
+			}
+
+		}
+
+		public enum PROFILE {
+			W45("w45"), W185("w185"), H632("h632"), ORIGINAL("original");
+
+			private final String size;
+
+			PROFILE(String path) {
+				this.size = path;
+			}
+
+			public String getPath() {
+				return size;
+			}
+
+		}
+
+		public enum LOGO {
+			W45("w45"), W154("w154"), W185("w185"), W92("w92"), W300("w300"), W500(
+					"w500"), ORIGINAL("original");
+
+			private final String size;
+
+			LOGO(String path) {
+				this.size = path;
+			}
+
+			public String getPath() {
+				return size;
+			}
+
+		}
+
+		public String getPoster(String path, POSTER size) {
+			return String.format(secure_base_url, size.getPath(), path);
+		}
+
+		public String getBackdrop(String path, BACKDROP size) {
+			return String.format(secure_base_url, size.getPath(), path);
+		}
+
+		public String getProfile(String path, PROFILE size) {
+			return String.format(secure_base_url, size.getPath(), path);
+		}
+
+		public String getLogo(String path, LOGO size) {
+			return String.format(secure_base_url, size.getPath(), path);
+		}
+		
 	}
 
 }

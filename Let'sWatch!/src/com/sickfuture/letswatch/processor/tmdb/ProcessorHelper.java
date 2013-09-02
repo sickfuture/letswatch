@@ -5,11 +5,11 @@ import android.content.Context;
 
 import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.utils.AppUtils;
-import com.android.sickfuture.sickcore.utils.StringsUtils;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.*;
 import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.content.contract.Contract.*;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.processor.tmdb.movies.MovieResultsProcessor;
 
 public class ProcessorHelper {
@@ -66,28 +66,41 @@ public class ProcessorHelper {
 		if (movie.getReleases() != null) {
 			Releases releases = movie.getReleases();
 			releases.setId(id);
-			ReleasesProcessor rProc = (ReleasesProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_RELEASES_PROCESSOR_SERVICE);
+			ReleasesProcessor rProc = (ReleasesProcessor) AppUtils.get(
+					getCtx(),
+					LetsWatchApplication.TMDB_RELEASES_PROCESSOR_SERVICE);
 			rProc.cache(rProc.processReleases(releases), getCtx());
 		}
 		if (movie.getTrailers() != null) {
 			Trailers trailers = movie.getTrailers();
 			trailers.setId(id);
-			TrailersProcessor tProc = (TrailersProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_TRAILERS_PROCESSOR_SERVICE);
+			TrailersProcessor tProc = (TrailersProcessor) AppUtils.get(
+					getCtx(),
+					LetsWatchApplication.TMDB_TRAILERS_PROCESSOR_SERVICE);
 			tProc.cache(tProc.processTrailers(trailers), getCtx());
 		}
 		if (movie.getSimilar_movies() != null) {
 			value.put(Contract.MovieColumns.SIMILAR_IDS, movie.getSimilarIds());
-			MovieResultsProcessor processor = (MovieResultsProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE);
-			processor.processMovieList(movie.getSimilar_movies());
+			MovieResultsProcessor processor = (MovieResultsProcessor) AppUtils
+					.get(getCtx(),
+							LetsWatchApplication.TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE);
+			processor.processMovieList(movie.getSimilar_movies().getResults(),
+					null, null, null);
 		}
 		if (movie.getReviews() != null) {
 			ResultsReviews reviews = movie.getReviews();
 			reviews.setId(id);
-			ReviewsProcessor processor = (ReviewsProcessor) AppUtils.get(getCtx(), LetsWatchApplication.TMDB_REVIEWS_PROCESSOR_SERVICE);
+			ReviewsProcessor processor = (ReviewsProcessor) AppUtils.get(
+					getCtx(),
+					LetsWatchApplication.TMDB_REVIEWS_PROCESSOR_SERVICE);
 			processor.cache(processor.processReviews(reviews), getCtx());
 		}
 		if (movie.getLists() != null) {
-			// TODO process
+			ResultsLists lists = movie.getLists();
+			lists.setId(id);
+			ListsProcessor processor = (ListsProcessor) AppUtils.get(getCtx(),
+					LetsWatchApplication.TMDB_LISTS_PROCESSOR_SERVICE);
+			processor.cache(processor.processLists(lists), getCtx());
 		}
 		return value;
 	}
@@ -106,20 +119,67 @@ public class ProcessorHelper {
 	public static ContentValues processPerson(Person person) {
 		ContentValues value = new ContentValues();
 		value.put(Contract.PersonColumns.ADULT, person.isAdult());
-		value.put(Contract.PersonColumns.BIIOGRAPHY, person.getBiography());
-		value.put(Contract.PersonColumns.BIRTHDAY, person.getBirthday());
-		value.put(Contract.PersonColumns.DEATHDAY, person.getDeathday());
-		value.put(Contract.PersonColumns.HOMEPAGE, person.getHomepage());
-		value.put(Contract.PersonColumns.NAME, person.getName());
-		value.put(Contract.PersonColumns.PLACE_OF_BIRTH,
+		put(value, Contract.PersonColumns.BIIOGRAPHY, person.getBiography());
+		put(value, Contract.PersonColumns.BIRTHDAY, person.getBirthday());
+		put(value, Contract.PersonColumns.DEATHDAY, person.getDeathday());
+		put(value, Contract.PersonColumns.HOMEPAGE, person.getHomepage());
+		String name = person.getName();
+		value.put(Contract.PersonColumns.NAME, name);
+		put(value, Contract.PersonColumns.PLACE_OF_BIRTH,
 				person.getPlace_of_birth());
-		value.put(Contract.PersonColumns.PROFILE_PATH, person.getProfile_path());
-		value.put(Contract.PersonColumns.TMDB_ID, person.getId());
+		String profile = person.getProfile_path();
+		put(value, Contract.PersonColumns.PROFILE_PATH, profile);
+		int id = person.getId();
+		value.put(Contract.PersonColumns.TMDB_ID, id);
 		if (person.getImages() != null) {
-			// process images
+			processImages(person.getImages());
 		}
 		if (person.getCredits() != null) {
-			// process creds
+			java.util.List<Movie> cast = person.getCredits().getCast();
+			long time = System.currentTimeMillis();
+			if (cast != null && cast.size() > 0) {
+				ContentValues[] castsValues = new ContentValues[cast.size()];
+				int i = 0;
+				for (Movie movie : cast) {
+					castsValues[i].put(Contract.CastColumns.LAST_UPDATE, time);
+					put(castsValues[i], Contract.CastColumns.CHARACTER,
+							movie.getCharacter());
+					castsValues[i].put(Contract.CastColumns.NAME, name);
+					put(castsValues[i], Contract.CastColumns.PROFILE_PATH,
+							profile);
+					castsValues[i].put(Contract.CastColumns.TMDB_MOVIE_ID,
+							movie.getId());
+					castsValues[i].put(Contract.CastColumns.TMDB_PERSON_ID, id);
+					i++;
+				}
+				CastsProcessor castsProcessor = (CastsProcessor) AppUtils.get(
+						getCtx(),
+						LetsWatchApplication.TMDB_CASTS_PROCESSOR_SERVICE);
+				castsProcessor.cache(castsValues, getCtx());
+			}
+			java.util.List<Movie> crew = person.getCredits().getCrew();
+			if (crew != null && crew.size() > 0) {
+				ContentValues[] crewValues = new ContentValues[crew.size()];
+				int i = 0;
+				for (Movie movie : crew) {
+					crewValues[i].put(Contract.CrewColumns.LAST_UPDATE, time);
+					put(crewValues[i], Contract.CrewColumns.DEPARTMENT,
+							movie.getDepartment());
+					put(crewValues[i], Contract.CrewColumns.JOB, movie.getJob());
+					crewValues[i].put(Contract.CrewColumns.NAME, name);
+					put(crewValues[i], Contract.CrewColumns.PROFILE_PATH,
+							profile);
+					crewValues[i].put(Contract.CrewColumns.TMDB_MOVIE_ID,
+							movie.getId());
+					crewValues[i].put(Contract.CrewColumns.TMDB_PERSON_ID, id);
+					i++;
+				}
+				getCtx().getContentResolver()
+						.bulkInsert(
+								ContractUtils
+										.getProviderUriFromContract(Contract.CrewColumns.class),
+								crewValues);
+			}
 		}
 		return value;
 	}
@@ -186,32 +246,51 @@ public class ProcessorHelper {
 
 	public static ContentValues processList(List list) {
 		ContentValues value = new ContentValues();
-		value.put(Contract.ListColumns.AUTHOR, list.getCreated_by());
-		value.put(Contract.ListColumns.DESCRIPTION, list.getDescription());
-		value.put(Contract.ListColumns.ISO_639_1, list.getIso_639_1());
+		put(value, Contract.ListColumns.AUTHOR, list.getCreated_by());
+		put(value, Contract.ListColumns.DESCRIPTION, list.getDescription());
+		put(value, Contract.ListColumns.ISO_639_1, list.getIso_639_1());
 		value.put(Contract.ListColumns.NAME, list.getName());
-		value.put(Contract.ListColumns.POSTER_PATH, list.getPoster_path());
-		value.put(Contract.ListColumns.TMDB_ID, list.getId());
-		value.put(Contract.ListColumns.TYPE, list.getList_type());
+		put(value, Contract.ListColumns.POSTER_PATH, list.getPoster_path());
+		String id = list.getId();
+		value.put(Contract.ListColumns.TMDB_ID, id);
+		put(value, Contract.ListColumns.TYPE, list.getList_type());
 		if (list.getItems() != null && list.getItems().size() > 0) {
-			// TODO process movies
+			MovieResultsProcessor processor = (MovieResultsProcessor) AppUtils
+					.get(getCtx(),
+							LetsWatchApplication.TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE);
+			processor
+					.processMovieList(
+							list.getItems(),
+							ContractUtils
+									.getProviderUriFromContract(Contract.MovieToListColumns.class),
+							Contract.MovieToListColumns.LIST_TMDB_ID, id);
 		}
 		return value;
 	}
 
 	public static ContentValues processCollection(Collection collection) {
 		ContentValues value = new ContentValues();
-		value.put(Contract.CollectoinColumns.BACKDROP_PATH,
+		put(value, Contract.CollectoinColumns.BACKDROP_PATH,
 				collection.getBackdrop_path());
 		value.put(Contract.CollectoinColumns.NAME, collection.getName());
-		value.put(Contract.CollectoinColumns.POSTER_PATH,
+		put(value, Contract.CollectoinColumns.POSTER_PATH,
 				collection.getPoster_path());
-		value.put(Contract.CollectoinColumns.TMDB_ID, collection.getId());
+		int id = collection.getId();
+		value.put(Contract.CollectoinColumns.TMDB_ID, id);
 		if (collection.getImages() != null) {
-			// TODO process
+			processImages(collection.getImages());
 		}
 		if (collection.getParts() != null && collection.getParts().size() > 0) {
-			// TODO process
+			MovieResultsProcessor processor = (MovieResultsProcessor) AppUtils
+					.get(getCtx(),
+							LetsWatchApplication.TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE);
+			processor
+					.processMovieList(
+							collection.getParts(),
+							ContractUtils
+									.getProviderUriFromContract(Contract.MovieToCollectionColumns.class),
+							Contract.MovieToCollectionColumns.COLLECTION_TMDB_ID,
+							String.valueOf(id));
 		}
 		return value;
 	}
@@ -237,9 +316,11 @@ public class ProcessorHelper {
 
 	public static ContentValues processRelease(Country country) {
 		ContentValues value = new ContentValues();
-		value.put(Contract.ReleasesColumns.CERTIFICATION, country.getCertification());
+		value.put(Contract.ReleasesColumns.CERTIFICATION,
+				country.getCertification());
 		value.put(Contract.ReleasesColumns.ISO_3166_1, country.getIso_3166_1());
-		value.put(Contract.ReleasesColumns.RELEASE_DATE, country.getRelease_date());
+		value.put(Contract.ReleasesColumns.RELEASE_DATE,
+				country.getRelease_date());
 		return value;
 	}
 

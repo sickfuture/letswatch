@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ResultsLists {
 
-	private int page, total_pages, total_results;
+	private int id, page, total_pages, total_results;
 	private ArrayList<List> results;
 
 	public int getPage() {
@@ -21,6 +21,14 @@ public class ResultsLists {
 
 	public ArrayList<List> getResults() {
 		return results;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }

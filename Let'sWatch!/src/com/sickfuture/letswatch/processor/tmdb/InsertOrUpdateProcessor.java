@@ -12,7 +12,7 @@ public abstract class InsertOrUpdateProcessor<DataSource> implements
 
 	@Override
 	public boolean cache(ContentValues result, Context context) {
-		String field = getMovieIdField();
+		String field = getIdField();
 		String selection = field + " = " + result.getAsString(field);
 		Cursor cursor = context.getContentResolver().query(getUri(), null,
 				selection, null, null);
@@ -29,6 +29,6 @@ public abstract class InsertOrUpdateProcessor<DataSource> implements
 
 	public abstract Uri getUri();
 
-	public abstract String getMovieIdField();
+	public abstract String getIdField();
 
 }
