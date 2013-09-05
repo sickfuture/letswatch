@@ -13,6 +13,8 @@ import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
+import com.sickfuture.letswatch.api.MovieApis.TmdbApi.BACKDROP;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 
@@ -39,8 +41,9 @@ public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 
 		mPosterImageView = (RecyclingImageView) holder
 				.getViewById(IMAGE_VIEW_POSTER);
-		String posterUrl = "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w300"+cursor.getString(cursor
+		String path = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
+		String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);//"http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w300";
 		mPosterImageView.setScaleType(ScaleType.CENTER_CROP);
 		mImageLoader.loadBitmap(mPosterImageView, posterUrl);
 

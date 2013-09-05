@@ -38,14 +38,6 @@ public class InfoFragment extends ListFragment implements
 
 	private int mId, mIsFavorite;
 
-//	private static final String[] PROJECTION = new String[] {
-//			Contract.MovieColumns.MOVIE_ID, Contract.MovieColumns.MOVIE_TITLE,
-//			Contract.MovieColumns.YEAR, Contract.MovieColumns.RUNTIME,
-//			Contract.MovieColumns.RATING_CRITICS,
-//			Contract.MovieColumns.RATING_AUDIENCE,
-//			Contract.MovieColumns.SYNOPSIS,
-//			Contract.MovieColumns.POSTERS_DETAILED };
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

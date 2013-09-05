@@ -1400,7 +1400,7 @@ public class MovieApis {
 			}
 			StringBuilder builder = new StringBuilder(String.format(
 					URL_TEMPLATE,
-					content + String.format("/&s" + method, itemId)));
+					content + String.format("/%s" + method, itemId)));
 			return builder;
 		}
 
@@ -1409,7 +1409,7 @@ public class MovieApis {
 			if (TextUtils.isEmpty(id)) {
 				throw new IllegalArgumentException("Invalid movie id");
 			}
-			builder.append(String.format("/&s" + method, id));
+			builder.append(String.format("/%s" + method, id));
 			addSessionId(sessionId, builder);
 			return builder;
 		}
@@ -1471,7 +1471,7 @@ public class MovieApis {
 			}
 		}
 
-		private static final String secure_base_url = "https://d3gtl9l2a4fn1j.cloudfront.net/t/p/%s%s";
+		private static final String SECURE_BASE_URL = "https://d3gtl9l2a4fn1j.cloudfront.net/t/p/%s%s";
 
 		public enum POSTER {
 			W92("w92"), W154("w154"), W185("w185"), W342("w342"), W500("w500"), ORIGINAL(
@@ -1535,20 +1535,20 @@ public class MovieApis {
 
 		}
 
-		public String getPoster(String path, POSTER size) {
-			return String.format(secure_base_url, size.getPath(), path);
+		public static String getPoster(String path, POSTER size) {
+			return String.format(SECURE_BASE_URL, size.getPath(), path);
 		}
 
-		public String getBackdrop(String path, BACKDROP size) {
-			return String.format(secure_base_url, size.getPath(), path);
+		public static String getBackdrop(String path, BACKDROP size) {
+			return String.format(SECURE_BASE_URL, size.getPath(), path);
 		}
 
-		public String getProfile(String path, PROFILE size) {
-			return String.format(secure_base_url, size.getPath(), path);
+		public static String getProfile(String path, PROFILE size) {
+			return String.format(SECURE_BASE_URL, size.getPath(), path);
 		}
 
-		public String getLogo(String path, LOGO size) {
-			return String.format(secure_base_url, size.getPath(), path);
+		public static String getLogo(String path, LOGO size) {
+			return String.format(SECURE_BASE_URL, size.getPath(), path);
 		}
 		
 	}

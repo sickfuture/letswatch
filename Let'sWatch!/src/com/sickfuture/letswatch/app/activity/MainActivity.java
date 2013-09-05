@@ -1,5 +1,6 @@
 package com.sickfuture.letswatch.app.activity;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +53,7 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 
 	private InputMethodManager mKeyboard;
 
+	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -134,8 +136,8 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 		}
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
-		fragmentManager.beginTransaction()
-				.replace(R.id.content_frame, fragment).addToBackStack(null)
+		fragmentManager.beginTransaction().addToBackStack(null)
+				.replace(R.id.content_frame, fragment)
 				.commit();
 
 		mDrawerList.setItemChecked(position, true);
@@ -151,17 +153,16 @@ public class MainActivity extends ActionBarActivity implements IListClickable {
 
 	@Override
 	public void onItemListClick(Bundle arguments) {
-		if(arguments.containsKey(Contract.MovieColumns.TMDB_ID)){
+		if (arguments.containsKey(Contract.MovieColumns.TMDB_ID)) {
 			Fragment fragment = new MovieFragment();
 			fragment.setArguments(arguments);
 			FragmentManager fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction()
-					.replace(R.id.content_frame, fragment)
-					.commit();
+			fragmentManager.beginTransaction().addToBackStack(null)
+					.replace(R.id.content_frame, fragment).commit();
 		} else {
-		Intent details = new Intent(this, MovieDetailsActivity.class);
-		details.putExtra(MainActivity.ARGUMENTS, arguments);
-		startActivity(details);
+			Intent details = new Intent(this, MovieDetailsActivity.class);
+			details.putExtra(MainActivity.ARGUMENTS, arguments);
+			startActivity(details);
 		}
 	}
 
