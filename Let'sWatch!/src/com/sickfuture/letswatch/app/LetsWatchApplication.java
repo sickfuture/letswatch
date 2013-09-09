@@ -23,8 +23,11 @@ import com.sickfuture.letswatch.processor.tmdb.ReviewsProcessor;
 import com.sickfuture.letswatch.processor.tmdb.TitlesProcessor;
 import com.sickfuture.letswatch.processor.tmdb.TrailersProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.MovieResultsProcessor;
-import com.sickfuture.letswatch.processor.tmdb.movies.PopularProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.TmdbNowPlayingProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.TmdbPopularProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.TmdbTopRatedProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.TmdbUpcomingProcessor;
 import com.sickfuture.letswatch.processor.tmdb.persons.PersonProcessor;
 
 public class LetsWatchApplication extends SickApp {
@@ -43,6 +46,9 @@ public class LetsWatchApplication extends SickApp {
     
     public static final String TMDB_MOVIE_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
 	public static final String TMDB_POPULAR_PROCESSOR_SERVICE = "sickcore:TmdbPopularProcessor";
+	public static final String TMDB_NOW_PLAYING_PROCESSOR_SERVICE = "sickcore:TmdbNowPlayingProcessor";
+	public static final String TMDB_UPCOMING_PROCESSOR_SERVICE = "sickcore:TmdbUpcomingProcessor";
+	public static final String TMDB_TOP_RATED_PROCESSOR_SERVICE = "sickcore:TmdbTopRatedProcessor";
 	public static final String TMDB_TITLES_PROCESSOR_SERVICE = "sickcore:TmdbTitlesProcessor";
 	public static final String TMDB_CASTS_PROCESSOR_SERVICE = "sickcore:TmdbCastsProcessor";
 	public static final String TMDB_IMAGES_PROCESSOR_SERVICE = "sickcore:TmdbImagesProcessor";
@@ -77,7 +83,10 @@ public class LetsWatchApplication extends SickApp {
         registerAppService(new SearchProcessor());
         registerAppService(new InfoProcessor());
         registerAppService(new TmdbMovieProcessor());
-        registerAppService(new PopularProcessor());
+        registerAppService(new TmdbPopularProcessor());
+        registerAppService(new TmdbNowPlayingProcessor());
+        registerAppService(new TmdbTopRatedProcessor());
+        registerAppService(new TmdbUpcomingProcessor());
         registerAppService(new TitlesProcessor());
         registerAppService(new CastsProcessor());
         registerAppService(new ImagesProcessor());

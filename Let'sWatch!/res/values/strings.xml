@@ -16,16 +16,21 @@
     <!-- MainActivity -->
 
 	<!-- Drawer items -->
+	<string name="drawer_movies">Movies</string>
+	<string name="drawer_people">People</string>
+	<string name="drawer_user">User space</string>
+	<string name="drawer_discover">Discover</string>
+	
 	<string name="drawer_theaters">Theaters</string>
 	<string name="drawer_dvd">Dvd</string>
 	<string name="drawer_favorites">Favorites</string>
 	<string name="drawer_popular">Popular</string>
 
 	<string-array name="titles_drawer">
-	    <item >@string/drawer_theaters</item>
-	    <item >@string/drawer_dvd</item>
-	    <item >@string/drawer_favorites</item>
-	    <item >@string/drawer_popular</item>
+	    <item >@string/drawer_movies</item>
+	    <item >@string/drawer_people</item>
+	    <item >@string/drawer_user</item>
+	    <item >@string/drawer_discover</item>
 	</string-array>
 	
     <!-- Page titles -->

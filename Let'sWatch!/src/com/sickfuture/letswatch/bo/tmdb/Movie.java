@@ -175,6 +175,28 @@ public class Movie {
 		return genres;
 	}
 
+	public String getGenresIds() {
+		if (genres.size() > 0) {
+			StringBuilder builder = new StringBuilder();
+			for (IdName i : genres) {
+				builder.append(i.getId()).append(",");
+			}
+			return builder.substring(0, builder.length() - 1);
+		}
+		return null;
+	}
+
+	public String getGenresString() {
+		if (genres.size() > 0) {
+			StringBuilder builder = new StringBuilder();
+			for (IdName i : genres) {
+				builder.append(i.getName()).append(",");
+			}
+			return builder.substring(0, builder.length() - 1);
+		}
+		return null;
+	}
+	
 	public float getPopularity() {
 		return popularity;
 	}

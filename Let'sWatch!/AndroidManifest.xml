@@ -32,6 +32,14 @@
                 android:name="android.app.default_searchable"
                 android:value=".app.activity.SearchActivity" />
         </activity>
+        <activity android:name=".app.activity.tmdb.MovieActivity" >
+        </activity>
+        <activity android:name=".app.activity.tmdb.PeopleActivity" >
+        </activity>
+        <activity android:name=".app.activity.tmdb.UserActivity" >
+        </activity>
+        <activity android:name=".app.activity.tmdb.DiscoverActivity" >
+        </activity>
         <activity
             android:name=".app.activity.FullScreenImageActivity"
             android:theme="@style/FullscreenTheme" >
@@ -126,6 +134,21 @@
             android:exported="false" >
         </provider>
         <provider
+            android:name=".content.provider.tmdb.TmdbNowPlayingProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TmdbNowPlayingProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.TmdbTopRatedProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TmdbTopRatedProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.TmdbUpcomingProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TmdbUpcomingProvider"
+            android:exported="false" >
+        </provider>
+        <provider
             android:name=".content.provider.tmdb.TitlesProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.tmdb.TitlesProvider"
             android:exported="false" >
@@ -208,6 +231,11 @@
         <provider
             android:name=".content.provider.tmdb.PersonProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.tmdb.PersonProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.GenresProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.GenresProvider"
             android:exported="false" >
         </provider>
     </application>

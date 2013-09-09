@@ -55,7 +55,7 @@ public class MoviesMainFragment extends SickListFragment {
 		}
 		
 		SimpleAdapter adapter = new SimpleAdapter(getActivity(), data,
-				R.layout.view_movie_main_fragment, from, to);
+				R.layout.adapter_movie_grid, from, to);
 		return adapter;
 	}
 

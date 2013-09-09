@@ -10,7 +10,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/AntiqueWhite" />
+        android:background="@color/Aquamarine" />
 
     <TextView
         android:id="@+id/text_view_section_title"
@@ -28,5 +28,19 @@
         android:textColor="@color/Gray"
         android:textSize="17sp"
         android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/text_view_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/image_view_section_backdrop"
+        android:layout_alignRight="@id/image_view_section_backdrop"
+        android:padding="8dp"
+        android:shadowColor="@color/Black"
+        android:shadowDx="1"
+        android:shadowRadius="1"
+        android:text="@string/app_name"
+        android:textColor="@color/FireBrick"
+        android:textSize="17sp" />
 
 </RelativeLayout>

@@ -35,6 +35,16 @@ public class ProcessorHelper {
 		put(value, MovieColumns.TAGLINE, movie.getTagline());
 		put(value, MovieColumns.BUDGET, movie.getBudget());
 		put(value, MovieColumns.REVENUE, movie.getRevenue());
+		if(movie.getGenres()!=null){
+			put(value, MovieColumns.GENRES_IDS, movie.getGenresIds());
+			put(value, MovieColumns.GENRES, movie.getGenresString());
+		}
+		if(movie.getProduction_companies()!=null){
+			
+		}
+		if(movie.getProduction_countries()!=null){
+			
+		}
 		if (movie.getAlternative_titles() != null) {
 			AltTitles alternative_titles = movie.getAlternative_titles();
 			alternative_titles.setId(id);

@@ -7,7 +7,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true" >
 
         <com.android.sickfuture.sickcore.image.view.RecyclingImageView
             android:id="@+id/image_view_fragment_movie_backdrop"
@@ -56,7 +57,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_view_fragment_movie_year"
                 android:layout_toRightOf="@id/image_view_fragment_movie_poster"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:animateLayoutChanges="true" >
             </LinearLayout>
 
             <ImageView

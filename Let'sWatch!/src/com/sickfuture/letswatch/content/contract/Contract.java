@@ -238,9 +238,8 @@ public class Contract {
 		public static final String MOVIE_ID = "MOVIE_ID";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "UPCOMING_TMDB_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/UPCOMING_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./UPCOMING_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/UPCOMING_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.TmdbUpcomingProvider/UPCOMING_TMDB_TABLE")
 	public static final class UpcomingTmdbColumns implements CoreBaseColumns {
 
 		@DBUnique
@@ -248,9 +247,8 @@ public class Contract {
 		public static final String MOVIE_TMDB_ID = "TMDB_ID";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "NOW_PLAYING_TMDB_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/NOW_PLAYING_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./NOW_PLAYING_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/NOW_PLAYING_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.TmdbNowPlayingProvider/NOW_PLAYING_TMDB_TABLE")
 	public static final class NowPlayingTmdbColumns implements CoreBaseColumns {
 
 		@DBUnique
@@ -267,9 +265,8 @@ public class Contract {
 		public static final String MOVIE_TMDB_ID = "TMDB_ID";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "TOP_RATED_TMDB_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/TOP_RATED_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./TOP_RATED_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/TOP_RATED_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.TmdbTopRatedProvider/TOP_RATED_TMDB_TABLE")
 	public static final class TopRatedTmdbColumns implements CoreBaseColumns {
 
 		@DBUnique
@@ -537,6 +534,17 @@ public class Contract {
 	@DBTableName(tableName = "KEYWORDS_TABLE")
 	@ContentInfo(contentType = "vnd.android.cursor.dir/KEYWORDS_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.KeywordsProvider/KEYWORDS_TABLE")
 	public static final class KeywordsColumns implements CoreBaseColumns {
+
+		@DBLongType
+		public static final String TMDB_ID = "TMDB_ID";
+		@DBVarcharType
+		public static final String NAME = "COMPANY_TMDB_ID";
+
+	}
+
+	@DBTableName(tableName = "GENRES_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/GENRES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.GenresProvider/GENRES_TABLE")
+	public static final class GenresColumns implements CoreBaseColumns {
 
 		@DBLongType
 		public static final String TMDB_ID = "TMDB_ID";
