@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.processor;
+package com.sickfuture.letswatch.processor.tmdb;
 
 import java.util.ArrayList;
 
@@ -13,24 +13,20 @@ import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.StringsUtils;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-public abstract class BaseMovieListProcessor<DataSource, Result> implements IProcessor<DataSource, Result> {
+public abstract class BaseListProcessor <DataSource, Result> implements IProcessor<DataSource, Result> {
 
-	private static final Uri mMoviesUri = ContractUtils
-			.getProviderUriFromContract(Contract.MovieColumns.class);
-	
-	protected void processNewMovies(ArrayList<ContentValues> array) {
-		String ids = StringsUtils.join(array, getMovieIdField(),
+	protected void processNew(ArrayList<ContentValues> array) {
+		String ids = StringsUtils.join(array, getIdField(),
 				",");
-		String field = getMovieIdField();
 		Cursor cursor = ContextHolder.getInstance().getContext()
 				.getContentResolver()
-				.query(mMoviesUri, null, field + " IN (" + ids + ")", null, null);
+				.query(getUri(), null, getIdField() + " IN (" + ids + ")", null, null);
 		ArrayList<Long> toUpdate = new ArrayList<Long>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
-				Long id = Long.valueOf(cursor.getString(cursor
-						.getColumnIndex(getMovieIdField())));
+				Long id = cursor.getLong(cursor
+						.getColumnIndex(getIdField()));
 				toUpdate.add(id);
 				cursor.moveToNext();
 			}
@@ -40,7 +36,9 @@ public abstract class BaseMovieListProcessor<DataSource, Result> implements IPro
 		updateOldAndPutNew(array, toUpdate);
 	}
 
-	protected abstract String getMovieIdField();
+	protected abstract String getIdField();
+
+	protected abstract Uri getUri();
 
 	protected void updateOldAndPutNew(ArrayList<ContentValues> array, ArrayList<Long> toUpdate) {
 		if (toUpdate.size() > 0) {
@@ -48,7 +46,7 @@ public abstract class BaseMovieListProcessor<DataSource, Result> implements IPro
 			for (Long id : toUpdate) {
 				ContentValues toRemove = null;
 				for (ContentValues v : array) {
-					int i = (Integer) v.get(getMovieIdField());
+					int i = (Integer) v.get(getIdField());
 					if (i == id) {
 						forUpdate.add(v);
 						toRemove = v;
@@ -66,26 +64,24 @@ public abstract class BaseMovieListProcessor<DataSource, Result> implements IPro
 		}
 	}
 
-	private void updateInDb(ArrayList<ContentValues> forUpdate) {
+	protected void updateInDb(ArrayList<ContentValues> forUpdate) {
 		forUpdate.trimToSize();
 		Context context = ContextHolder.getInstance().getContext();
 		for (int i = 0; i < forUpdate.size(); i++) {
-			String where = getMovieIdField()
+			String where = getIdField()
 					+ " = "
 					+ forUpdate.get(i).getAsString(
-							getMovieIdField());
-			context.getContentResolver().update(mMoviesUri, forUpdate.get(i),
+							getIdField());
+			context.getContentResolver().update(getUri(), forUpdate.get(i),
 					where, null);
 		}
 
 	}
 
-	private void insertToDb(ArrayList<ContentValues> array) {
+	protected void insertToDb(ArrayList<ContentValues> array) {
 		ContentValues[] values = array.toArray(new ContentValues[array
 				.size()]);
 		Context context = ContextHolder.getInstance().getContext();
-		context.getContentResolver().bulkInsert(mMoviesUri, values);
+		context.getContentResolver().bulkInsert(getUri(), values);
 	}
-
-
 }

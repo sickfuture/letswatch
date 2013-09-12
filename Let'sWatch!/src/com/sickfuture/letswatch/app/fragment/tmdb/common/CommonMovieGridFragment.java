@@ -1,5 +1,6 @@
 package com.sickfuture.letswatch.app.fragment.tmdb.common;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.android.sickfuture.sickcore.utils.NetworkHelper;
+import com.android.sickfuture.sickcore.utils.NetworkHelper.NetworkCallback;
 import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
@@ -24,9 +27,10 @@ import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-public abstract class CommonGridFragment  extends SickGridCursorFragment implements RefreshActionListener {
+public abstract class CommonMovieGridFragment extends SickGridCursorFragment
+		implements RefreshActionListener {
 
-	private static final String LOG_TAG = CommonGridFragment.class
+	private static final String LOG_TAG = CommonMovieGridFragment.class
 			.getSimpleName();
 	private RefreshActionItem mRefreshActionItem;
 
@@ -56,8 +60,10 @@ public abstract class CommonGridFragment  extends SickGridCursorFragment impleme
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		if (data == null) {
-			loadData();
+		if (data.getCount() == 0) {
+			if (NetworkHelper.checkConnection(getActivity())) {
+				loadData();
+			}
 		} else {
 			((CursorAdapter) mGridViewAdapter).swapCursor(data);
 		}
@@ -89,10 +95,12 @@ public abstract class CommonGridFragment  extends SickGridCursorFragment impleme
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_refresh);
-        mRefreshActionItem = (RefreshActionItem) MenuItemCompat.getActionView(item);
-        mRefreshActionItem.setMenuItem(item);
-        mRefreshActionItem.setProgressIndicatorType(ProgressIndicatorType.INDETERMINATE);
-        mRefreshActionItem.setRefreshActionListener(this);
+		mRefreshActionItem = (RefreshActionItem) MenuItemCompat
+				.getActionView(item);
+		mRefreshActionItem.setMenuItem(item);
+		mRefreshActionItem
+				.setProgressIndicatorType(ProgressIndicatorType.INDETERMINATE);
+		mRefreshActionItem.setRefreshActionListener(this);
 		super.onPrepareOptionsMenu(menu);
 	}
 
@@ -120,9 +128,24 @@ public abstract class CommonGridFragment  extends SickGridCursorFragment impleme
 
 	@Override
 	public void onRefreshButtonClick(RefreshActionItem sender) {
-		loadData();
-		
-	}
+		NetworkHelper.checkAndConnect(getActivity(), new NetworkCallback() {
 
+			@Override
+			public void processTask(Context context) {
+				loadData();
+
+			}
+
+			@Override
+			public void onError(Context context, Exception e) {
+
+			}
+
+			@Override
+			public void onCancel(Context context) {
+
+			}
+		});
+	}
 
 }

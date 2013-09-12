@@ -10,6 +10,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.android.sickfuture.sickcore.context.ContextHolder;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.google.gson.Gson;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.Movie;
@@ -59,12 +60,18 @@ public class MovieResultsProcessor extends TmdbMovieListProcessor {
 			ContextHolder.getInstance().getContext().getContentResolver()
 					.bulkInsert(uri, values);
 		}
-		processNewMovies(values2);
+		processNew(values2);
 	}
 
 	@Override
 	public String getKey() {
 		return LetsWatchApplication.TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE;
+	}
+
+	@Override
+	protected Uri getUri() {
+		return ContractUtils
+				.getProviderUriFromContract(Contract.MovieColumns.class);
 	}
 
 }

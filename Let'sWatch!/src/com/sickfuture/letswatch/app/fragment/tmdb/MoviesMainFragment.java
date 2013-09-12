@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -89,5 +90,13 @@ public class MoviesMainFragment extends SickListFragment {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void onStart() {
+		((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(
+				getResources().getString(R.string.app_name));
+		super.onStart();
+	}
+
 
 }

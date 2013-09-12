@@ -6,6 +6,8 @@
     <color name="asphaltgraish">#9931312e</color>
     <color name="black_overlay">#66000000</color>
     <color name="white_overlay">#66FFFFFF</color>
+    <color name="drawer_white_transp">#ddF5F5FF</color>
+    <color name="drawer_black_transp">#dd111111</color>
     
     <color name="white">#FFFFFF</color>
     <color name="yellow">#FFFF00</color>

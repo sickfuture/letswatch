@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.app.fragment.tmdb;
+package com.sickfuture.letswatch.app.fragment.tmdb.movie;
 
 import java.io.InputStream;
 
@@ -152,7 +152,46 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 			setTagline(c);
 			setInfo(c);
 			setStoryline(c);
+			setProductionCreds(c);
 		}
+	}
+
+	private void setProductionCreds(Cursor c) {
+		int runtime = getInt(c, Contract.MovieColumns.RUNTIME);
+		int budget = getInt(c, Contract.MovieColumns.BUDGET);
+		int revenue = getInt(c, Contract.MovieColumns.REVENUE);
+		int voteCount = getInt(c, Contract.MovieColumns.VOTE_COUNT);
+		String voteAverage = getString(c, Contract.MovieColumns.VOTE_AVERAGE);
+		StringBuilder builder = new StringBuilder();
+		if (runtime > 0) {
+			builder.append("Runtime ").append(runtime).append("\n");
+		}
+		if (budget > 0) {
+			builder.append("Budget ").append(String.format("%,d", budget))
+					.append("\n");
+		}
+		if (revenue > 0) {
+			builder.append("Rvenue ").append(String.format("%,d", revenue))
+					.append("\n");
+		}
+		if (voteCount > 0) {
+			builder.append("Rating ")
+					.append(String.format("%.1f", Float.valueOf(voteAverage)))
+					.append("/").append(voteCount).append("\n");
+		}
+		if (builder.length() > 4) {
+			String creds = builder.substring(0, builder.length() - 2);
+			if (!TextUtils.isEmpty(creds)) {
+				TextView pc = new TextView(getActivity());
+				pc.setText(creds);
+				mProductionContainer.removeAllViews();
+				mProductionContainer.setVisibility(View.VISIBLE);
+				mProductionContainer.addView(pc);
+			}
+		} else {
+			mProductionContainer.setVisibility(View.GONE);
+		}
+
 	}
 
 	private void setStoryline(Cursor c) {
@@ -239,6 +278,10 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
 		Log.d(LOG_TAG, "getString:" + column + " " + s);
 		return s;
+	}
+
+	private int getInt(Cursor cursor, String column) {
+		return cursor.getInt(cursor.getColumnIndex(column));
 	}
 
 	private void setText(TextView textView, String text) {

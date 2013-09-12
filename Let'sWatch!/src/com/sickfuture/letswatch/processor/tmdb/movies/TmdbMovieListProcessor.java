@@ -6,17 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
+import android.net.Uri;
 
+import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.google.gson.Gson;
 import com.sickfuture.letswatch.bo.tmdb.Movie;
 import com.sickfuture.letswatch.bo.tmdb.ResultsMovies;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
-import com.sickfuture.letswatch.processor.BaseMovieListProcessor;
+import com.sickfuture.letswatch.processor.tmdb.BaseListProcessor;
 import com.sickfuture.letswatch.processor.tmdb.ProcessorHelper;
 
 public abstract class TmdbMovieListProcessor extends
-		BaseMovieListProcessor<InputStream, ContentValues[]> {
+		BaseListProcessor<InputStream, ContentValues[]> {
 
 	@Override
 	public ContentValues[] process(InputStream data) {
@@ -35,14 +37,20 @@ public abstract class TmdbMovieListProcessor extends
 
 			values2.add(ProcessorHelper.processMovie(movies.get(i)));
 		}
-		processNewMovies(values2);
+		processNew(values2);
 		return values;
 
 	}
 
 	@Override
-	protected String getMovieIdField() {
+	protected String getIdField() {
 		return Contract.MovieColumns.TMDB_ID;
+	}
+
+	@Override
+	protected Uri getUri() {
+		return ContractUtils
+				.getProviderUriFromContract(Contract.MovieColumns.class);
 	}
 
 }

@@ -274,9 +274,8 @@ public class Contract {
 		public static final String MOVIE_TMDB_ID = "TMDB_ID";
 	}
 
-	// TODO provider
 	@DBTableName(tableName = "POPULAR_PEOPLE_TMDB_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/POPULAR_PEOPLE_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider./POPULAR_PEOPLE_TMDB_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/POPULAR_PEOPLE_TMDB_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.PopularPersonsProvider/POPULAR_PEOPLE_TMDB_TABLE")
 	public static final class PopularPeopleTmdbColumns implements
 			CoreBaseColumns {
 

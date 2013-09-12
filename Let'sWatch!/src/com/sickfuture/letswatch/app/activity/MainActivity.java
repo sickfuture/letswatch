@@ -29,8 +29,8 @@ import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.FavoritesFragment;
 import com.sickfuture.letswatch.app.fragment.pager.DvdPagerFragment;
 import com.sickfuture.letswatch.app.fragment.pager.TheatersPagerFragment;
-import com.sickfuture.letswatch.app.fragment.tmdb.MovieFragment;
-import com.sickfuture.letswatch.app.fragment.tmdb.PopularMoviesFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.movie.PopularMoviesFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MainActivity extends DrawerActivity implements IListClickable {

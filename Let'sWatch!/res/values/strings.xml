@@ -33,6 +33,18 @@
 	    <item >@string/drawer_discover</item>
 	</string-array>
 	
+	<string name="now_playing">Now playing</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top rated</string>
+    <string name="upcoming">Upcoming</string>
+    
+    <string-array name="movie_sections">
+        <item >@string/now_playing</item>
+        <item >@string/popular</item>
+        <item >@string/top_rated</item>
+        <item >@string/upcoming</item>
+    </string-array>
+	
     <!-- Page titles -->
     <string name="title_box_office">box office</string>
     <string name="title_upcoming">upcoming</string>
@@ -82,5 +94,6 @@
     <string name="search_label">LETS_WATCH_SEARCH_LABEL</string>
     <string name="search_hint">Search movie...</string>
     <string name="storyline">Storyline</string>
+    
 
 </resources>

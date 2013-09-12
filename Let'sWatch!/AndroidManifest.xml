@@ -238,6 +238,11 @@
             android:authorities="com.sickfuture.letswatch.content.provider.tmdb.GenresProvider"
             android:exported="false" >
         </provider>
+        <provider
+            android:name=".content.provider.tmdb.PopularPersonsProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.PopularPersonsProvider"
+            android:exported="false" >
+        </provider>
     </application>
 
 </manifest>
