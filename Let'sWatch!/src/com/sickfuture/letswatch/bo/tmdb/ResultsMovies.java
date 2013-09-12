@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ResultsMovies {
 
+	private Dates dates;
 	private int page, total_pages, total_results;
 	private List<Movie> results;
 
@@ -23,4 +24,21 @@ public class ResultsMovies {
 		return results;
 	}
 
+	public Dates getDates() {
+		return dates;
+	}
+
+}
+
+class Dates {
+
+	private String minimum, maximum;
+
+	public String getMinimum() {
+		return minimum;
+	}
+
+	public String getMaximum() {
+		return maximum;
+	}
 }

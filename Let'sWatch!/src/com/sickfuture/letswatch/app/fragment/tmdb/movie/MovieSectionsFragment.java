@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.app.fragment.tmdb;
+package com.sickfuture.letswatch.app.fragment.tmdb.movie;
 
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.activity.tmdb.DrawerActivity;
@@ -18,8 +18,8 @@ public class MovieSectionsFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setListAdapter(new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1, new String[] {
-						"Now playing", "Popular", "Top rated", "Upcoming" }));
+				android.R.layout.simple_list_item_1, getResources()
+						.getStringArray(R.array.movie_sections)));
 	}
 
 	@Override

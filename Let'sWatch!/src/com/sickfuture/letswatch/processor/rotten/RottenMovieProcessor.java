@@ -9,16 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
 import android.net.Uri;
 
-import com.android.sickfuture.sickcore.context.ContextHolder;
-import com.android.sickfuture.sickcore.source.IProcessor;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.IOUtils;
 import com.android.sickfuture.sickcore.utils.L;
-import com.android.sickfuture.sickcore.utils.StringsUtils;
 import com.google.gson.Gson;
 import com.sickfuture.letswatch.bo.rotten.Movie;
 import com.sickfuture.letswatch.bo.rotten.MovieList;
@@ -26,7 +21,8 @@ import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.processor.BaseMovieListProcessor;
 
-public abstract class RottenMovieProcessor extends BaseMovieListProcessor<InputStream, ContentValues[]> {
+public abstract class RottenMovieProcessor extends
+		BaseMovieListProcessor<InputStream, ContentValues[]> {
 
 	private static final String LOG_TAG = RottenMovieProcessor.class
 			.getSimpleName();
@@ -90,7 +86,7 @@ public abstract class RottenMovieProcessor extends BaseMovieListProcessor<InputS
 				// L.d(LOG_TAG, i+"");
 				values2.add(value);
 			}
-			processNewMovies(values2);
+			processNew(values2);
 			return values;
 		}
 		return null;
@@ -151,10 +147,15 @@ public abstract class RottenMovieProcessor extends BaseMovieListProcessor<InputS
 		return null;
 	}
 
+	@Override
+	protected String getIdField() {
+		return Contract.MovieColumns.ROTTEN_ID;
+	}
 
 	@Override
-	protected String getMovieIdField() {
-		return Contract.MovieColumns.ROTTEN_ID;
+	protected Uri getUri() {
+		return ContractUtils
+				.getProviderUriFromContract(Contract.MovieColumns.class);
 	}
 
 	private String getStringResponse(InputStream is) {

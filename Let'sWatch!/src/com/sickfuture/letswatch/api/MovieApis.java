@@ -292,7 +292,7 @@ public class MovieApis {
 		private static final String SESSION_NEW = "/session/new";
 		private static final String TOKEN_NEW = "/token/new";
 		private static final String AUTHENTICATION = "/authentication";
-		private static final String URL_TEMPLATE = "https://api.themoviedb.org/3%s?api_key=8df0f158f56c4b9766eeb45fdbbe3b7d";
+		private static final String URL_TEMPLATE = "http://api.themoviedb.org/3%s?api_key=8df0f158f56c4b9766eeb45fdbbe3b7d";
 		private static final String CONFIGURATION = "/configuration";
 		private static final String APPEND = "append_to_response=%s";
 		private static final String PAGE = "page=%s";

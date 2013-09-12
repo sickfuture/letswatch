@@ -29,6 +29,7 @@ import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbTopRatedProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbUpcomingProcessor;
 import com.sickfuture.letswatch.processor.tmdb.persons.PersonProcessor;
+import com.sickfuture.letswatch.processor.tmdb.persons.PopularPersonsProcessor;
 
 public class LetsWatchApplication extends SickApp {
 
@@ -60,6 +61,7 @@ public class LetsWatchApplication extends SickApp {
 	public static final String TMDB_LISTS_PROCESSOR_SERVICE = "sickcore:TmdbListsProcessor";
 	public static final String TMDB_PERSON_PROCESSOR_SERVICE = "sickcore:TmdbPersonProcessor";
 	public static final String TMDB_LIST_PROCESSOR_SERVICE = "sickcore:TmdbPersonProcessor";
+	public static final String TMDB_POPULAR_PERSON_PROCESSOR_SERVICE = "sickcore:TmdbPopularPersonProcessor";
 
     @Override
     public void register() {
@@ -98,5 +100,6 @@ public class LetsWatchApplication extends SickApp {
         registerAppService(new ListsProcessor());
         registerAppService(new PersonProcessor());
         registerAppService(new ListProcessor());
+        registerAppService(new PopularPersonsProcessor());
     }
 }

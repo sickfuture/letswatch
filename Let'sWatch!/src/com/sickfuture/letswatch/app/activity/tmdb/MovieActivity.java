@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.sickfuture.letswatch.app.callback.IListClickable;
-import com.sickfuture.letswatch.app.fragment.tmdb.MovieFragment;
-import com.sickfuture.letswatch.app.fragment.tmdb.MovieSectionsFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieSectionsFragment;
 
 public class MovieActivity extends DrawerActivity implements IListClickable {
 
@@ -21,7 +21,7 @@ public class MovieActivity extends DrawerActivity implements IListClickable {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		FragmentManager manager = getSupportFragmentManager();
-		manager.beginTransaction().addToBackStack(null)
+		manager.beginTransaction()
 				.replace(CONTENT_FRAME, new MovieSectionsFragment()).commit();
 	}
 

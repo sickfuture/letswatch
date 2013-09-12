@@ -14,7 +14,7 @@
     <dimen name="text_normal">20sp</dimen>
     <dimen name="text_large">24sp</dimen>
     <dimen name="tap_item_height">56dp</dimen>
-    <dimen name="dim_poster_width">96dp</dimen>
-    <dimen name="dim_poster_height">140dp</dimen>
+    <dimen name="dim_poster_width">120dp</dimen>
+    <dimen name="dim_poster_height">176dp</dimen>
 
 </resources>
