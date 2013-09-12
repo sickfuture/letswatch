@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.processor;
+package com.sickfuture.letswatch.processor.tmdb.movies;
 
 import java.util.ArrayList;
 

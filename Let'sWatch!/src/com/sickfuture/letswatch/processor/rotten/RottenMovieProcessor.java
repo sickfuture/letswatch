@@ -19,7 +19,7 @@ import com.sickfuture.letswatch.bo.rotten.Movie;
 import com.sickfuture.letswatch.bo.rotten.MovieList;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
-import com.sickfuture.letswatch.processor.BaseMovieListProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.BaseMovieListProcessor;
 
 public abstract class RottenMovieProcessor extends
 		BaseMovieListProcessor<InputStream, ContentValues[]> {
