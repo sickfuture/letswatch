@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <GridView
+        android:id="@+id/grid_view_sections_now_playing"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="3" >
+    </GridView>
+
+    <GridView
+        android:id="@+id/grid_view_sections_popular"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="3" >
+    </GridView>
+
+    <GridView
+        android:id="@+id/grid_view_sections_top_rated"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="3" >
+    </GridView>
+
+    <GridView
+        android:id="@+id/grid_view_sections_upcoming"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="3" >
+    </GridView>
+
+</LinearLayout>
