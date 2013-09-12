@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,7 +28,6 @@ import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
-import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;

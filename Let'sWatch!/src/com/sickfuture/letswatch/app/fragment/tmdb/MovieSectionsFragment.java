@@ -1,54 +1,118 @@
 package com.sickfuture.letswatch.app.fragment.tmdb;
 
+import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.app.activity.tmdb.DrawerActivity;
+import com.sickfuture.letswatch.adapter.MoviesSectionsGridAdapter;
+import com.sickfuture.letswatch.content.contract.Contract;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.ViewGroup;
+import android.widget.GridView;
 
-public class MovieSectionsFragment extends ListFragment {
+public class MovieSectionsFragment extends Fragment implements
+		LoaderCallbacks<Cursor> {
+
+	private GridView mGridViewNowPlaying, mGridViewPopular, mGridViewTopRated,
+			mGridViewUpcoming;
+
+	private MoviesSectionsGridAdapter mGridViewNowPlayingAdapter,
+			mGridViewPopularAdapter, mGridViewTopRatedAdapter,
+			mGridViewUpcomingAdapter;
+
+	private int mNowPlayingLoaderId, mPopularLoaderId, mTopRatedLoaderId,
+			mUpcomingLoaderId;
+
+	private Uri mLoaderUri;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setListAdapter(new ArrayAdapter<String>(getActivity(),
-				android.R.layout.simple_list_item_1, new String[] {
-						"Now playing", "Popular", "Top rated", "Upcoming" }));
 	}
 
 	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		Fragment fragment = null;
-		switch (position) {
-		case 0:
-			fragment = new NowPlayingFragment();
-			break;
-		case 1:
-			fragment = new PopularMoviesFragment();
-			break;
-		case 2:
-			fragment = new TopRatedFragment();
-			break;
-		case 3:
-			fragment = new UpcomingMoviesFragment();
-			break;
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View view = inflater.inflate(R.layout.fragment_movie_sections_grids,
+				null);
+		initViews(view);
+		LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+		loaderManager.initLoader(mNowPlayingLoaderId, null, this);
+		loaderManager.initLoader(mPopularLoaderId, null, this);
+		loaderManager.initLoader(mTopRatedLoaderId, null, this);
+		loaderManager.initLoader(mUpcomingLoaderId, null, this);
+		return view;
+	}
+
+	private void initViews(View view) {
+		mGridViewNowPlaying = (GridView) view
+				.findViewById(R.id.grid_view_sections_now_playing);
+		mGridViewNowPlayingAdapter = new MoviesSectionsGridAdapter(
+				getActivity(), null);
+		mGridViewNowPlaying.setAdapter(mGridViewNowPlayingAdapter);
+		mNowPlayingLoaderId = mGridViewNowPlaying.hashCode();
+		mGridViewPopular = (GridView) view
+				.findViewById(R.id.grid_view_sections_popular);
+		mGridViewPopularAdapter = new MoviesSectionsGridAdapter(getActivity(),
+				null);
+		mGridViewPopular.setAdapter(mGridViewPopularAdapter);
+		mPopularLoaderId = mGridViewPopular.hashCode();
+		mGridViewTopRated = (GridView) view
+				.findViewById(R.id.grid_view_sections_top_rated);
+		mGridViewTopRatedAdapter = new MoviesSectionsGridAdapter(getActivity(),
+				null);
+		mGridViewTopRated.setAdapter(mGridViewTopRatedAdapter);
+		mTopRatedLoaderId = mGridViewTopRated.hashCode();
+		mGridViewUpcoming = (GridView) view
+				.findViewById(R.id.grid_view_sections_upcoming);
+		mGridViewUpcomingAdapter = new MoviesSectionsGridAdapter(getActivity(),
+				null);
+		mGridViewUpcoming.setAdapter(mGridViewUpcomingAdapter);
+		mUpcomingLoaderId = mGridViewUpcoming.hashCode();
+	}
+
+	@Override
+	public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+		if (id == mNowPlayingLoaderId) {
+			mLoaderUri = Uri.parse(ContractUtils
+					.getProviderUriFromContract(Contract.MovieColumns.class)
+					+ "#query");
+		} else if (id == mPopularLoaderId) {
+			// TODO set appropriate uri
+		} else if (id == mTopRatedLoaderId) {
+			// TODO set appropriate uri
+		} else if (id == mUpcomingLoaderId) {
+			// TODO set appropriate uri
 		}
-		FragmentManager manager = getActivity().getSupportFragmentManager();
-		manager.beginTransaction().addToBackStack(null)
-				.replace(DrawerActivity.CONTENT_FRAME, fragment).commit();
+		return new CursorLoader(getActivity(), mLoaderUri, null, null, null,
+				null);
 	}
 
 	@Override
-	public void onStart() {
-		((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(
-				getResources().getString(R.string.drawer_movies));
-		super.onStart();
+	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		int loaderId = loader.getId();
+		if (loaderId == mNowPlayingLoaderId) {
+			mGridViewNowPlayingAdapter.swapCursor(cursor);
+		} else if (loaderId == mPopularLoaderId) {
+			mGridViewPopularAdapter.swapCursor(cursor);
+		} else if (loaderId == mTopRatedLoaderId) {
+			mGridViewTopRatedAdapter.swapCursor(cursor);
+		} else if (loaderId == mUpcomingLoaderId) {
+			mGridViewUpcomingAdapter.swapCursor(cursor);
+		}
+	}
+
+	@Override
+	public void onLoaderReset(Loader<Cursor> arg0) {
+		// TODO do smth
 	}
 
 }

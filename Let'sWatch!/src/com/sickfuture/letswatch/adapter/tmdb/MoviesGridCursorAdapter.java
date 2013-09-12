@@ -3,11 +3,10 @@ package com.sickfuture.letswatch.adapter.tmdb;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
+import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
