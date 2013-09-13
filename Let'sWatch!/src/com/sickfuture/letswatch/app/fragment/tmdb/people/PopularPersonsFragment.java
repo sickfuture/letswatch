@@ -3,21 +3,27 @@ package com.sickfuture.letswatch.app.fragment.tmdb.people;
 import java.io.InputStream;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
+import android.widget.Toast;
 
 import com.android.sickfuture.sickcore.service.DataSourceRequest;
 import com.android.sickfuture.sickcore.service.SourceService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.NetworkHelper;
+import com.android.sickfuture.sickcore.utils.NetworkHelper.NetworkCallback;
+import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.sickfuture.letswatch.R;
@@ -27,9 +33,12 @@ import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
 public class PopularPersonsFragment extends SickGridCursorFragment implements
 		RefreshActionListener {
+
+	private RefreshActionItem mRefreshActionItem;
 
 	private String sortOrder;
 	private String[] selectionArgs;
@@ -39,6 +48,12 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 			.getProviderUriFromContract(Contract.PopularPeopleTmdbColumns.class);
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
 	public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
 		// TODO Auto-generated method stub
 
@@ -46,20 +61,31 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 
 	@Override
 	protected void start(Bundle bundle) {
-		// TODO Auto-generated method stub
-
+		mRefreshActionItem.showProgress(true);
 	}
 
 	@Override
 	protected void error(Exception exception) {
-		// TODO Auto-generated method stub
-
+		Toast.makeText(getActivity(), exception.toString(), Toast.LENGTH_SHORT)
+				.show();
+		mRefreshActionItem.showProgress(false);
 	}
 
 	@Override
 	protected void done(Bundle result) {
-		// TODO Auto-generated method stub
+		mRefreshActionItem.showProgress(false);
+	}
 
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(R.id.menu_refresh);
+		mRefreshActionItem = (RefreshActionItem) MenuItemCompat
+				.getActionView(item);
+		mRefreshActionItem.setMenuItem(item);
+		mRefreshActionItem
+				.setProgressIndicatorType(ProgressIndicatorType.INDETERMINATE);
+		mRefreshActionItem.setRefreshActionListener(this);
+		super.onPrepareOptionsMenu(menu);
 	}
 
 	@Override
@@ -75,7 +101,11 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 	@Override
 	public void onListItemClick(AdapterView<?> list, View view, int position,
 			long id, IListClickable clickable) {
-		// TODO Auto-generated method stub
+		Cursor c = (Cursor) list.getItemAtPosition(position);
+		Bundle bundle = new Bundle();
+		bundle.putString(PersonColumns.TMDB_ID,
+				c.getString(c.getColumnIndex(PersonColumns.TMDB_ID)));
+		clickable.onItemListClick(bundle);
 
 	}
 
@@ -103,15 +133,16 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 	}
 
 	private void loadData() {
-		String url = MovieApis.TmdbApi.getPopularPersons(0);
-		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
-				url);
-		request.setIsCacheable(true);
-		SourceService.execute(getActivity(), request,
-				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
-				LetsWatchApplication.TMDB_POPULAR_PERSON_PROCESSOR_SERVICE,
-				mResultReceiver);
-
+		if (NetworkHelper.checkConnection(getActivity())) {
+			String url = MovieApis.TmdbApi.getPopularPersons(0);
+			DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
+					url);
+			request.setIsCacheable(true);
+			SourceService.execute(getActivity(), request,
+					LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
+					LetsWatchApplication.TMDB_POPULAR_PERSON_PROCESSOR_SERVICE,
+					mResultReceiver);
+		}
 	}
 
 	@Override
@@ -121,7 +152,23 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 
 	@Override
 	public void onRefreshButtonClick(RefreshActionItem sender) {
-		// TODO Auto-generated method stub
+		NetworkHelper.checkAndConnect(getActivity(), new NetworkCallback() {
+
+			@Override
+			public void processTask(Context context) {
+				loadData();
+			}
+
+			@Override
+			public void onError(Context context, Exception e) {
+
+			}
+
+			@Override
+			public void onCancel(Context context) {
+
+			}
+		});
 
 	}
 

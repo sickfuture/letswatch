@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:id="@+id/container_person_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/LightGrey"
+            android:padding="8dp" >
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:id="@+id/image_view_fragment_person_photo"
+                android:layout_width="150dp"
+                android:layout_height="216dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/AliceBlue"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/text_view_fragment_person_age_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/image_view_fragment_person_photo"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_toRightOf="@id/image_view_fragment_person_photo"
+                android:text="@string/app_name" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/text_view_fragment_person_bio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/container_person_info"
+            android:layout_marginTop="16dp"
+            android:background="@color/LightGrey"
+            android:padding="8dp" />
+    </RelativeLayout>
+
+</ScrollView>

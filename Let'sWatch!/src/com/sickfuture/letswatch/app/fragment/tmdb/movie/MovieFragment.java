@@ -33,6 +33,7 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.helpers.UIHelper;
 
 public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
@@ -110,6 +111,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+		// TODO load if data is older than 1 hour
 		loadData();
 		return new CursorLoader(getActivity(), uri, projection, selection,
 				selectionArgs, sortOrder);
@@ -121,7 +123,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 		// if (cursor.getCount() == 0) {
 		// loadData();
 		// } else
-		if (cursor.getCount() != 0)
+		if (cursor.getCount() > 0)
 			compliteView(cursor);
 
 	}
@@ -212,7 +214,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 		} else {
 			String releaseDate = getString(c,
 					Contract.MovieColumns.RELEASE_DATE);
-			setText(mYearTextView, releaseDate);
+			UIHelper.setTextOrGone(mYearTextView, releaseDate);
 		}
 		String genres = getString(c, MovieColumns.GENRES);
 		if (!TextUtils.isEmpty(genres)) {
@@ -243,8 +245,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 	}
 
 	private void setTagline(Cursor c) {
-		String tagline = getString(c, Contract.MovieColumns.TAGLINE);
-		setText(mTaglineTextView, tagline);
+		UIHelper.setTextOrGone(mTaglineTextView, c, Contract.MovieColumns.TAGLINE);
 	}
 
 	private void setPoster(Cursor c) {
@@ -282,14 +283,6 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 
 	private int getInt(Cursor cursor, String column) {
 		return cursor.getInt(cursor.getColumnIndex(column));
-	}
-
-	private void setText(TextView textView, String text) {
-		if (!TextUtils.isEmpty(text)) {
-			textView.setText(text);
-			textView.setVisibility(View.VISIBLE);
-		} else
-			textView.setVisibility(View.GONE);
 	}
 
 }
