@@ -2,9 +2,11 @@ package com.sickfuture.letswatch.processor.tmdb;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.net.Uri;
 
 import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.source.IProcessor;
@@ -15,8 +17,9 @@ import com.sickfuture.letswatch.bo.tmdb.Cast;
 import com.sickfuture.letswatch.bo.tmdb.Casts;
 import com.sickfuture.letswatch.bo.tmdb.Crew;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 
-public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> {
+public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> {//extends BaseListProcessor<InputStream, ContentValues[]>
 
 	@Override
 	public String getKey() {
@@ -43,6 +46,7 @@ public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> 
 				valuesCrew[i].put(Contract.CrewColumns.LAST_UPDATE, time);
 				i++;
 			}
+//			processNew(new ArrayList<ContentValues>(valuesCrew), field, uri);
 			ContextHolder.getInstance().getContext().getContentResolver()
 			.bulkInsert(
 					ContractUtils
@@ -72,5 +76,15 @@ public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> 
 						result);
 		return true;
 	}
+
+//	@Override
+//	protected String getIdField() {
+//		return CastColumns.TMDB_MOVIE_ID;
+//	}
+//
+//	@Override
+//	protected Uri getUri() {
+//		return ContractUtils.getProviderUriFromContract(CastColumns.class);
+//	}
 
 }

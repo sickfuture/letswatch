@@ -16,17 +16,21 @@ import com.sickfuture.letswatch.content.contract.Contract;
 public abstract class BaseListProcessor <DataSource, Result> implements IProcessor<DataSource, Result> {
 
 	protected void processNew(ArrayList<ContentValues> array) {
-		String ids = StringsUtils.join(array, getIdField(),
+		processNew(array, getIdField(), getUri());
+	}
+
+	protected void processNew(ArrayList<ContentValues> array, String field, Uri uri) {
+		String ids = StringsUtils.join(array, field,
 				",");
 		Cursor cursor = ContextHolder.getInstance().getContext()
 				.getContentResolver()
-				.query(getUri(), null, getIdField() + " IN (" + ids + ")", null, null);
+				.query(uri, null, field + " IN (" + ids + ")", null, null);
 		ArrayList<Long> toUpdate = new ArrayList<Long>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
 				Long id = cursor.getLong(cursor
-						.getColumnIndex(getIdField()));
+						.getColumnIndex(field));
 				toUpdate.add(id);
 				cursor.moveToNext();
 			}
@@ -35,7 +39,7 @@ public abstract class BaseListProcessor <DataSource, Result> implements IProcess
 
 		updateOldAndPutNew(array, toUpdate);
 	}
-
+	
 	protected abstract String getIdField();
 
 	protected abstract Uri getUri();

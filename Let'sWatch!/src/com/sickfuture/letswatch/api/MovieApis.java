@@ -526,7 +526,7 @@ public class MovieApis {
 		 *            Comma separated, any movie method
 		 * @return
 		 */
-		public static String getCastsMovie(String id,
+		public static String getMovieCasts(String id,
 				String... appendToResponse) {
 			StringBuilder builder = getMovieBuilder(CASTS, id);
 			appendToResponse(builder, appendToResponse);

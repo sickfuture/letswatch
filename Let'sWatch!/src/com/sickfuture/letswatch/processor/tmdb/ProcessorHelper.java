@@ -11,6 +11,7 @@ import com.sickfuture.letswatch.bo.tmdb.*;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.processor.tmdb.movies.MovieResultsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.persons.PersonCreditsProcessor;
 
 public class ProcessorHelper {
 
@@ -35,15 +36,15 @@ public class ProcessorHelper {
 		put(value, MovieColumns.TAGLINE, movie.getTagline());
 		put(value, MovieColumns.BUDGET, movie.getBudget());
 		put(value, MovieColumns.REVENUE, movie.getRevenue());
-		if(movie.getGenres()!=null){
+		if (movie.getGenres() != null) {
 			put(value, MovieColumns.GENRES_IDS, movie.getGenresIds());
 			put(value, MovieColumns.GENRES, movie.getGenresString());
 		}
-		if(movie.getProduction_companies()!=null){
-			
+		if (movie.getProduction_companies() != null) {
+
 		}
-		if(movie.getProduction_countries()!=null){
-			
+		if (movie.getProduction_countries() != null) {
+
 		}
 		if (movie.getAlternative_titles() != null) {
 			AltTitles alternative_titles = movie.getAlternative_titles();
@@ -145,51 +146,44 @@ public class ProcessorHelper {
 			processImages(person.getImages());
 		}
 		if (person.getCredits() != null) {
-			java.util.List<Movie> cast = person.getCredits().getCast();
-			long time = System.currentTimeMillis();
-			if (cast != null && cast.size() > 0) {
-				ContentValues[] castsValues = new ContentValues[cast.size()];
-				int i = 0;
-				for (Movie movie : cast) {
-					castsValues[i].put(Contract.CastColumns.LAST_UPDATE, time);
-					put(castsValues[i], Contract.CastColumns.CHARACTER,
-							movie.getCharacter());
-					castsValues[i].put(Contract.CastColumns.NAME, name);
-					put(castsValues[i], Contract.CastColumns.PROFILE_PATH,
-							profile);
-					castsValues[i].put(Contract.CastColumns.TMDB_MOVIE_ID,
-							movie.getId());
-					castsValues[i].put(Contract.CastColumns.TMDB_PERSON_ID, id);
-					i++;
-				}
-				CastsProcessor castsProcessor = (CastsProcessor) AppUtils.get(
-						getCtx(),
-						LetsWatchApplication.TMDB_CASTS_PROCESSOR_SERVICE);
-				castsProcessor.cache(castsValues, getCtx());
-			}
-			java.util.List<Movie> crew = person.getCredits().getCrew();
-			if (crew != null && crew.size() > 0) {
-				ContentValues[] crewValues = new ContentValues[crew.size()];
-				int i = 0;
-				for (Movie movie : crew) {
-					crewValues[i].put(Contract.CrewColumns.LAST_UPDATE, time);
-					put(crewValues[i], Contract.CrewColumns.DEPARTMENT,
-							movie.getDepartment());
-					put(crewValues[i], Contract.CrewColumns.JOB, movie.getJob());
-					crewValues[i].put(Contract.CrewColumns.NAME, name);
-					put(crewValues[i], Contract.CrewColumns.PROFILE_PATH,
-							profile);
-					crewValues[i].put(Contract.CrewColumns.TMDB_MOVIE_ID,
-							movie.getId());
-					crewValues[i].put(Contract.CrewColumns.TMDB_PERSON_ID, id);
-					i++;
-				}
-				getCtx().getContentResolver()
-						.bulkInsert(
-								ContractUtils
-										.getProviderUriFromContract(Contract.CrewColumns.class),
-								crewValues);
-			}
+			person.getCredits().setId(id);
+			PersonCreditsProcessor processor = (PersonCreditsProcessor) AppUtils
+					.get(getCtx(),
+							LetsWatchApplication.TMDB_PERSON_CREDITS_PROCESSOR_SERVICE);
+			processor.processCredits(person.getCredits());
+			// TODO remove commented
+			// java.util.List<Cast> cast = person.getCredits().getCast();
+			// long time = System.currentTimeMillis();
+			// if (cast != null && cast.size() > 0) {
+			// ContentValues[] castsValues = new ContentValues[cast.size()];
+			// int i = 0;
+			// for (Cast c : cast) {
+			// castsValues[i] = processCast(c);
+			// castsValues[i].put(Contract.CastColumns.LAST_UPDATE, time);
+			// castsValues[i].put(Contract.CastColumns.TMDB_PERSON_ID, id);
+			// i++;
+			// }
+			// CastsProcessor castsProcessor = (CastsProcessor) AppUtils.get(
+			// getCtx(),
+			// LetsWatchApplication.TMDB_CASTS_PROCESSOR_SERVICE);
+			// castsProcessor.cache(castsValues, getCtx());
+			// }
+			// java.util.List<Crew> crew = person.getCredits().getCrew();
+			// if (crew != null && crew.size() > 0) {
+			// ContentValues[] crewValues = new ContentValues[crew.size()];
+			// int i = 0;
+			// for (Crew cr : crew) {
+			// crewValues[i] = processCrew(cr);
+			// crewValues[i].put(Contract.CrewColumns.LAST_UPDATE, time);
+			// crewValues[i].put(Contract.CrewColumns.TMDB_PERSON_ID, id);
+			// i++;
+			// }
+			// getCtx().getContentResolver()
+			// .bulkInsert(
+			// ContractUtils
+			// .getProviderUriFromContract(Contract.CrewColumns.class),
+			// crewValues);
+			// }
 		}
 		return value;
 	}
@@ -204,9 +198,20 @@ public class ProcessorHelper {
 	public static ContentValues processCast(Cast cast) {
 		ContentValues value = new ContentValues();
 		value.put(Contract.CastColumns.CHARACTER, cast.getCharacter());
-		value.put(Contract.CastColumns.NAME, cast.getName());
-		value.put(Contract.CastColumns.PROFILE_PATH, cast.getProfile_path());
-		value.put(Contract.CastColumns.TMDB_MOVIE_ID, cast.getId());
+		if (cast.getName() != null) {
+			value.put(Contract.CrewColumns.PERSON_NAME, cast.getName());
+			value.put(Contract.CrewColumns.PERSON_PROFILE_PATH,
+					cast.getProfile_path());
+			value.put(Contract.CrewColumns.TMDB_PERSON_ID, cast.getId());
+		} else if (cast.getTitle() != null || cast.getOriginal_title() != null) {
+			value.put(Contract.CrewColumns.MOVIE_TITLE, cast.getTitle());
+			value.put(Contract.CrewColumns.MOVIE_ORIGINAL_TITLE,
+					cast.getOriginal_title());
+			value.put(Contract.CrewColumns.MOVIE_POSTER_PATH,
+					cast.getPoster_path());
+			value.put(Contract.CrewColumns.MOVIE_ADULT, cast.isAdult() ? 1 : 0);
+			value.put(Contract.CrewColumns.TMDB_MOVIE_ID, cast.getId());
+		}
 		return value;
 	}
 
@@ -214,9 +219,20 @@ public class ProcessorHelper {
 		ContentValues value = new ContentValues();
 		value.put(Contract.CrewColumns.DEPARTMENT, crew.getDepartment());
 		value.put(Contract.CrewColumns.JOB, crew.getJob());
-		value.put(Contract.CrewColumns.NAME, crew.getName());
-		value.put(Contract.CrewColumns.PROFILE_PATH, crew.getProfile_path());
-		value.put(Contract.CrewColumns.TMDB_MOVIE_ID, crew.getId());
+		if (crew.getName() != null) {
+			value.put(Contract.CrewColumns.PERSON_NAME, crew.getName());
+			value.put(Contract.CrewColumns.PERSON_PROFILE_PATH,
+					crew.getProfile_path());
+			value.put(Contract.CrewColumns.TMDB_PERSON_ID, crew.getId());
+		} else if (crew.getTitle() != null || crew.getOriginal_title() != null) {
+			value.put(Contract.CrewColumns.MOVIE_TITLE, crew.getTitle());
+			value.put(Contract.CrewColumns.MOVIE_ORIGINAL_TITLE,
+					crew.getOriginal_title());
+			value.put(Contract.CrewColumns.MOVIE_POSTER_PATH,
+					crew.getPoster_path());
+			value.put(Contract.CrewColumns.MOVIE_ADULT, crew.isAdult() ? 1 : 0);
+			value.put(Contract.CrewColumns.TMDB_MOVIE_ID, crew.getId());
+		}
 		return value;
 	}
 

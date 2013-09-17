@@ -10,32 +10,44 @@
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true" >
 
-        <com.android.sickfuture.sickcore.image.view.RecyclingImageView
-            android:id="@+id/image_view_fragment_movie_backdrop"
+        <RelativeLayout
+            android:id="@+id/container_fragment_movie_top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="@color/AliceBlue"
-            android:scaleType="centerCrop" />
+            android:layout_alignParentTop="true" >
 
-        <TextView
-            android:id="@+id/text_view_fragment_movie_tagline"
-            android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_below="@id/image_view_fragment_movie_backdrop"
-            android:gravity="center_horizontal|bottom"
-            android:text="@string/app_name" />
+            <ImageView
+                android:id="@+id/image_view_fragment_movie_backdrop"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true"
+                android:background="@color/AliceBlue"
+                android:paddingBottom="8dp"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/text_view_fragment_movie_tagline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:background="@drawable/background_gradient_dark_from_top"
+                android:gravity="center_horizontal|top"
+                android:minHeight="48dp"
+                android:padding="8dp"
+                android:text="@string/app_name"
+                android:textColor="@color/LightGrey"
+                android:textStyle="bold" />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/RelativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_fragment_movie_tagline"
-            android:layout_marginTop="16dp"
+            android:layout_below="@id/container_fragment_movie_top"
             android:background="@color/LightGrey"
             android:padding="8dp" >
 
-            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+            <ImageView
                 android:id="@+id/image_view_fragment_movie_poster"
                 style="@style/styleImageViewPosterOnMainScreen"
                 android:layout_alignParentLeft="true"
@@ -57,8 +69,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_view_fragment_movie_year"
                 android:layout_toRightOf="@id/image_view_fragment_movie_poster"
-                android:orientation="vertical"
-                android:animateLayoutChanges="true" >
+                android:animateLayoutChanges="true"
+                android:orientation="vertical" >
             </LinearLayout>
 
             <ImageView
@@ -102,6 +114,58 @@
             android:layout_marginTop="16dp"
             android:background="@color/LightGrey"
             android:orientation="vertical"
+            android:paddingBottom="4dp"
+            android:paddingTop="8dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/cast"
+                android:textStyle="italic" />
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/hlist_view_fragment_movie_cast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_fragment_movie_crew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_fragment_movie_casts"
+            android:background="@color/LightGrey"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/crew"
+                android:textStyle="italic" />
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/hlist_view_fragment_movie_crew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_fragment_movie_production_creds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_fragment_movie_crew"
+            android:layout_marginTop="16dp"
+            android:background="@color/LightGrey"
+            android:orientation="vertical"
             android:padding="8dp"
             android:visibility="gone" >
         </LinearLayout>
@@ -110,24 +174,25 @@
             android:id="@+id/layout_fragment_movie_similar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/layout_fragment_movie_casts"
+            android:layout_below="@id/layout_fragment_movie_production_creds"
             android:layout_marginTop="16dp"
             android:background="@color/LightGrey"
             android:orientation="vertical"
-            android:padding="8dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:visibility="gone" >
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/layout_fragment_movie_production_creds"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout_fragment_movie_similar"
-            android:layout_marginTop="16dp"
-            android:background="@color/LightGrey"
-            android:orientation="vertical"
-            android:padding="8dp"
-            android:visibility="gone" >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/similar"
+                android:textStyle="italic" />
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/hlist_view_fragment_movie_similar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.app.fragment.tmdb.movie;
 
+import it.sephiroth.android.library.widget.HListView;
+
 import java.io.InputStream;
 
 import android.content.ContentValues;
@@ -10,13 +12,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,12 +28,16 @@ import com.android.sickfuture.sickcore.service.DataSourceRequest;
 import com.android.sickfuture.sickcore.service.SourceService;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.L;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.adapter.tmdb.CastHListAdapter;
+import com.sickfuture.letswatch.adapter.tmdb.CrewHListAdapter;
 import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
-import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
+import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.helpers.UIHelper;
 
@@ -48,26 +54,44 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 	private static final int STORYLINE_CONTAINER = R.id.layout_fragment_movie_storyline;
 	private static final int STORYLINE = R.id.text_view_fragment_movie_storyline;
 	private static final int CASTS_CONTAINER = R.id.layout_fragment_movie_casts;
+	private static final int CREW_CONTAINER = R.id.layout_fragment_movie_crew;
 	private static final int SIMILAR_CONTAINER = R.id.layout_fragment_movie_similar;
 	private static final int PRODUCTION_CONTAINER = R.id.layout_fragment_movie_production_creds;
 
-	private View mScrollView;
+	private View mParentView;
 	private ViewGroup mInfoContainer, mStoryContainer, mCastsContainer,
-			mSimilarContainer, mProductionContainer;
-	private RecyclingImageView mBackdropImageView, mPosterImageView;
-	private ImageView mCertifyImageView;
+			mCrewContainer, mSimilarContainer, mProductionContainer;
+	private ImageView mCertifyImageView, mBackdropImageView, mPosterImageView;
 	private TextView mTaglineTextView, mYearTextView;
+	private HListView mCastHListView, mCrewHListView, mSimilarHListView;
 
 	private int mLoaderId;
 	private String mid;
 
 	private SickImageLoader mImageLoader;
 
-	private Uri uri;
-	private String[] projection;
-	private String selection;
-	private String[] selectionArgs;
-	private String sortOrder;
+	private static final Uri moviesUri = ContractUtils
+			.getProviderUriFromContract(Contract.MovieColumns.class);
+	private String[] moviesProjection;
+	private String moviesSelection;
+	private String[] moviesSelectionArgs;
+	private String moviesSortOrder;
+
+	private static final Uri castUri = ContractUtils
+			.getProviderUriFromContract(CastColumns.class);
+	private String[] castProjection;
+	private String castSelection;
+	private String[] castSelectionArgs;
+	private String castSortOrder;
+	private CursorAdapter mCastAdapter;
+
+	private static final Uri crewUri = ContractUtils
+			.getProviderUriFromContract(CrewColumns.class);
+	private String[] crewProjection;
+	private String crewSelection;
+	private String[] crewSelectionArgs;
+	private String crewSortOrder;
+	private CursorAdapter mCrewAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -77,44 +101,57 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 		mid = args.getString(Contract.MovieColumns.TMDB_ID);
 		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
-		uri = Uri.parse(ContractUtils
-				.getProviderUriFromContract(Contract.MovieColumns.class)
-				+ "#query");
-		selection = Contract.MovieColumns.TMDB_ID + " = " + mid;
+		moviesSelection = Contract.MovieColumns.TMDB_ID + " = " + mid;
+		castSelection = CastColumns.TMDB_MOVIE_ID + " = " + mid;
+		crewSelection = CrewColumns.TMDB_MOVIE_ID + " = " + mid;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		mScrollView = inflater.inflate(R.layout.fragment_movie, null);
-		mBackdropImageView = (RecyclingImageView) mScrollView
-				.findViewById(BACKDROP);
-		mPosterImageView = (RecyclingImageView) mScrollView
-				.findViewById(POSTER);
-		mCertifyImageView = (ImageView) mScrollView.findViewById(CERTIFICATION);
-		mTaglineTextView = (TextView) mScrollView.findViewById(TAGLINE);
-		mYearTextView = (TextView) mScrollView.findViewById(YEAR);
-		mInfoContainer = (ViewGroup) mScrollView.findViewById(INFO_CONTAINER);
-		mStoryContainer = (ViewGroup) mScrollView
+		mParentView = inflater.inflate(R.layout.fragment_movie, null);
+		mBackdropImageView = (ImageView) mParentView.findViewById(BACKDROP);
+		mPosterImageView = (ImageView) mParentView.findViewById(POSTER);
+		mCertifyImageView = (ImageView) mParentView.findViewById(CERTIFICATION);
+		mTaglineTextView = (TextView) mParentView.findViewById(TAGLINE);
+		mYearTextView = (TextView) mParentView.findViewById(YEAR);
+		mInfoContainer = (ViewGroup) mParentView.findViewById(INFO_CONTAINER);
+		mStoryContainer = (ViewGroup) mParentView
 				.findViewById(STORYLINE_CONTAINER);
-		mCastsContainer = (ViewGroup) mScrollView.findViewById(CASTS_CONTAINER);
-		mSimilarContainer = (ViewGroup) mScrollView
+		mCastsContainer = (ViewGroup) mParentView.findViewById(CASTS_CONTAINER);
+		mCrewContainer = (ViewGroup) mParentView.findViewById(CREW_CONTAINER);
+		mSimilarContainer = (ViewGroup) mParentView
 				.findViewById(SIMILAR_CONTAINER);
-		mProductionContainer = (ViewGroup) mScrollView
+		mProductionContainer = (ViewGroup) mParentView
 				.findViewById(PRODUCTION_CONTAINER);
 		mLoaderId = hashCode();
 		getActivity().getSupportLoaderManager().initLoader(mLoaderId, null,
 				this);
-		return mScrollView;
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 1, null,
+				this);
+		// TODO create single provider for cast and crew
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 2, null,
+				this);
+		return mParentView;
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		// TODO load if data is older than 1 hour
-		loadData();
-		return new CursorLoader(getActivity(), uri, projection, selection,
-				selectionArgs, sortOrder);
+		// TODO load when data is older than 1 hour
+		if (id == mLoaderId) {
+			loadMovieData();
+			return new CursorLoader(getActivity(), moviesUri, moviesProjection,
+					moviesSelection, moviesSelectionArgs, moviesSortOrder);
+		} else if (id == mLoaderId + 1) {
+			loadCast();
+			return new CursorLoader(getActivity(), castUri, castProjection,
+					castSelection, castSelectionArgs, castSortOrder);
+		} else if (id == mLoaderId + 2) {
+			return new CursorLoader(getActivity(), crewUri, crewProjection,
+					crewSelection, crewSelectionArgs, crewSortOrder);
+		}
+		return null;
 	}
 
 	@Override
@@ -124,26 +161,68 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 		// loadData();
 		// } else
 		if (cursor.getCount() > 0)
-			compliteView(cursor);
+			if (loader.getId() == mLoaderId) {
+
+				Log.d(LOG_TAG,
+						"onLoadFinished: movie " + cursor.getColumnCount());
+				compliteView(cursor);
+			} else if (loader.getId() == mLoaderId + 1) {
+				mCastsContainer.setVisibility(View.VISIBLE);
+				Log.d(LOG_TAG, "onLoadFinished: cast" + cursor.getCount());
+				if (mCastHListView == null) {
+					mCastHListView = (HListView) mParentView
+							.findViewById(R.id.hlist_view_fragment_movie_cast);
+					mCastAdapter = new CastHListAdapter(getActivity(), cursor);
+					mCastHListView.setAdapter(mCastAdapter);
+				} else
+					mCastAdapter.swapCursor(cursor);
+			} else if (loader.getId() == mLoaderId + 2) {
+				mCrewContainer.setVisibility(View.VISIBLE);
+				Log.d(LOG_TAG, "onLoadFinished: crew" + cursor.getCount());
+				if (mCrewHListView == null) {
+					mCrewHListView = (HListView) mParentView
+							.findViewById(R.id.hlist_view_fragment_movie_crew);
+					mCrewAdapter = new CrewHListAdapter(getActivity(), cursor);
+					mCrewHListView.setAdapter(mCrewAdapter);
+				} else
+					mCastAdapter.swapCursor(cursor);
+			}
 
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		// TODO Auto-generated method stub
+		if (loader.getId() == mLoaderId + 1 && mCastAdapter != null) {
+			mCastAdapter.swapCursor(null);
+		} else if (loader.getId() == mLoaderId + 2 && mCrewAdapter != null) {
+			mCrewAdapter.swapCursor(null);
+		}
 
 	}
 
-	private void loadData() {
+	private void loadMovieData() {
 		String url = MovieApis.TmdbApi.getMovie(mid, null);
-		Log.d(LOG_TAG, "loadData: " + url);
+		L.d(LOG_TAG, "loadData: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
 				url);
-		request.setIsCacheable(true);
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
 				LetsWatchApplication.TMDB_MOVIE_PROCESSOR_SERVICE);
 
+	}
+
+	private void loadCast() {
+		getActivity().getContentResolver().delete(castUri, castSelection,
+				castSelectionArgs);
+		getActivity().getContentResolver().delete(crewUri, crewSelection,
+				crewSelectionArgs);
+		String url = TmdbApi.getMovieCasts(mid);
+		L.d(LOG_TAG, "loadCast: " + url);
+		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
+				url);
+		SourceService.execute(getActivity(), request,
+				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
+				LetsWatchApplication.TMDB_CASTS_PROCESSOR_SERVICE, null);
 	}
 
 	private void compliteView(Cursor c) {
@@ -173,7 +252,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 					.append("\n");
 		}
 		if (revenue > 0) {
-			builder.append("Rvenue ").append(String.format("%,d", revenue))
+			builder.append("Revenue ").append(String.format("%,d", revenue))
 					.append("\n");
 		}
 		if (voteCount > 0) {
@@ -245,24 +324,25 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 	}
 
 	private void setTagline(Cursor c) {
-		UIHelper.setTextOrGone(mTaglineTextView, c, Contract.MovieColumns.TAGLINE);
+		UIHelper.setTextOrGone(mTaglineTextView, c,
+				Contract.MovieColumns.TAGLINE);
 	}
 
 	private void setPoster(Cursor c) {
-		if (!TextUtils.isEmpty(getString(c, Contract.MovieColumns.POSTER_PATH))) {
-			String poster = TmdbApi.getPoster(
-					getString(c, Contract.MovieColumns.POSTER_PATH),
-					TmdbApi.POSTER.W185);
+		String posterPath = getString(c, Contract.MovieColumns.POSTER_PATH);
+		if (!TextUtils.isEmpty(posterPath)) {
+			String poster = TmdbApi.getPoster(posterPath, TmdbApi.POSTER.W185);
+
+			Log.d(LOG_TAG, "setPoster: " + poster);
 			mImageLoader.loadBitmap(mPosterImageView, poster);
 		}
 	}
 
 	private void setBackdrop(Cursor c) {
-		if (!TextUtils
-				.isEmpty(getString(c, Contract.MovieColumns.BACKDROP_PATH))) {
-			String backdrop = TmdbApi.getBackdrop(
-					getString(c, Contract.MovieColumns.BACKDROP_PATH),
-					TmdbApi.BACKDROP.W780);
+		String bdPath = getString(c, Contract.MovieColumns.BACKDROP_PATH);
+		if (!TextUtils.isEmpty(bdPath)) {
+			String backdrop = TmdbApi
+					.getBackdrop(bdPath, TmdbApi.BACKDROP.W780);
 			mImageLoader.loadBitmap(mBackdropImageView, backdrop);
 		}
 	}
@@ -277,7 +357,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor> {
 	private String getString(Cursor cursor, String column) {
 		String s = cursor.getString(cursor.getColumnIndex(column));
 
-		Log.d(LOG_TAG, "getString:" + column + " " + s);
+		// Log.d(LOG_TAG, "getString:" + column + " " + s);
 		return s;
 	}
 

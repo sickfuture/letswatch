@@ -1,6 +1,7 @@
 package com.sickfuture.letswatch.app.fragment.tmdb.people;
 
 import java.io.InputStream;
+import java.text.DateFormat;
 
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
@@ -15,6 +16,7 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi.PROFILE;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
+import com.sickfuture.letswatch.helpers.AgeHelper;
 import com.sickfuture.letswatch.helpers.UIHelper;
 
 import android.content.ContentValues;
@@ -110,8 +112,13 @@ public class PersonFragment extends Fragment implements LoaderCallbacks<Cursor> 
 				UIHelper.setImage(mProfileImageView, mImageLoader,
 						TmdbApi.getProfile(posterPath, PROFILE.W185));
 			}
-			UIHelper.setTextOrInvisible(mInfoTextView, c,
-					PersonColumns.BIRTHDAY);
+			String bDay = c.getString(c.getColumnIndex(PersonColumns.BIRTHDAY));
+			int age = AgeHelper.getAge(bDay);
+			bDay = AgeHelper.formatDate(bDay, DateFormat.MEDIUM);
+			if (age > 0) {
+				bDay += "\nAge: " + age;
+			}
+			UIHelper.setTextOrInvisible(mInfoTextView, bDay);
 			UIHelper.setTextOrGone(mBioTextView, c, PersonColumns.BIIOGRAPHY);
 		}
 
