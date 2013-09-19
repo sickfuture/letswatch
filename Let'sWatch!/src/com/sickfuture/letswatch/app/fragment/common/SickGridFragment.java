@@ -27,7 +27,6 @@ public abstract class SickGridFragment extends Fragment implements OnScrollListe
 			.getSimpleName();
 
 	protected GridView mGridView;
-	private IListClickable mClickable;
 	protected SourceResultReceiver mResultReceiver;
 	protected BaseAdapter mGridViewAdapter;
 
@@ -98,14 +97,7 @@ public abstract class SickGridFragment extends Fragment implements OnScrollListe
 		if (!(activity instanceof IListClickable))
 			throw new IllegalArgumentException(
 					"Activity must implements IListClickable");
-		mClickable = (IListClickable) activity;
 		super.onAttach(activity);
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> list, View view, int position,
-			long id) {
-		onListItemClick(list, view, position, id, mClickable);
 	}
 
 	protected abstract int fragmentResource();
@@ -113,8 +105,5 @@ public abstract class SickGridFragment extends Fragment implements OnScrollListe
 	protected abstract int gridViewResource();
 
 	public abstract BaseAdapter adapter();
-
-	public abstract void onListItemClick(AdapterView<?> list, View view,
-			int position, long id, IListClickable clickable);
 
 }

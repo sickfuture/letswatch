@@ -4,13 +4,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import android.content.ContentProviderOperation;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.OperationApplicationException;
 import android.net.Uri;
+import android.os.RemoteException;
 
 import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.L;
 import com.google.gson.Gson;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.Cast;
@@ -19,7 +23,13 @@ import com.sickfuture.letswatch.bo.tmdb.Crew;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 
-public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> {//extends BaseListProcessor<InputStream, ContentValues[]>
+public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> {
+	private static final String LOG_TAG = CastsProcessor.class.getSimpleName();
+
+	private static final Uri CAST_URI = ContractUtils
+			.getProviderUriFromContract(Contract.CastColumns.class);
+	private static final Uri CREW_URI = ContractUtils
+			.getProviderUriFromContract(Contract.CrewColumns.class);
 
 	@Override
 	public String getKey() {
@@ -36,9 +46,9 @@ public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> 
 	public ContentValues[] processCasts(Casts casts) {
 		long time = System.currentTimeMillis();
 		int id = casts.getId();
+		ContentValues[] valuesCrew = null;
 		if (casts.getCrew() != null && casts.getCrew().size() != 0) {
-			ContentValues[] valuesCrew = new ContentValues[casts.getCrew()
-					.size()];
+			valuesCrew = new ContentValues[casts.getCrew().size()];
 			int i = 0;
 			for (Crew crew : casts.getCrew()) {
 				valuesCrew[i] = ProcessorHelper.processCrew(crew);
@@ -46,12 +56,6 @@ public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> 
 				valuesCrew[i].put(Contract.CrewColumns.LAST_UPDATE, time);
 				i++;
 			}
-//			processNew(new ArrayList<ContentValues>(valuesCrew), field, uri);
-			ContextHolder.getInstance().getContext().getContentResolver()
-			.bulkInsert(
-					ContractUtils
-							.getProviderUriFromContract(Contract.CrewColumns.class),
-					valuesCrew);
 		}
 		if (casts.getCast() == null || casts.getCast().size() == 0) {
 			return null;
@@ -64,27 +68,17 @@ public class CastsProcessor implements IProcessor<InputStream, ContentValues[]> 
 			values[i].put(Contract.CastColumns.LAST_UPDATE, time);
 			i++;
 		}
+		if (valuesCrew != null) {
+			ContextHolder.getInstance().getContext().getContentResolver()
+					.bulkInsert(CREW_URI, valuesCrew);
+		}
 		return values;
 	}
 
 	@Override
 	public boolean cache(ContentValues[] result, Context context) {
-		context.getContentResolver()
-				.bulkInsert(
-						ContractUtils
-								.getProviderUriFromContract(Contract.CastColumns.class),
-						result);
+		context.getContentResolver().bulkInsert(CAST_URI, result);
 		return true;
 	}
-
-//	@Override
-//	protected String getIdField() {
-//		return CastColumns.TMDB_MOVIE_ID;
-//	}
-//
-//	@Override
-//	protected Uri getUri() {
-//		return ContractUtils.getProviderUriFromContract(CastColumns.class);
-//	}
 
 }

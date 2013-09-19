@@ -57,7 +57,7 @@ public class LetsWatchApplication extends SickApp {
 	public static final String TMDB_KEYWORDS_PROCESSOR_SERVICE = "sickcore:TmdbKeywordsProcessor";
 	public static final String TMDB_RELEASES_PROCESSOR_SERVICE = "sickcore:TmdbReleasesProcessor";
 	public static final String TMDB_TRAILERS_PROCESSOR_SERVICE = "sickcore:TmdbTrailersProcessor";
-	public static final String TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
+	public static final String TMDB_MOVIE_RESULTS_PROCESSOR_SERVICE = "sickcore:TmdbMovieResultsProcessor";
 	public static final String TMDB_REVIEWS_PROCESSOR_SERVICE = "sickcore:TmdbReviewsProcessor";
 	public static final String TMDB_LISTS_PROCESSOR_SERVICE = "sickcore:TmdbListsProcessor";
 	public static final String TMDB_PERSON_PROCESSOR_SERVICE = "sickcore:TmdbPersonProcessor";

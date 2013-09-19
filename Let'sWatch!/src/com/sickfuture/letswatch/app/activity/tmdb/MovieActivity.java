@@ -32,7 +32,6 @@ public class MovieActivity extends DrawerActivity implements IListClickable {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		fragmentManager.beginTransaction().replace(CONTENT_FRAME, fragment)
 				.addToBackStack(null).commit();
-
 	}
 
 }

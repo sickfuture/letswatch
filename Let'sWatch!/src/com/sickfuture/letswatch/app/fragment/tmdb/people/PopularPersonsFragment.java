@@ -99,13 +99,13 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 	}
 
 	@Override
-	public void onListItemClick(AdapterView<?> list, View view, int position,
-			long id, IListClickable clickable) {
+	public void onItemClick(AdapterView<?> list, View view, int position,
+			long id) {
 		Cursor c = (Cursor) list.getItemAtPosition(position);
 		Bundle bundle = new Bundle();
 		bundle.putString(PersonColumns.TMDB_ID,
 				c.getString(c.getColumnIndex(PersonColumns.TMDB_ID)));
-		clickable.onItemListClick(bundle);
+		((IListClickable) getActivity()).onItemListClick(bundle);
 
 	}
 

@@ -28,7 +28,7 @@ public abstract class SickListFragment extends Fragment implements
 			.getSimpleName();
 
 	protected ListView mListView;
-	private IListClickable mClickable;
+//	private IListClickable mClickable;
 	protected SourceResultReceiver mResultReceiver;
 	protected BaseAdapter mListViewAdapter;
 
@@ -98,14 +98,14 @@ public abstract class SickListFragment extends Fragment implements
 		if (!(activity instanceof IListClickable))
 			throw new IllegalArgumentException(
 					"Activity must implements IListClickable");
-		mClickable = (IListClickable) activity;
+//		mClickable = (IListClickable) activity;
 		super.onAttach(activity);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> list, View view, int position,
 			long id) {
-		onListItemClick(list, view, position, id, mClickable);
+		onListItemClick(list, view, position, id);//, mClickable);
 	}
 
 	protected int fragmentResource() {
@@ -119,6 +119,6 @@ public abstract class SickListFragment extends Fragment implements
 	public abstract BaseAdapter adapter();
 
 	public abstract void onListItemClick(AdapterView<?> list, View view,
-			int position, long id, IListClickable clickable);
+			int position, long id);//, IListClickable clickable);
 
 }

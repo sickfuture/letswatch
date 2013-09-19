@@ -62,7 +62,7 @@ public class MoviesMainFragment extends SickListFragment {
 
 	@Override
 	public void onListItemClick(AdapterView<?> list, View view, int position,
-			long id, IListClickable clickable) {
+			long id) {//, IListClickable clickable) {
 		switch (position) {
 		case 0:
 			//replaceFragment();

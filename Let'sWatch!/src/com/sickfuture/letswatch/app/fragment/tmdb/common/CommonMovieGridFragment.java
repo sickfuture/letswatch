@@ -115,14 +115,14 @@ public abstract class CommonMovieGridFragment extends SickGridCursorFragment
 	}
 
 	@Override
-	public void onListItemClick(AdapterView<?> list, View view, int position,
-			long id, IListClickable clickable) {
+	public void onItemClick(AdapterView<?> list, View view, int position,
+			long id) {
 		String key = Contract.MovieColumns.TMDB_ID;
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
 		long mid = cursor.getLong(cursor.getColumnIndex(key));
-		Bundle arguments = new Bundle();
-		arguments.putString(key, String.valueOf(mid));
-		clickable.onItemListClick(arguments);
+		Bundle args = new Bundle();
+		args.putString(key, String.valueOf(mid));
+		((IListClickable) getActivity()).onItemListClick(args);
 
 	}
 

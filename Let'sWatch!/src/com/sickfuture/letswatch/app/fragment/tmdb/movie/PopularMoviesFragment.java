@@ -1,6 +1,7 @@
 package com.sickfuture.letswatch.app.fragment.tmdb.movie;
 
 import java.io.InputStream;
+import java.util.Locale;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -49,7 +50,8 @@ public class PopularMoviesFragment extends CommonMovieGridFragment {
 	
 	@Override
 	protected void loadData() {
-		String url = MovieApis.TmdbApi.getPopularMovies(null, 0);
+		String url = MovieApis.TmdbApi.getPopularMovies(Locale.getDefault()
+				.getLanguage(), 0);
 
 		Log.d(LOG_TAG, "loadData: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
