@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
         <RelativeLayout
             android:id="@+id/container_person_info"
@@ -40,10 +42,58 @@
             android:id="@+id/text_view_fragment_person_bio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/container_person_info"
             android:layout_marginTop="16dp"
             android:background="@color/LightGrey"
             android:padding="8dp" />
-    </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_fragment_person_casts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/LightGrey"
+            android:orientation="vertical"
+            android:paddingBottom="4dp"
+            android:paddingTop="8dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/cast"
+                android:textStyle="italic" />
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/hlist_view_fragment_person_cast"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_fragment_person_crew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="8dp"
+            android:paddingTop="4dp"
+            android:visibility="gone" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/crew"
+                android:textStyle="italic" />
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/hlist_view_fragment_person_crew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+        </LinearLayout>
+    </LinearLayout>
 
 </ScrollView>

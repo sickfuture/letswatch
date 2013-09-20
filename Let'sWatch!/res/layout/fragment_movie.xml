@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" >
 
-            <ImageView
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
                 android:id="@+id/image_view_fragment_movie_backdrop"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -47,7 +47,7 @@
             android:background="@color/LightGrey"
             android:padding="8dp" >
 
-            <ImageView
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
                 android:id="@+id/image_view_fragment_movie_poster"
                 style="@style/styleImageViewPosterOnMainScreen"
                 android:layout_alignParentLeft="true"

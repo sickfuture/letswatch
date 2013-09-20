@@ -336,11 +336,15 @@ public class Contract {
 		@DBVarcharType
 		public static final String MOVIE_TITLE = "MOVIE_TITLE";
 		@DBVarcharType
+		public static final String MOVIE_ORIGINAL_TITLE = "MOVIE_ORIGINAL_TITLE";
+		@DBVarcharType
 		public static final String PERSON_NAME = "PERSON_NAME";
+		@DBIntegerType
+		public static final String MOVIE_ADULT = "MOVIE_ADULT";
 		@DBVarcharType
 		public static final String PERSON_PROFILE_PATH = "PERSON_PROFILE_PATH";
 		@DBVarcharType
-		public static final String MOVIE_PROFILE_PATH = "MOVIE_PROFILE_PATH";
+		public static final String MOVIE_POSTER_PATH = "MOVIE_POSTER_PATH";
 		@DBIntegerType
 		public static final String LAST_UPDATE = "LAST_UPDATE";
 	}
@@ -366,7 +370,7 @@ public class Contract {
 		@DBVarcharType
 		public static final String PERSON_PROFILE_PATH = "PERSON_PROFILE_PATH";
 		@DBVarcharType
-		public static final String MOVIE_POSTER_PATH = "MOVIE_PROFILE_PATH";
+		public static final String MOVIE_POSTER_PATH = "MOVIE_POSTER_PATH";
 		@DBIntegerType
 		public static final String MOVIE_ADULT = "MOVIE_ADULT";
 		@DBIntegerType

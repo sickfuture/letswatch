@@ -17,7 +17,8 @@ import com.sickfuture.letswatch.bo.tmdb.Crew;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.processor.tmdb.ProcessorHelper;
 
-public class PersonCreditsProcessor implements IProcessor<InputStream, ContentValues[]> {
+public class PersonCreditsProcessor implements
+		IProcessor<InputStream, ContentValues[]> {
 
 	@Override
 	public String getKey() {
@@ -27,7 +28,8 @@ public class PersonCreditsProcessor implements IProcessor<InputStream, ContentVa
 	@Override
 	public ContentValues[] process(InputStream data) {
 		Gson gson = new Gson();
-		Credits credits = gson.fromJson(new InputStreamReader(data), Credits.class);
+		Credits credits = gson.fromJson(new InputStreamReader(data),
+				Credits.class);
 		processCredits(credits);
 		return null;
 	}
@@ -45,11 +47,14 @@ public class PersonCreditsProcessor implements IProcessor<InputStream, ContentVa
 				castsValues[i].put(Contract.CastColumns.TMDB_PERSON_ID, id);
 				i++;
 			}
-			ContextHolder.getInstance().getContext().getContentResolver()
-			.bulkInsert(
-					ContractUtils
-							.getProviderUriFromContract(Contract.CrewColumns.class),
-					castsValues);
+			ContextHolder
+					.getInstance()
+					.getContext()
+					.getContentResolver()
+					.bulkInsert(
+							ContractUtils
+									.getProviderUriFromContract(Contract.CastColumns.class),
+							castsValues);
 		}
 		java.util.List<Crew> crew = credits.getCrew();
 		if (crew != null && crew.size() > 0) {
@@ -61,13 +66,16 @@ public class PersonCreditsProcessor implements IProcessor<InputStream, ContentVa
 				crewValues[i].put(Contract.CrewColumns.TMDB_PERSON_ID, id);
 				i++;
 			}
-			ContextHolder.getInstance().getContext().getContentResolver()
-			.bulkInsert(
-					ContractUtils
-							.getProviderUriFromContract(Contract.CrewColumns.class),
-					crewValues);
+			ContextHolder
+					.getInstance()
+					.getContext()
+					.getContentResolver()
+					.bulkInsert(
+							ContractUtils
+									.getProviderUriFromContract(Contract.CrewColumns.class),
+							crewValues);
 		}
-		
+
 	}
 
 	@Override

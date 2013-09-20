@@ -74,7 +74,8 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	private View mParentView;
 	private ViewGroup mInfoContainer, mStoryContainer, mCastsContainer,
 			mCrewContainer, mSimilarContainer, mProductionContainer;
-	private ImageView mCertifyImageView, mBackdropImageView, mPosterImageView;
+	private RecyclingImageView mBackdropImageView, mPosterImageView;
+	private ImageView mCertifyImageView;
 	private TextView mTaglineTextView, mYearTextView;
 	private HListView mCastHListView, mCrewHListView, mSimilarHListView;
 
@@ -140,8 +141,8 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			Bundle savedInstanceState) {
 
 		mParentView = inflater.inflate(R.layout.fragment_movie, null);
-		mBackdropImageView = (ImageView) mParentView.findViewById(BACKDROP);
-		mPosterImageView = (ImageView) mParentView.findViewById(POSTER);
+		mBackdropImageView = (RecyclingImageView) mParentView.findViewById(BACKDROP);
+		mPosterImageView = (RecyclingImageView) mParentView.findViewById(POSTER);
 		mCertifyImageView = (ImageView) mParentView.findViewById(CERTIFICATION);
 		mTaglineTextView = (TextView) mParentView.findViewById(TAGLINE);
 		mYearTextView = (TextView) mParentView.findViewById(YEAR);
