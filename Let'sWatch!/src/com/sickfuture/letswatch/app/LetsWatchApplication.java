@@ -1,9 +1,9 @@
 package com.sickfuture.letswatch.app;
 
 import com.android.sickfuture.sickcore.app.SickApp;
-import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.SickImageLoader.ImageLoaderParamsBuilder;
 import com.android.sickfuture.sickcore.source.implemented.HttpInputStreamDataSource;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.processor.rotten.BoxOfficeProcessor;
 import com.sickfuture.letswatch.processor.rotten.CurrentReleaseProcessor;
 import com.sickfuture.letswatch.processor.rotten.InfoProcessor;
@@ -73,7 +73,8 @@ public class LetsWatchApplication extends SickApp {
 				getApplicationContext());
 		builder.enableFadeIn(true).setDiscCacheEnabled(true)
 				.setDiscCacheSize(10 * 1024 * 1024).setMemoryCacheEnabled(true)
-				.setPartOfAvailibleMemoryCache(0.3f).setLoadingImage(-1);
+				.setPartOfAvailibleMemoryCache(0.5f)
+				.setLoadingImage(R.drawable.empty_photo);
 		registerAppService(builder.build());
 		/**********************/
 

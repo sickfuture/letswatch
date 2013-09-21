@@ -8,6 +8,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import com.android.sickfuture.sickcore.image.SickImageLoader;
+import com.android.sickfuture.sickcore.image.callback.ImageLoadedCallback;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
@@ -102,22 +104,23 @@ public class FilpImagesAnimationGridLayout extends GridLayout implements
 	@SuppressLint("NewApi")
 	private void flipAnimate() {
 		try {
-			final View view = getChildAt(mRandom.nextInt(getChildCount() - 1));
+			final RecyclingImageView view = (RecyclingImageView) getChildAt(mRandom
+					.nextInt(getChildCount() - 1));
 			if (!mCursor
 					.moveToPosition(mRandom.nextInt(mCursor.getCount() - 1))) {
 				return;
 			}
-			final ViewTreeObserver observer = view.getViewTreeObserver();
-			observer.addOnPreDrawListener(new OnPreDrawListener() {
+			String path = mCursor.getString(mCursor
+					.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
+			String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
+			mImageLoader.loadBitmap(posterUrl, new ImageLoadedCallback() {
 
 				@Override
-				public boolean onPreDraw() {
-					observer.removeOnPreDrawListener(this);
-					String path = mCursor.getString(mCursor
-							.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
-					String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
-					mImageLoader.loadBitmap((RecyclingImageView) view,
-							posterUrl);
+				public void onLoadStarted(String uri) {
+				}
+
+				@Override
+				public void onLoadFinished(final Object result) {
 					ObjectAnimator visToInvis = ObjectAnimator.ofFloat(view,
 							"rotationY", 0f, 90f);
 					visToInvis.setDuration(500);
@@ -130,12 +133,17 @@ public class FilpImagesAnimationGridLayout extends GridLayout implements
 						@Override
 						public void onAnimationEnd(Animator anim) {
 							invisToVis.start();
+							view.setImageBitmap((Bitmap) result);
 						}
 					});
 					visToInvis.start();
-					return true;
+				}
+
+				@Override
+				public void onLoadError(Throwable e) {
 				}
 			});
+
 		} finally {
 			// TODO close cursor
 		}
