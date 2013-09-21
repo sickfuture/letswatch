@@ -2,15 +2,21 @@ package com.sickfuture.letswatch.animations;
 
 import java.util.Random;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
-import android.widget.LinearLayout;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
@@ -25,24 +31,22 @@ public class FilpImagesAnimationGridLayout extends GridLayout implements
 
 	private Cursor mCursor;
 	private final Random mRandom = new Random();
-	private int mChildWidth;
 	private SickImageLoader mImageLoader;
 
 	public FilpImagesAnimationGridLayout(Context context) {
 		super(context);
-		mImageLoader = (SickImageLoader) AppUtils.get(context,
-				LetsWatchApplication.IMAGE_LOADER_SERVICE);
 	}
 
 	public FilpImagesAnimationGridLayout(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		mImageLoader = (SickImageLoader) AppUtils.get(context,
-				LetsWatchApplication.IMAGE_LOADER_SERVICE);
 	}
 
 	public FilpImagesAnimationGridLayout(Context context, AttributeSet attrs,
 			int defStyle) {
 		super(context, attrs, defStyle);
+	}
+
+	public void init(Context context) {
 		mImageLoader = (SickImageLoader) AppUtils.get(context,
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
 	}
@@ -50,13 +54,25 @@ public class FilpImagesAnimationGridLayout extends GridLayout implements
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		int leftAndRightMargins = ((LinearLayout.LayoutParams) getLayoutParams()).leftMargin
-				+ ((LinearLayout.LayoutParams) getLayoutParams()).rightMargin;
-		mChildWidth = getMeasuredWidth() / getColumnCount()
-				- (getColumnCount() * leftAndRightMargins);
-		for (int i = 0; i < getChildCount() - 1; i++) {
+		setOnClickListener(this);
+		int childWidth = getMeasuredWidth() / getColumnCount();
+		int leftMargin = 0;
+		int rightMargin = 0;
+		for (int i = 0; i < getChildCount(); i++) {
 			View view = getChildAt(i);
-			view.getLayoutParams().width = mChildWidth;
+			if (view != null) {
+				GridLayout.LayoutParams layoutParams = (LayoutParams) view
+						.getLayoutParams();
+				leftMargin = layoutParams.leftMargin;
+				if (leftMargin == Integer.MIN_VALUE) {
+					leftMargin = 0;
+				}
+				rightMargin = layoutParams.rightMargin;
+				if (rightMargin == Integer.MIN_VALUE) {
+					rightMargin = 0;
+				}
+				layoutParams.width = childWidth - (rightMargin + leftMargin);
+			}
 		}
 	}
 
@@ -64,6 +80,7 @@ public class FilpImagesAnimationGridLayout extends GridLayout implements
 		if (cursor == null) {
 			return;
 		}
+		init(getContext());
 		mCursor = cursor;
 		notify(cursor);
 	}
@@ -79,20 +96,49 @@ public class FilpImagesAnimationGridLayout extends GridLayout implements
 		}
 	}
 
+	private Interpolator accelerator = new AccelerateInterpolator();
+	private Interpolator decelerator = new DecelerateInterpolator();
+
+	@SuppressLint("NewApi")
 	private void flipAnimate() {
 		try {
-			View view = getChildAt(mRandom.nextInt(getChildCount() - 1));
+			final View view = getChildAt(mRandom.nextInt(getChildCount() - 1));
 			if (!mCursor
 					.moveToPosition(mRandom.nextInt(mCursor.getCount() - 1))) {
 				return;
 			}
+			final ViewTreeObserver observer = view.getViewTreeObserver();
+			observer.addOnPreDrawListener(new OnPreDrawListener() {
+
+				@Override
+				public boolean onPreDraw() {
+					observer.removeOnPreDrawListener(this);
+					String path = mCursor.getString(mCursor
+							.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
+					String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
+					mImageLoader.loadBitmap((RecyclingImageView) view,
+							posterUrl);
+					ObjectAnimator visToInvis = ObjectAnimator.ofFloat(view,
+							"rotationY", 0f, 90f);
+					visToInvis.setDuration(500);
+					visToInvis.setInterpolator(accelerator);
+					final ObjectAnimator invisToVis = ObjectAnimator.ofFloat(
+							view, "rotationY", -90f, 0f);
+					invisToVis.setDuration(500);
+					invisToVis.setInterpolator(decelerator);
+					visToInvis.addListener(new AnimatorListenerAdapter() {
+						@Override
+						public void onAnimationEnd(Animator anim) {
+							invisToVis.start();
+						}
+					});
+					visToInvis.start();
+					return true;
+				}
+			});
 		} finally {
 			// TODO close cursor
 		}
-	}
-
-	private Animation getCurrentAnimation() {
-		return new ScaleAnimation(0f, 1.0f, 0f, 1.0f);
 	}
 
 	@Override
