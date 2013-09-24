@@ -21,21 +21,23 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.android.sickfuture.sickcore.ui.Font;
+import com.android.sickfuture.sickcore.utils.AndroidVersionsUtils;
 import com.sickfuture.letswatch.R;
 
 public abstract class DrawerActivity extends ActionBarActivity {
 
 	public static final String FRAGMENT = "FRAGMENT";
 	public static final String ARGUMENTS = "ARGS";
-	
+
 	public static final int ACTIVITY_MOVIES = 0;
 	public static final int ACTIVITY_PEOPLE = 1;
 	public static final int ACTIVITY_USER = 2;
 	public static final int ACTIVITY_DISCOVER = 3;
-	
+
 	public static final int CONTENT_FRAME = R.id.content_frame;
 	private static final int TITLES_DRAWER = R.array.titles_drawer;
-	
+
 	private String[] mDrawerTitles;
 	private ListView mDrawerList;
 	private CharSequence mDrawerTitle;
@@ -48,6 +50,7 @@ public abstract class DrawerActivity extends ActionBarActivity {
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		// applyCustomFontForPreICS();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
@@ -65,15 +68,17 @@ public abstract class DrawerActivity extends ActionBarActivity {
 			public void onDrawerClosed(View view) {
 				ActionBar actionBar = getSupportActionBar();
 				actionBar.setTitle(mTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
+				if (AndroidVersionsUtils.hasHoneycomb())
+					invalidateOptionsMenu(); // creates call to
+												// onPrepareOptionsMenu()
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				ActionBar actionBar = getSupportActionBar();
 				actionBar.setTitle(mDrawerTitle);
-				invalidateOptionsMenu(); // creates call to
-											// onPrepareOptionsMenu()
+				if (AndroidVersionsUtils.hasHoneycomb())
+					invalidateOptionsMenu(); // creates call to
+												// onPrepareOptionsMenu()
 			}
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -191,5 +196,16 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
+
+	// private void applyCustomFontForPreICS() {
+	// if (!AndroidVersionsUtils.hasICS()) {
+	// new Font(
+	// "font/Roboto-Regular.ttf",
+	// "font/Roboto-Bold.ttf",
+	// "font/Roboto-Italic.ttf",
+	// "font/Roboto-BoldItalic.ttf"
+	// ).install(this);
+	// }
+	// }
 
 }

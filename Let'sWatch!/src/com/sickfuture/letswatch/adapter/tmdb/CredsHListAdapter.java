@@ -1,16 +1,15 @@
 package com.sickfuture.letswatch.adapter.tmdb;
 
-import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
-import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
-import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
-import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
-import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+
+import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
+import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
+import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
+import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 
 public class CredsHListAdapter extends HListCursorAdapter {
 

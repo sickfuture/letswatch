@@ -8,10 +8,11 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 
 import com.sickfuture.letswatch.app.callback.IListClickable;
 
-public abstract class SickGridCursorFragment extends SickGridFragment implements
+public abstract class SickGridCursorFragment extends SickAdapterViewFragment<GridView> implements
 		LoaderCallbacks<Cursor> {
 
 	private int mLoaderId;

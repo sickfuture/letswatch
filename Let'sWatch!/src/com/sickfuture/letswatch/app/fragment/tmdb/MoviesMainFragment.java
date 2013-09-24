@@ -24,8 +24,8 @@ public class MoviesMainFragment extends SickListFragment {
 	private String[] from = new String[] { IMAGE_RESOURCE, TITLE };
 	private final String[] titles = new String[] { "upcoming", "now playing",
 			"popular", "top rated" };
-	private int[] to = new int[] { R.id.image_view_section_backdrop,
-			R.id.text_view_section_title };
+	private int[] to = new int[] { R.id.image_view_adapter_backdrop,
+			R.id.text_view_adapter_backdrop_title };
 
 	@Override
 	protected void start(Bundle bundle) {
@@ -56,7 +56,7 @@ public class MoviesMainFragment extends SickListFragment {
 		}
 		
 		SimpleAdapter adapter = new SimpleAdapter(getActivity(), data,
-				R.layout.adapter_movie_grid, from, to);
+				R.layout.adapter_backdrops, from, to);
 		return adapter;
 	}
 

@@ -94,7 +94,7 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 	}
 
 	@Override
-	protected int gridViewResource() {
+	protected int adapterViewResource() {
 		return R.id.grid_view_fragment_persons;
 	}
 
@@ -122,13 +122,13 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 				loadData();
 			}
 		} else {
-			((CursorAdapter) mGridViewAdapter).swapCursor(cursor);
+			((CursorAdapter) getAdapter()).swapCursor(cursor);
 		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		((CursorAdapter) mGridViewAdapter).swapCursor(null);
+		((CursorAdapter) getAdapter()).swapCursor(null);
 
 	}
 
@@ -141,7 +141,7 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 			SourceService.execute(getActivity(), request,
 					LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
 					LetsWatchApplication.TMDB_POPULAR_PERSON_PROCESSOR_SERVICE,
-					mResultReceiver);
+					getResultReceiver());
 		}
 	}
 

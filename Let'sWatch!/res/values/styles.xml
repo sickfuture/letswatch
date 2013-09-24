@@ -56,4 +56,14 @@
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/Black</item>
     </style>
+    <style name="styleSectionTitle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+    <style name="styleSelectableLayout">
+        <item name="android:background">@drawable/selector_section</item>
+        <item name="android:clickable">true</item>
+    </style>
 </resources>

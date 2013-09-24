@@ -6,8 +6,9 @@ import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 
-public abstract class SickCursorListFragment extends SickListFragment implements
+public abstract class SickCursorListFragment extends SickAdapterViewFragment<ListView> implements
 		LoaderCallbacks<Cursor> {
 
 	private int mLoaderId;

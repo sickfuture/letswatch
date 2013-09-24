@@ -153,6 +153,8 @@ public class Contract {
 		public static final String STUDIO = "STUDIO";
 		@DBVarcharType
 		public static final String DIRECTORS = "DIRECTORS";
+		@DBVarcharType
+		public static final String SEARCH_VALS = "SEARCH_VALS";
 
 	}
 
@@ -321,6 +323,8 @@ public class Contract {
 		public static final String PLACE_OF_BIRTH = "PLACE_OF_BIRTH";
 		@DBIntegerType
 		public static final String LAST_UPDATE = "LAST_UPDATE";
+		@DBVarcharType
+		public static final String SEARCH_VALS = "SEARCH_VALS";
 	}
 
 	@DBTableName(tableName = "CAST_TABLE")

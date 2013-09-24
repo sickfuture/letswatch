@@ -14,10 +14,10 @@ import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
-import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonMovieGridFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonGridFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-public class NowPlayingFragment extends CommonMovieGridFragment {
+public class NowPlayingFragment extends CommonGridFragment {
 
 	private static final String LOG_TAG = NowPlayingFragment.class
 			.getSimpleName();
@@ -40,7 +40,7 @@ public class NowPlayingFragment extends CommonMovieGridFragment {
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
 				LetsWatchApplication.TMDB_NOW_PLAYING_PROCESSOR_SERVICE,
-				mResultReceiver);
+				getResultReceiver());
 
 	}
 
@@ -49,6 +49,18 @@ public class NowPlayingFragment extends CommonMovieGridFragment {
 		((ActionBarActivity) getActivity()).setTitle(getResources().getString(
 				R.string.now_playing));
 		super.onStart();
+	}
+
+	@Override
+	protected String[] getProjection() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getSelection() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

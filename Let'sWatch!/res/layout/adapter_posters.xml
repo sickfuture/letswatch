@@ -2,22 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
+
     <com.android.sickfuture.sickcore.image.view.RecyclingImageView
-        android:id="@+id/image_view_person_photo"
+        android:id="@+id/image_view_adapter_poster"
         android:layout_width="120dp"
         android:layout_height="176dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/Aquamarine" />
+        android:background="@color/AliceBlue" />
 
     <TextView
-        android:id="@+id/text_view_person_name"
+        android:id="@+id/text_view_adapter_poster_title"
         android:layout_width="120dp"
         android:layout_height="60dp"
-        android:layout_alignLeft="@id/image_view_person_photo"
-        android:layout_alignBottom="@id/image_view_person_photo"
+        android:layout_alignBottom="@id/image_view_adapter_poster"
+        android:layout_alignLeft="@id/image_view_adapter_poster"
         android:background="@drawable/background_gradient_dark"
         android:gravity="bottom|left"
         android:padding="8dp"
@@ -28,6 +28,20 @@
         android:textColor="@color/LightGrey"
         android:textSize="16sp"
         android:textStyle="italic" />
-    
+
+    <TextView
+        android:id="@+id/text_view_adapter_poster_addit_info"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@id/image_view_adapter_poster"
+        android:layout_below="@id/text_view_adapter_poster_title"
+        android:background="@color/blackish"
+        android:text="@string/app_name"
+        android:textColor="@color/LightGrey"
+        android:textSize="16sp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:visibility="gone" />
 
 </RelativeLayout>

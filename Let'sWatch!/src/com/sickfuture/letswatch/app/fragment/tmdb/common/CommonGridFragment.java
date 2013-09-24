@@ -27,11 +27,12 @@ import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-public abstract class CommonMovieGridFragment extends SickGridCursorFragment
+public abstract class CommonGridFragment extends SickGridCursorFragment
 		implements RefreshActionListener {
 
-	private static final String LOG_TAG = CommonMovieGridFragment.class
+	private static final String LOG_TAG = CommonGridFragment.class
 			.getSimpleName();
+	
 	private RefreshActionItem mRefreshActionItem;
 
 	@Override
@@ -55,8 +56,12 @@ public abstract class CommonMovieGridFragment extends SickGridCursorFragment
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), getUri(), null, null, null, null);
+		return new CursorLoader(getActivity(), getUri(), getProjection(), getSelection(), null, null);
 	}
+
+	protected abstract String[] getProjection();
+
+	protected abstract String getSelection();
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -65,13 +70,13 @@ public abstract class CommonMovieGridFragment extends SickGridCursorFragment
 				loadData();
 			}
 		} else {
-			((CursorAdapter) mGridViewAdapter).swapCursor(data);
+			((CursorAdapter) getAdapter()).swapCursor(data);
 		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		((CursorAdapter) mGridViewAdapter).swapCursor(null);
+		((CursorAdapter) getAdapter()).swapCursor(null);
 	}
 
 	@Override
@@ -106,12 +111,12 @@ public abstract class CommonMovieGridFragment extends SickGridCursorFragment
 
 	@Override
 	protected int fragmentResource() {
-		return R.layout.fragment_grid;
+		return R.layout.fragment_person_grid;
 	}
 
 	@Override
-	protected int gridViewResource() {
-		return R.id.grid_view_fragment_grid;
+	protected int adapterViewResource() {
+		return R.id.grid_view_fragment_persons;
 	}
 
 	@Override
@@ -133,7 +138,6 @@ public abstract class CommonMovieGridFragment extends SickGridCursorFragment
 			@Override
 			public void processTask(Context context) {
 				loadData();
-
 			}
 
 			@Override

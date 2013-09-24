@@ -14,6 +14,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -23,6 +24,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -44,6 +46,8 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.tmdb.PeopleActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.CastFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.CrewFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
@@ -51,7 +55,7 @@ import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.helpers.UIHelper;
 
 public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
-		OnItemClickListener {
+		OnItemClickListener, OnClickListener {
 
 	private static final String LOG_TAG = MovieFragment.class.getSimpleName();
 
@@ -132,8 +136,8 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 				+ " = " + mid;
 		castSelection = CastColumns.TMDB_MOVIE_ID + " = " + mid;
 		crewSelection = CrewColumns.TMDB_MOVIE_ID + " = " + mid;
-		similarSelection = movTable + "." + Contract.MovieColumns.TMDB_ID
-				+ " IN (" + mSimilarIds + ")";
+		// similarSelection = movTable + "." + Contract.MovieColumns.TMDB_ID
+		// + " IN (" + mSimilarIds + ")";
 	}
 
 	@Override
@@ -141,8 +145,10 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			Bundle savedInstanceState) {
 
 		mParentView = inflater.inflate(R.layout.fragment_movie, null);
-		mBackdropImageView = (RecyclingImageView) mParentView.findViewById(BACKDROP);
-		mPosterImageView = (RecyclingImageView) mParentView.findViewById(POSTER);
+		mBackdropImageView = (RecyclingImageView) mParentView
+				.findViewById(BACKDROP);
+		mPosterImageView = (RecyclingImageView) mParentView
+				.findViewById(POSTER);
 		mCertifyImageView = (ImageView) mParentView.findViewById(CERTIFICATION);
 		mTaglineTextView = (TextView) mParentView.findViewById(TAGLINE);
 		mYearTextView = (TextView) mParentView.findViewById(YEAR);
@@ -152,18 +158,21 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 
 		mSimilarContainer = (ViewGroup) mParentView
 				.findViewById(SIMILAR_CONTAINER);
+		mSimilarContainer.setOnClickListener(this);
 		mSimilarHListView = (HListView) mParentView.findViewById(HLIST_SIMILAR);
 		mSimilarAdapter = new SimilarHListAdapter(getActivity(), null);
 		mSimilarHListView.setAdapter(mSimilarAdapter);
 		mSimilarHListView.setOnItemClickListener(this);
 
 		mCrewContainer = (ViewGroup) mParentView.findViewById(CREW_CONTAINER);
+		mCrewContainer.setOnClickListener(this);
 		mCrewHListView = (HListView) mParentView.findViewById(HLIST_MOVIE_CREW);
 		mCrewAdapter = new CrewHListAdapter(getActivity(), null);
 		mCrewHListView.setAdapter(mCrewAdapter);
 		mCrewHListView.setOnItemClickListener(this);
 
 		mCastsContainer = (ViewGroup) mParentView.findViewById(CASTS_CONTAINER);
+		mCastsContainer.setOnClickListener(this);
 		mCastHListView = (HListView) mParentView.findViewById(HLIST_MOVIE_CAST);
 		mCastAdapter = new CastHListAdapter(getActivity(), null);
 		mCastHListView.setAdapter(mCastAdapter);
@@ -174,12 +183,12 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 		mLoaderId = hashCode();
 		getActivity().getSupportLoaderManager().initLoader(mLoaderId, null,
 				this);
-		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 1,
-				null, this);
-		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 2,
-				null, this);
-		getActivity().getSupportLoaderManager().initLoader(
-				mLoaderId + 3, null, this);
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 1, null,
+				this);
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 2, null,
+				this);
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 3, null,
+				this);
 		return mParentView;
 	}
 
@@ -198,10 +207,10 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			return new CursorLoader(getActivity(), crewUri, crewProjection,
 					crewSelection, crewSelectionArgs, crewSortOrder);
 		} else if (id == mLoaderId + 3) {
+			similarSelection = movTable + "." + Contract.MovieColumns.TMDB_ID
+					+ " IN (" + mSimilarIds + ")";
 			return new CursorLoader(getActivity(), moviesUri,
-					similarProjection, movTable + "."
-							+ Contract.MovieColumns.TMDB_ID + " IN ("
-							+ mSimilarIds + ")", similarSelectionArgs,
+					similarProjection, similarSelection, similarSelectionArgs,
 					similarSortOrder);
 		}
 		return null;
@@ -419,7 +428,8 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 		if (parent.getId() == HLIST_MOVIE_CAST
 				|| parent.getId() == HLIST_MOVIE_CREW) {
 			Intent intent = new Intent(getActivity(), PeopleActivity.class);
-			intent.putExtra(CastColumns.TMDB_PERSON_ID, c.getString(c.getColumnIndex(CastColumns.TMDB_PERSON_ID)));
+			intent.putExtra(CastColumns.TMDB_PERSON_ID,
+					c.getString(c.getColumnIndex(CastColumns.TMDB_PERSON_ID)));
 			startActivity(intent);
 		} else if (parent.getId() == HLIST_SIMILAR) {
 			Bundle args = new Bundle();
@@ -436,6 +446,32 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			throw new IllegalArgumentException(
 					"Activity must implements IListClickable");
 		super.onAttach(activity);
+	}
+
+	@Override
+	public void onClick(View view) {
+		Fragment fragment = null;
+		if (view.getId() == CASTS_CONTAINER) {
+			Bundle args = new Bundle();
+			args.putString("mid", mid);
+			fragment = new CastFragment();
+			fragment.setArguments(args);
+		} else if (view.getId() == CREW_CONTAINER) {
+			Bundle args = new Bundle();
+			args.putString("mid", mid);
+			fragment = new CrewFragment();
+			fragment.setArguments(args);
+		} else if (view.getId() == SIMILAR_CONTAINER) {
+			Bundle args = new Bundle();
+			args.putString("ids", mSimilarIds);
+			fragment = new SimilarMoviesFragment();
+			fragment.setArguments(args);
+		}
+		FragmentManager fragmentManager = getActivity()
+				.getSupportFragmentManager();
+		fragmentManager.beginTransaction().addToBackStack(null)
+				.replace(R.id.content_frame, fragment).commit();
+
 	}
 
 }

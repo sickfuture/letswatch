@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -21,6 +22,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -38,6 +40,7 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi.PROFILE;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.tmdb.MovieActivity;
+import com.sickfuture.letswatch.app.fragment.tmdb.movie.SimilarMoviesFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
@@ -46,7 +49,7 @@ import com.sickfuture.letswatch.helpers.AgeHelper;
 import com.sickfuture.letswatch.helpers.UIHelper;
 
 public class PersonFragment extends Fragment implements
-		LoaderCallbacks<Cursor>, OnItemClickListener {
+		LoaderCallbacks<Cursor>, OnItemClickListener, OnClickListener {
 
 	private static final String LOG_TAG = PersonFragment.class.getSimpleName();
 
@@ -111,12 +114,14 @@ public class PersonFragment extends Fragment implements
 		mBioTextView = (TextView) parent
 				.findViewById(R.id.text_view_fragment_person_bio);
 		mCrewContainer = (ViewGroup) parent.findViewById(CREW_CONTAINER);
+		mCrewContainer.setOnClickListener(this);
 		mCrewHListView = (HListView) parent.findViewById(HLIST_CREW);
 		mCrewAdapter = new CredsHListAdapter(getActivity(), null);
 		mCrewHListView.setAdapter(mCrewAdapter);
 		mCrewHListView.setOnItemClickListener(this);
 
 		mCastsContainer = (ViewGroup) parent.findViewById(CASTS_CONTAINER);
+		mCastsContainer.setOnClickListener(this);
 		mCastHListView = (HListView) parent.findViewById(HLIST_CAST);
 		mCastAdapter = new CredsHListAdapter(getActivity(), null);
 		mCastHListView.setAdapter(mCastAdapter);
@@ -215,6 +220,28 @@ public class PersonFragment extends Fragment implements
 				c.getString(c.getColumnIndex(CastColumns.TMDB_MOVIE_ID)));
 		startActivity(intent);
 
+	}
+
+	@Override
+	public void onClick(View view) {
+		Fragment fragment = null;
+		if (view.getId() == CASTS_CONTAINER) {
+			Bundle args = new Bundle();
+			args.putString("pid", pid);
+			fragment = new CastFragment();
+			fragment.setArguments(args);
+		} else 
+			if (view.getId() == CREW_CONTAINER) {
+			Bundle args = new Bundle();
+			args.putString("pid", pid);
+			fragment = new CrewFragment();
+			fragment.setArguments(args);
+		} 
+		FragmentManager fragmentManager = getActivity()
+				.getSupportFragmentManager();
+		fragmentManager.beginTransaction().addToBackStack(null)
+				.replace(R.id.content_frame, fragment).commit();
+		
 	}
 
 }

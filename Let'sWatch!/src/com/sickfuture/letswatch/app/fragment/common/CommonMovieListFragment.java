@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.android.sickfuture.sickcore.utils.InetChecker;
+import com.sickfuture.letswatch.R;
 //import com.handmark.pulltorefresh.library.PullToRefreshBase;
 //import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
@@ -52,12 +53,12 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		((CursorAdapter) mListViewAdapter).swapCursor(data);
+		((CursorAdapter) getAdapter()).swapCursor(data);
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		((CursorAdapter) mListViewAdapter).swapCursor(null);
+		((CursorAdapter) getAdapter()).swapCursor(null);
 	}
 
 //	@Override
@@ -77,19 +78,17 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 	}
 
 	@Override
-	public void onListItemClick(AdapterView<?> list, View view, int position,
-			long id) {//, IListClickable clickable) {
-		Cursor cursor = (Cursor) list.getItemAtPosition(position);
-		Bundle args = new Bundle();
-		args.putInt(Contract.ID,
-				cursor.getInt(cursor.getColumnIndex(MovieColumns.ROTTEN_ID)));
-		((IListClickable)getActivity()).onItemListClick(args);
+	protected void start(Bundle bundle) {
 
 	}
 
 	@Override
-	protected void start(Bundle bundle) {
-
+	public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+		Cursor cursor = (Cursor) list.getItemAtPosition(position);
+		Bundle args = new Bundle();
+		args.putInt(Contract.ID,
+				cursor.getInt(cursor.getColumnIndex(MovieColumns.ROTTEN_ID)));
+		((IListClickable) getActivity()).onItemListClick(args);
 	}
 
 	@Override
@@ -103,5 +102,16 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 	protected void done(Bundle result) {
 //		mListView.onRefreshComplete();
 	}
+	
+	@Override
+	protected int fragmentResource() {
+		return R.layout.fragment_common;
+	}
+
+	@Override
+	protected int adapterViewResource() {
+		return R.id.list_view_common_fragment;
+	}
+
 
 }

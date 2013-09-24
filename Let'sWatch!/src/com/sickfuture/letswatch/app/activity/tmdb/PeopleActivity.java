@@ -27,7 +27,9 @@ public class PeopleActivity extends DrawerActivity implements IListClickable {
 					getIntent().getStringExtra(CastColumns.TMDB_PERSON_ID));
 			args.putBoolean(ADD_TO_BACKSTACK, false);
 			onItemListClick(args);
-		} else {
+		} else if(getIntent().hasExtra(CastColumns.TMDB_PERSON_ID)){
+			
+		}else {
 			FragmentManager manager = getSupportFragmentManager();
 			manager.beginTransaction()
 					.replace(CONTENT_FRAME, new PopularPersonsFragment())

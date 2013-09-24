@@ -3,11 +3,10 @@ package com.sickfuture.letswatch.adapter.tmdb;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.ImageView.ScaleType;
+import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
@@ -21,9 +20,9 @@ import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 
-	public static final int TEXT_VIEW_MOVIE_TITLE = R.id.text_view_section_title;
-	public static final int TEXT_VIEW_RATING = R.id.text_view_rating;
-	public static final int IMAGE_VIEW_POSTER = R.id.image_view_section_backdrop;
+	public static final int TEXT_VIEW_MOVIE_TITLE = R.id.text_view_adapter_backdrop_title;
+	public static final int TEXT_VIEW_RATING = R.id.text_view_adapter_backdrop_addit_info;
+	public static final int IMAGE_VIEW_POSTER = R.id.image_view_adapter_backdrop;
 
 	private SickImageLoader mImageLoader;
 	private RecyclingImageView mPosterImageView;
@@ -37,10 +36,10 @@ public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 	@Override
 	public void bindData(View view, Context context, Cursor cursor,
 			ViewHolder holder) {
-		TextView title = (TextView) holder.getViewById(TEXT_VIEW_MOVIE_TITLE);
+		TextView title = (TextView) holder.getViewById(getTitleViewRes());
 		title.setText(cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.TITLE)));
-		TextView ratingView = (TextView) holder.getViewById(TEXT_VIEW_RATING);
+		TextView ratingView = (TextView) holder.getViewById(getRatingViewRes());
 		String rating = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.VOTE_AVERAGE));
 		float r = Float.parseFloat(rating);
@@ -51,24 +50,44 @@ public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 			ratingView.setVisibility(View.INVISIBLE);
 		}
 		mPosterImageView = (RecyclingImageView) holder
-				.getViewById(IMAGE_VIEW_POSTER);
-		String path = cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
-		String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);// "http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w300";
+				.getViewById(getImageRes());
+		String posterUrl = getImageUrl(cursor);
 		mPosterImageView.setScaleType(ScaleType.CENTER_CROP);
 		mImageLoader.loadBitmap(mPosterImageView, posterUrl);
 
 	}
 
+	protected String getImageUrl(Cursor cursor) {
+		String path = cursor.getString(cursor
+				.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
+		String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
+		return posterUrl;
+	}
+
+	protected int getImageRes() {
+		return IMAGE_VIEW_POSTER;
+	}
+
+	protected int getRatingViewRes() {
+		return TEXT_VIEW_RATING;
+	}
+
+	protected int getTitleViewRes() {
+		return TEXT_VIEW_MOVIE_TITLE;
+	}
+
 	@Override
 	protected int[] getViewsIds() {
-		return new int[] { TEXT_VIEW_MOVIE_TITLE, IMAGE_VIEW_POSTER,
-				TEXT_VIEW_RATING };
+		return new int[] { getTitleViewRes(), getImageRes(), getRatingViewRes() };
 	}
 
 	@Override
 	public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-		return View.inflate(context, R.layout.adapter_movie_grid, null);
+		return View.inflate(context, getAdapterRes(), null);
+	}
+
+	protected int getAdapterRes() {
+		return R.layout.adapter_backdrops;
 	}
 
 }
