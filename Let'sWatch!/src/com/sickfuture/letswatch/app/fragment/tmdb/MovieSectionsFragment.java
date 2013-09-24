@@ -12,26 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.L;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.animations.AnimatedCellLayout;
-import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MovieSectionsFragment extends Fragment implements
 		LoaderCallbacks<Cursor> {
 
-	// private GridView mGridViewNowPlaying, mGridViewPopular,
-	// mGridViewTopRated,
-	// mGridViewUpcoming;
-
-	// private MoviesSectionsGridAdapter mGridViewNowPlayingAdapter,
-	// mGridViewPopularAdapter, mGridViewTopRatedAdapter,
-	// mGridViewUpcomingAdapter;
+	private static final String LOG_TAG = MovieSectionsFragment.class
+			.getSimpleName();
 
 	private int mNowPlayingLoaderId, mPopularLoaderId, mTopRatedLoaderId,
 			mUpcomingLoaderId;
 
-	private AnimatedCellLayout layout;
+	private AnimatedCellLayout mNowPlayingLayout;
+	private AnimatedCellLayout mPopularLayout;
+	private AnimatedCellLayout mTopRatedLayout;
+	private AnimatedCellLayout mUpcomingLayout;
 
 	private Uri mLoaderUri;
 
@@ -45,53 +42,38 @@ public class MovieSectionsFragment extends Fragment implements
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_movie_sections_grids,
 				null);
-		initViews(view);
-		LoaderManager loaderManager = getActivity().getSupportLoaderManager();
-		loaderManager.initLoader(mNowPlayingLoaderId, null, this);
-		// loaderManager.initLoader(mPopularLoaderId, null, this);
-		// loaderManager.initLoader(mTopRatedLoaderId, null, this);
-		// loaderManager.initLoader(mUpcomingLoaderId, null, this);
+		init(view);
 		return view;
 	}
 
-	private void initViews(View view) {
-		// mGridViewNowPlaying = (GridView) view
-		// .findViewById(R.id.grid_view_sections_now_playing);
-		// mGridViewNowPlayingAdapter = new MoviesSectionsGridAdapter(
-		// getActivity(), null);
-		// mGridViewNowPlaying.setAdapter(mGridViewNowPlayingAdapter);
-		// mNowPlayingLoaderId = mGridViewNowPlaying.hashCode();
-		// mGridViewPopular = (GridView) view
-		// .findViewById(R.id.grid_view_sections_popular);
-		// mGridViewPopularAdapter = new
-		// MoviesSectionsGridAdapter(getActivity(),
-		// null);
-		// mGridViewPopular.setAdapter(mGridViewPopularAdapter);
-		// mPopularLoaderId = mGridViewPopular.hashCode();
-		// mGridViewTopRated = (GridView) view
-		// .findViewById(R.id.grid_view_sections_top_rated);
-		// mGridViewTopRatedAdapter = new
-		// MoviesSectionsGridAdapter(getActivity(),
-		// null);
-		// mGridViewTopRated.setAdapter(mGridViewTopRatedAdapter);
-		// mTopRatedLoaderId = mGridViewTopRated.hashCode();
-		// mGridViewUpcoming = (GridView) view
-		// .findViewById(R.id.grid_view_sections_upcoming);
-		// mGridViewUpcomingAdapter = new
-		// MoviesSectionsGridAdapter(getActivity(),
-		// null);
-		// mGridViewUpcoming.setAdapter(mGridViewUpcomingAdapter);
-		// mUpcomingLoaderId = mGridViewUpcoming.hashCode();
-		layout = (AnimatedCellLayout) view
+	private void init(View view) {
+		mNowPlayingLayout = (AnimatedCellLayout) view
 				.findViewById(R.id.sections_now_playing_grid);
+		mNowPlayingLoaderId = mNowPlayingLayout.hashCode();
+
+		mPopularLayout = (AnimatedCellLayout) view
+				.findViewById(R.id.sections_popular_grid);
+		mPopularLoaderId = mPopularLayout.hashCode();
+
+		mTopRatedLayout = (AnimatedCellLayout) view
+				.findViewById(R.id.sections_top_rated_grid);
+		mTopRatedLoaderId = mTopRatedLayout.hashCode();
+
+		mUpcomingLayout = (AnimatedCellLayout) view
+				.findViewById(R.id.sections_upcoming_grid);
+		mUpcomingLoaderId = mUpcomingLayout.hashCode();
+
+		LoaderManager loaderManager = getActivity().getSupportLoaderManager();
+		loaderManager.initLoader(mNowPlayingLoaderId, null, this);
+		loaderManager.initLoader(mPopularLoaderId, null, this);
+		loaderManager.initLoader(mTopRatedLoaderId, null, this);
+		loaderManager.initLoader(mUpcomingLoaderId, null, this);
 	}
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
 		if (id == mNowPlayingLoaderId) {
-			mLoaderUri = Uri.parse(ContractUtils
-					.getProviderUriFromContract(Contract.MovieColumns.class)
-					+ "#query");
+			// TODO set appropriate uri
 		} else if (id == mPopularLoaderId) {
 			// TODO set appropriate uri
 		} else if (id == mTopRatedLoaderId) {
@@ -99,37 +81,47 @@ public class MovieSectionsFragment extends Fragment implements
 		} else if (id == mUpcomingLoaderId) {
 			// TODO set appropriate uri
 		}
+		if (mLoaderUri == null) {
+			L.w(LOG_TAG, "Can't load cursor by 'null' uri!");
+			return null;
+		}
 		return new CursorLoader(getActivity(), mLoaderUri, null, null, null,
 				null);
 	}
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		layout.swapCursor(cursor);
-		// int loaderId = loader.getId();
-		// if (loaderId == mNowPlayingLoaderId) {
-		// mGridViewNowPlayingAdapter.swapCursor(cursor);
-		// } else if (loaderId == mPopularLoaderId) {
-		// mGridViewPopularAdapter.swapCursor(cursor);
-		// } else if (loaderId == mTopRatedLoaderId) {
-		// mGridViewTopRatedAdapter.swapCursor(cursor);
-		// } else if (loaderId == mUpcomingLoaderId) {
-		// mGridViewUpcomingAdapter.swapCursor(cursor);
-		// }
+		if (cursor == null) {
+			return;
+		}
+		if (cursor.getCount() <= 0) {
+			// TODO load requested data
+			return;
+		}
+		int loaderId = loader.getId();
+		if (loaderId == mNowPlayingLoaderId) {
+			mNowPlayingLayout.swapCursor(cursor);
+		} else if (loaderId == mPopularLoaderId) {
+			mPopularLayout.swapCursor(cursor);
+		} else if (loaderId == mTopRatedLoaderId) {
+			mTopRatedLayout.swapCursor(cursor);
+		} else if (loaderId == mUpcomingLoaderId) {
+			mUpcomingLayout.swapCursor(cursor);
+		}
 	}
 
 	@Override
 	public void onLoaderReset(Loader<Cursor> loader) {
-		// int loaderId = loader.getId();
-		// if (loaderId == mNowPlayingLoaderId) {
-		// mGridViewNowPlayingAdapter.swapCursor(null);
-		// } else if (loaderId == mPopularLoaderId) {
-		// mGridViewPopularAdapter.swapCursor(null);
-		// } else if (loaderId == mTopRatedLoaderId) {
-		// mGridViewTopRatedAdapter.swapCursor(null);
-		// } else if (loaderId == mUpcomingLoaderId) {
-		// mGridViewUpcomingAdapter.swapCursor(null);
-		// }
+		int loaderId = loader.getId();
+		if (loaderId == mNowPlayingLoaderId) {
+			mNowPlayingLayout.swapCursor(null);
+		} else if (loaderId == mPopularLoaderId) {
+			mPopularLayout.swapCursor(null);
+		} else if (loaderId == mTopRatedLoaderId) {
+			mTopRatedLayout.swapCursor(null);
+		} else if (loaderId == mUpcomingLoaderId) {
+			mUpcomingLayout.swapCursor(null);
+		}
 	}
 
 }

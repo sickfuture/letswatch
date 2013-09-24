@@ -13,7 +13,6 @@ import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -30,8 +29,7 @@ import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 // TODO add timer and refactor this class
-public class AnimatedCellLayout extends ViewGroup implements
-		OnClickListener {
+public class AnimatedCellLayout extends ViewGroup {
 
 	private Cursor mCursor;
 
@@ -56,8 +54,7 @@ public class AnimatedCellLayout extends ViewGroup implements
 		init(context, attrs);
 	}
 
-	public AnimatedCellLayout(Context context, AttributeSet attrs,
-			int defStyle) {
+	public AnimatedCellLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		init(context, attrs);
 	}
@@ -196,6 +193,7 @@ public class AnimatedCellLayout extends ViewGroup implements
 	private void notify(Cursor cursor) {
 		mCursor = cursor;
 		for (int i = 0; i < getChildCount(); i++) {
+			// TODO set appropriate uri
 			RecyclingImageView child = (RecyclingImageView) getChildAt(i);
 			cursor.moveToPosition(i);
 			String path = cursor.getString(cursor
@@ -205,21 +203,24 @@ public class AnimatedCellLayout extends ViewGroup implements
 		}
 	}
 
-	private Interpolator accelerator = new AccelerateInterpolator();
-	private Interpolator decelerator = new DecelerateInterpolator();
+	private static final Interpolator accelerator = new AccelerateInterpolator();
+	private static final Interpolator decelerator = new DecelerateInterpolator();
 
 	@SuppressLint("NewApi")
 	private void flipAnimate() {
 		try {
-			final RecyclingImageView view = (RecyclingImageView) getChildAt(mRandom
+			final RecyclingImageView childToAnimate = (RecyclingImageView) getChildAt(mRandom
 					.nextInt(getChildCount() - 1));
 			if (!mCursor
 					.moveToPosition(mRandom.nextInt(mCursor.getCount() - 1))) {
 				return;
 			}
+
+			// TODO set appropriate uri
 			String path = mCursor.getString(mCursor
 					.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
 			String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
+
 			mImageLoader.loadBitmap(posterUrl, new ImageLoadedCallback() {
 
 				@Override
@@ -228,19 +229,19 @@ public class AnimatedCellLayout extends ViewGroup implements
 
 				@Override
 				public void onLoadFinished(final Object result) {
-					ObjectAnimator visToInvis = ObjectAnimator.ofFloat(view,
-							"rotationY", 0f, 90f);
+					ObjectAnimator visToInvis = ObjectAnimator.ofFloat(
+							childToAnimate, "rotationY", 0f, 90f);
 					visToInvis.setDuration(500);
 					visToInvis.setInterpolator(accelerator);
 					final ObjectAnimator invisToVis = ObjectAnimator.ofFloat(
-							view, "rotationY", -90f, 0f);
+							childToAnimate, "rotationY", -90f, 0f);
 					invisToVis.setDuration(500);
 					invisToVis.setInterpolator(decelerator);
 					visToInvis.addListener(new AnimatorListenerAdapter() {
 						@Override
 						public void onAnimationEnd(Animator anim) {
 							invisToVis.start();
-							view.setImageBitmap((Bitmap) result);
+							childToAnimate.setImageBitmap((Bitmap) result);
 						}
 					});
 					visToInvis.start();
@@ -254,11 +255,6 @@ public class AnimatedCellLayout extends ViewGroup implements
 		} finally {
 			// TODO close cursor
 		}
-	}
-
-	@Override
-	public void onClick(View v) {
-		flipAnimate();
 	}
 
 	public static class LayoutParams extends ViewGroup.LayoutParams {
