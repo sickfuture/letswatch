@@ -1,39 +1,296 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:cell="http://schemas.android.com/apk/res/com.sickfuture.letswatch"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="wrap_content"
+    tools:ignore="HardcodedText" >
 
-    <GridView
-        android:id="@+id/grid_view_sections_now_playing"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:numColumns="3" >
-    </GridView>
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-    <GridView
-        android:id="@+id/grid_view_sections_popular"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:numColumns="3" >
-    </GridView>
+        <com.sickfuture.letswatch.animations.AnimatedCellLayout
+            android:id="@+id/sections_now_playing_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            cell:columns="3"
+            cell:spacing="1dp" >
 
-    <GridView
-        android:id="@+id/grid_view_sections_top_rated"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:numColumns="3" >
-    </GridView>
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
 
-    <GridView
-        android:id="@+id/grid_view_sections_upcoming"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:numColumns="3" >
-    </GridView>
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
 
-</LinearLayout>
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+        </com.sickfuture.letswatch.animations.AnimatedCellLayout>
+
+        <com.sickfuture.letswatch.animations.AnimatedCellLayout
+            android:id="@+id/sections_popular_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            cell:columns="3"
+            cell:spacing="1dp" >
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+        </com.sickfuture.letswatch.animations.AnimatedCellLayout>
+
+        <com.sickfuture.letswatch.animations.AnimatedCellLayout
+            android:id="@+id/sections_top_rated_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            cell:columns="3"
+            cell:spacing="1dp" >
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+        </com.sickfuture.letswatch.animations.AnimatedCellLayout>
+
+        <com.sickfuture.letswatch.animations.AnimatedCellLayout
+            android:id="@+id/sections_upcoming_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            cell:columns="3"
+            cell:spacing="1dp" >
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="0"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="0"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="1"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+
+            <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                cell:layout_cellsHeight="1"
+                cell:layout_cellsWidth="1"
+                cell:layout_left="2"
+                cell:layout_top="1"
+                android:background="#00FF00"
+                android:scaleType="centerCrop" />
+        </com.sickfuture.letswatch.animations.AnimatedCellLayout>
+    </LinearLayout>
+
+</ScrollView>

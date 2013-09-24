@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.animations.FilpImagesAnimationGridLayout;
+import com.sickfuture.letswatch.animations.AnimatedCellLayout;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MovieSectionsFragment extends Fragment implements
@@ -31,7 +31,7 @@ public class MovieSectionsFragment extends Fragment implements
 	private int mNowPlayingLoaderId, mPopularLoaderId, mTopRatedLoaderId,
 			mUpcomingLoaderId;
 
-	private FilpImagesAnimationGridLayout layout;
+	private AnimatedCellLayout layout;
 
 	private Uri mLoaderUri;
 
@@ -43,7 +43,7 @@ public class MovieSectionsFragment extends Fragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_movie_sections_grids1,
+		View view = inflater.inflate(R.layout.fragment_movie_sections_grids,
 				null);
 		initViews(view);
 		LoaderManager loaderManager = getActivity().getSupportLoaderManager();
@@ -82,8 +82,8 @@ public class MovieSectionsFragment extends Fragment implements
 		// null);
 		// mGridViewUpcoming.setAdapter(mGridViewUpcomingAdapter);
 		// mUpcomingLoaderId = mGridViewUpcoming.hashCode();
-		layout = (FilpImagesAnimationGridLayout) view
-				.findViewById(R.id.now_playing_grid_layout_section);
+		layout = (AnimatedCellLayout) view
+				.findViewById(R.id.sections_now_playing_grid);
 	}
 
 	@Override
