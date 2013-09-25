@@ -76,6 +76,8 @@ public class Movie {
 	}
 
 	public String getSimilarIds() {
+		if(similar_movies.getResults() == null || similar_movies.getResults().size()==0)
+			return null;
 		StringBuilder builder = new StringBuilder();
 		for (Movie movie : similar_movies.getResults()) {
 			builder.append(movie.getId()).append(",");

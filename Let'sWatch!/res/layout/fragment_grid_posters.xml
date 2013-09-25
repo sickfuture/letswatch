@@ -4,10 +4,10 @@
     android:layout_height="match_parent" >
 
     <GridView
-        android:id="@+id/grid_view_fragment_persons"
+        android:id="@+id/grid_view_fragment_grid_posters"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="140dp"
+        android:columnWidth="150dp"
         android:gravity="center_horizontal"
         android:horizontalSpacing="@dimen/dim_normal"
         android:numColumns="auto_fit"

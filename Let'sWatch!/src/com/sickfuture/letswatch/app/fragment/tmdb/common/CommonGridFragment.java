@@ -22,6 +22,7 @@ import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.adapter.tmdb.MoviePosterGridAdapter;
 import com.sickfuture.letswatch.adapter.tmdb.MoviesGridCursorAdapter;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
@@ -45,7 +46,7 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 
 	@Override
 	public CursorAdapter cursorAdapter() {
-		return new MoviesGridCursorAdapter(getActivity(), null);
+		return new MoviePosterGridAdapter(getActivity(), null);
 	}
 
 	@Override
@@ -111,12 +112,12 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 
 	@Override
 	protected int fragmentResource() {
-		return R.layout.fragment_person_grid;
+		return R.layout.fragment_grid_posters;
 	}
 
 	@Override
 	protected int adapterViewResource() {
-		return R.id.grid_view_fragment_persons;
+		return R.id.grid_view_fragment_grid_posters;
 	}
 
 	@Override

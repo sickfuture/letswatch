@@ -1,14 +1,21 @@
 package com.sickfuture.letswatch.app.fragment.tmdb.people;
 
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
-import com.sickfuture.letswatch.adapter.tmdb.CredsHListAdapter;
+import com.sickfuture.letswatch.adapter.tmdb.CredsCursorAdapter;
 import com.sickfuture.letswatch.adapter.tmdb.CrewGridAdapter;
+import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonGridFragment;
+import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
 public class CrewFragment extends CommonGridFragment {
 
@@ -16,6 +23,7 @@ public class CrewFragment extends CommonGridFragment {
 			.getProviderUriFromContract(CrewColumns.class);
 
 	private String mid, pid;
+	private boolean isMovieCasts;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -23,10 +31,14 @@ public class CrewFragment extends CommonGridFragment {
 		if (getArguments().containsKey("mid")) {
 			mid = getArguments().getString("mid");
 			pid = null;
+			isMovieCasts = true;
 		} else if (getArguments().containsKey("pid")) {
 			pid = getArguments().getString("pid");
 			mid = null;
-		}
+			isMovieCasts = false;
+		} else
+			throw new IllegalStateException(
+					"Arguments don't contain required key");
 	}
 
 	@Override
@@ -47,22 +59,36 @@ public class CrewFragment extends CommonGridFragment {
 
 	@Override
 	protected String getSelection() {
-		if (mid != null) {
+		if (isMovieCasts) {
 			return CrewColumns.TMDB_MOVIE_ID + " = " + mid;
-		} else if (pid != null) {
+		} else 
 			return CrewColumns.TMDB_PERSON_ID + " = " + pid;
-		} else
-			return null;
 	}
 
 	@Override
 	public CursorAdapter cursorAdapter() {
-		if (mid != null) {
+		if (isMovieCasts) {
 			return new CrewGridAdapter(getActivity(), null);
-		} else if (pid != null) {
-			return new CredsHListAdapter(getActivity(), null);
-		} else
-			return null;
+		} else 
+			return new CredsCursorAdapter(getActivity(), null);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> list, View view, int position,
+			long id) {
+		Bundle args = new Bundle();
+		if (isMovieCasts) {
+			Cursor cursor = (Cursor) list.getItemAtPosition(position);
+			long id_ = cursor.getLong(cursor
+					.getColumnIndex(CrewColumns.TMDB_PERSON_ID));
+			args.putString(PersonColumns.TMDB_ID, String.valueOf(id_));
+		} else {
+			Cursor cursor = (Cursor) list.getItemAtPosition(position);
+			long id_ = cursor.getLong(cursor
+					.getColumnIndex(CrewColumns.TMDB_MOVIE_ID));
+			args.putString(MovieColumns.TMDB_ID, String.valueOf(id_));
+		}
+		((IListClickable) getActivity()).onItemListClick(args);
 	}
 
 }

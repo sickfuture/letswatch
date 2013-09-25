@@ -9,13 +9,15 @@ import android.support.v4.app.FragmentTransaction;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
 import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieSectionsFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.CastFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.CrewFragment;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
 public class MovieActivity extends DrawerActivity implements IListClickable {
 
 	private static final String ADD_TO_BACKSTACK = "addToBackstack";
-	
+
 	@Override
 	protected int getActivityNumberInDrawer() {
 		return ACTIVITY_MOVIES;
@@ -31,10 +33,29 @@ public class MovieActivity extends DrawerActivity implements IListClickable {
 					getIntent().getStringExtra(CastColumns.TMDB_MOVIE_ID));
 			args.putBoolean(ADD_TO_BACKSTACK, false);
 			onItemListClick(args);
+		} else if (getIntent().hasExtra("cast_pid")) {
+			Bundle args = new Bundle();
+			args.putString("pid",
+					getIntent().getStringExtra("cast_pid"));
+			Fragment fragment = new CastFragment();
+			fragment.setArguments(args);
+			FragmentManager manager = getSupportFragmentManager();
+			manager.beginTransaction().replace(CONTENT_FRAME, fragment)
+					.commit();
+		} else if (getIntent().hasExtra("crew_pid")) {
+			Bundle args = new Bundle();
+			args.putString("pid",
+					getIntent().getStringExtra("crew_pid"));
+			Fragment fragment = new CrewFragment();
+			fragment.setArguments(args);
+			FragmentManager manager = getSupportFragmentManager();
+			manager.beginTransaction().replace(CONTENT_FRAME, fragment)
+					.commit();
 		} else {
-		FragmentManager manager = getSupportFragmentManager();
-		manager.beginTransaction()
-				.replace(CONTENT_FRAME, new MovieSectionsFragment()).commit();
+			FragmentManager manager = getSupportFragmentManager();
+			manager.beginTransaction()
+					.replace(CONTENT_FRAME, new MovieSectionsFragment())
+					.commit();
 		}
 	}
 

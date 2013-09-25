@@ -8,6 +8,8 @@ import com.android.sickfuture.sickcore.content.CommonProvider;
 import com.android.sickfuture.sickcore.utils.DatabaseUtils;
 import com.android.sickfuture.sickcore.utils.SQLQueryBuilder;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.contract.Contract.NowPlayingTmdbColumns;
 
 public class TmdbNowPlayingProvider extends CommonProvider {
 
@@ -19,12 +21,20 @@ public class TmdbNowPlayingProvider extends CommonProvider {
 		String childTable = DatabaseUtils
 				.getTableNameFromContract(getContractClass());
 		String sql = new SQLQueryBuilder()
-				.select(null, "*")
+				.select(null, moviesTable + "." + MovieColumns._ID,
+						moviesTable + "." + MovieColumns.TMDB_ID,
+						moviesTable + "." + MovieColumns.TITLE,
+						moviesTable + "." + MovieColumns.TITLE_ORIGINAL,
+						moviesTable + "." + MovieColumns.POSTER_PATH,
+						moviesTable + "." + MovieColumns.BACKDROP_PATH,
+						moviesTable + "." + MovieColumns.VOTE_AVERAGE,
+						childTable + "." + NowPlayingTmdbColumns.MOVIE_TMDB_ID,
+						childTable + "." + NowPlayingTmdbColumns._ID)
 				.from(moviesTable, childTable)
 				.where(// selection +
 				String.format("%s.%s = %s.%s", moviesTable,
-								Contract.MovieColumns.TMDB_ID, childTable,
-								Contract.NowPlayingTmdbColumns.MOVIE_TMDB_ID))
+						Contract.MovieColumns.TMDB_ID, childTable,
+						Contract.NowPlayingTmdbColumns.MOVIE_TMDB_ID))
 				// .orderBy(sortOrder)
 				.getSql();
 

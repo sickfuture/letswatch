@@ -450,27 +450,24 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 
 	@Override
 	public void onClick(View view) {
-		Fragment fragment = null;
 		if (view.getId() == CASTS_CONTAINER) {
-			Bundle args = new Bundle();
-			args.putString("mid", mid);
-			fragment = new CastFragment();
-			fragment.setArguments(args);
+			Intent intent = new Intent(getActivity(), PeopleActivity.class);
+			intent.putExtra("cast_mid", mid);
+			startActivity(intent);
 		} else if (view.getId() == CREW_CONTAINER) {
-			Bundle args = new Bundle();
-			args.putString("mid", mid);
-			fragment = new CrewFragment();
-			fragment.setArguments(args);
+			Intent intent = new Intent(getActivity(), PeopleActivity.class);
+			intent.putExtra("crew_mid", mid);
+			startActivity(intent);
 		} else if (view.getId() == SIMILAR_CONTAINER) {
 			Bundle args = new Bundle();
 			args.putString("ids", mSimilarIds);
-			fragment = new SimilarMoviesFragment();
+			Fragment fragment = new SimilarMoviesFragment();
 			fragment.setArguments(args);
+			FragmentManager fragmentManager = getActivity()
+					.getSupportFragmentManager();
+			fragmentManager.beginTransaction().addToBackStack(null)
+			.replace(R.id.content_frame, fragment).commit();
 		}
-		FragmentManager fragmentManager = getActivity()
-				.getSupportFragmentManager();
-		fragmentManager.beginTransaction().addToBackStack(null)
-				.replace(R.id.content_frame, fragment).commit();
 
 	}
 

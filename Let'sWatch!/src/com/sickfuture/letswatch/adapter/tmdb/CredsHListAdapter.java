@@ -31,7 +31,6 @@ public class CredsHListAdapter extends HListCursorAdapter {
 		TextView titleView = (TextView) holder.getViewById(TITLE);
 		String title = c.getString(c.getColumnIndex(CastColumns.MOVIE_TITLE));
 		titleView.setText(title);
-
 	}
 
 }

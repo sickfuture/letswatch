@@ -10,7 +10,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/AliceBlue" />
+        android:background="@color/AliceBlue"
+        android:scaleType="centerCrop" />
 
     <FrameLayout
         android:id="@+id/layout_adapter_backdrop_info"

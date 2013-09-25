@@ -90,12 +90,12 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 
 	@Override
 	protected int fragmentResource() {
-		return R.layout.fragment_person_grid;
+		return R.layout.fragment_grid_posters;
 	}
 
 	@Override
 	protected int adapterViewResource() {
-		return R.id.grid_view_fragment_persons;
+		return R.id.grid_view_fragment_grid_posters;
 	}
 
 	@Override

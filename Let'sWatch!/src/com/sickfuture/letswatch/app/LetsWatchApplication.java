@@ -1,8 +1,9 @@
 package com.sickfuture.letswatch.app;
 
 import com.android.sickfuture.sickcore.app.SickApp;
-import com.android.sickfuture.sickcore.image.SickImageLoader;
+import com.android.sickfuture.sickcore.image.SickImageLoader.ImageLoaderParamsBuilder;
 import com.android.sickfuture.sickcore.source.implemented.HttpInputStreamDataSource;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.processor.rotten.BoxOfficeProcessor;
 import com.sickfuture.letswatch.processor.rotten.CurrentReleaseProcessor;
 import com.sickfuture.letswatch.processor.rotten.InfoProcessor;
@@ -23,9 +24,9 @@ import com.sickfuture.letswatch.processor.tmdb.ReviewsProcessor;
 import com.sickfuture.letswatch.processor.tmdb.TitlesProcessor;
 import com.sickfuture.letswatch.processor.tmdb.TrailersProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.MovieResultsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbNowPlayingProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbPopularProcessor;
-import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbTopRatedProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbUpcomingProcessor;
 import com.sickfuture.letswatch.processor.tmdb.persons.PersonCreditsProcessor;
@@ -72,7 +73,12 @@ public class LetsWatchApplication extends SickApp {
         /***************/
 
         /** SUPER_IMAGE_LOADER */
-        registerAppService(new SickImageLoader(this));
+        ImageLoaderParamsBuilder builder = new ImageLoaderParamsBuilder(this);
+		builder.setMemoryCacheEnabled(true).enableFadeIn(true)
+				.setDiscCacheEnabled(true).setDiscCacheSize(10 * 1024 * 1024)
+				.setFadeInTime(600).setLoadingImage(R.drawable.empty_photo)
+				.setPartOfAvailibleMemoryCache(0.25f);
+		registerAppService(builder.build());
         /**********************/
 
         /** PROCESSORS */

@@ -8,6 +8,9 @@ import com.android.sickfuture.sickcore.content.CommonProvider;
 import com.android.sickfuture.sickcore.utils.DatabaseUtils;
 import com.android.sickfuture.sickcore.utils.SQLQueryBuilder;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.contract.Contract.PopularTmdbColumns;
+import com.sickfuture.letswatch.content.contract.Contract.TopRatedTmdbColumns;
 
 public class TmdbTopRatedProvider extends CommonProvider {
 
@@ -19,7 +22,15 @@ public class TmdbTopRatedProvider extends CommonProvider {
 		String childTable = DatabaseUtils
 				.getTableNameFromContract(getContractClass());
 		String sql = new SQLQueryBuilder()
-				.select(null, "*")
+				.select(null, moviesTable + "." + MovieColumns._ID,
+						moviesTable + "." + MovieColumns.TMDB_ID,
+						moviesTable + "." + MovieColumns.TITLE,
+						moviesTable + "." + MovieColumns.TITLE_ORIGINAL,
+						moviesTable + "." + MovieColumns.POSTER_PATH,
+						moviesTable + "." + MovieColumns.BACKDROP_PATH,
+						moviesTable + "." + MovieColumns.VOTE_AVERAGE,
+						childTable + "." + TopRatedTmdbColumns.MOVIE_TMDB_ID,
+						childTable + "." + TopRatedTmdbColumns._ID)
 				.from(moviesTable, childTable)
 				.where(// selection +
 				String.format("%s.%s = %s.%s", moviesTable,

@@ -40,6 +40,7 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi.PROFILE;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.tmdb.MovieActivity;
+import com.sickfuture.letswatch.app.activity.tmdb.PeopleActivity;
 import com.sickfuture.letswatch.app.fragment.tmdb.movie.SimilarMoviesFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
@@ -127,10 +128,14 @@ public class PersonFragment extends Fragment implements
 		mCastHListView.setAdapter(mCastAdapter);
 		mCastHListView.setOnItemClickListener(this);
 
+		return parent;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
 		getLoaderManager().initLoader(mLoaderId, null, this);
 		getLoaderManager().initLoader(mLoaderId + 1, null, this);
 		getLoaderManager().initLoader(mLoaderId + 2, null, this);
-		return parent;
 	}
 
 	private void loadData() {
@@ -224,24 +229,16 @@ public class PersonFragment extends Fragment implements
 
 	@Override
 	public void onClick(View view) {
-		Fragment fragment = null;
+
 		if (view.getId() == CASTS_CONTAINER) {
-			Bundle args = new Bundle();
-			args.putString("pid", pid);
-			fragment = new CastFragment();
-			fragment.setArguments(args);
-		} else 
-			if (view.getId() == CREW_CONTAINER) {
-			Bundle args = new Bundle();
-			args.putString("pid", pid);
-			fragment = new CrewFragment();
-			fragment.setArguments(args);
-		} 
-		FragmentManager fragmentManager = getActivity()
-				.getSupportFragmentManager();
-		fragmentManager.beginTransaction().addToBackStack(null)
-				.replace(R.id.content_frame, fragment).commit();
-		
+			Intent intent = new Intent(getActivity(), MovieActivity.class);
+			intent.putExtra("cast_pid", pid);
+			startActivity(intent);
+		} else if (view.getId() == CREW_CONTAINER) {
+			Intent intent = new Intent(getActivity(), MovieActivity.class);
+			intent.putExtra("crew_pid", pid);
+			startActivity(intent);
+		}
 	}
 
 }

@@ -16,11 +16,19 @@ import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonGridFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.contract.Contract.NowPlayingTmdbColumns;
 
 public class NowPlayingFragment extends CommonGridFragment {
 
 	private static final String LOG_TAG = NowPlayingFragment.class
 			.getSimpleName();
+	
+	private static final String[] sProjection = new String[] {
+			MovieColumns._ID, MovieColumns.TMDB_ID, MovieColumns.TITLE,
+			MovieColumns.TITLE_ORIGINAL, MovieColumns.POSTER_PATH,
+			MovieColumns.VOTE_AVERAGE, NowPlayingTmdbColumns.MOVIE_TMDB_ID,
+			NowPlayingTmdbColumns._ID };
 
 	@Override
 	protected Uri getUri() {
@@ -53,13 +61,11 @@ public class NowPlayingFragment extends CommonGridFragment {
 
 	@Override
 	protected String[] getProjection() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	protected String getSelection() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

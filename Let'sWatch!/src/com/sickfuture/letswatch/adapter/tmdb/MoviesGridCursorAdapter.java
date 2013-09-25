@@ -25,7 +25,6 @@ public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 	public static final int IMAGE_VIEW_POSTER = R.id.image_view_adapter_backdrop;
 
 	private SickImageLoader mImageLoader;
-	private RecyclingImageView mPosterImageView;
 
 	public MoviesGridCursorAdapter(Context context, Cursor c) {
 		super(context, c);
@@ -47,13 +46,12 @@ public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 			ratingView.setText(String.format("%.1f", r));
 			ratingView.setVisibility(View.VISIBLE);
 		} else {
-			ratingView.setVisibility(View.INVISIBLE);
+			ratingView.setVisibility(View.GONE);
 		}
-		mPosterImageView = (RecyclingImageView) holder
+		RecyclingImageView posterImageView = (RecyclingImageView) holder
 				.getViewById(getImageRes());
 		String posterUrl = getImageUrl(cursor);
-		mPosterImageView.setScaleType(ScaleType.CENTER_CROP);
-		mImageLoader.loadBitmap(mPosterImageView, posterUrl);
+		mImageLoader.loadBitmap(posterImageView, posterUrl);
 
 	}
 

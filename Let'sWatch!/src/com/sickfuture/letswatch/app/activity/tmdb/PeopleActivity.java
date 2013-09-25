@@ -1,17 +1,18 @@
 package com.sickfuture.letswatch.app.activity.tmdb;
 
-import com.sickfuture.letswatch.app.callback.IListClickable;
-import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
-import com.sickfuture.letswatch.app.fragment.tmdb.people.PersonFragment;
-import com.sickfuture.letswatch.app.fragment.tmdb.people.PopularPersonsFragment;
-import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
-import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+
+import com.sickfuture.letswatch.app.callback.IListClickable;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.CastFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.CrewFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.PersonFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.people.PopularPersonsFragment;
+import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
+import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
 public class PeopleActivity extends DrawerActivity implements IListClickable {
 
@@ -27,9 +28,25 @@ public class PeopleActivity extends DrawerActivity implements IListClickable {
 					getIntent().getStringExtra(CastColumns.TMDB_PERSON_ID));
 			args.putBoolean(ADD_TO_BACKSTACK, false);
 			onItemListClick(args);
-		} else if(getIntent().hasExtra(CastColumns.TMDB_PERSON_ID)){
-			
-		}else {
+		} else if (getIntent().hasExtra("cast_mid")) {
+			Bundle args = new Bundle();
+			args.putString("mid",
+					getIntent().getStringExtra("cast_mid"));
+			Fragment fragment = new CastFragment();
+			fragment.setArguments(args);
+			FragmentManager manager = getSupportFragmentManager();
+			manager.beginTransaction().replace(CONTENT_FRAME, fragment)
+					.commit();
+		} else if (getIntent().hasExtra("crew_mid")) {
+			Bundle args = new Bundle();
+			args.putString("mid",
+					getIntent().getStringExtra("crew_mid"));
+			Fragment fragment = new CrewFragment();
+			fragment.setArguments(args);
+			FragmentManager manager = getSupportFragmentManager();
+			manager.beginTransaction().replace(CONTENT_FRAME, fragment)
+					.commit();
+		} else {
 			FragmentManager manager = getSupportFragmentManager();
 			manager.beginTransaction()
 					.replace(CONTENT_FRAME, new PopularPersonsFragment())
