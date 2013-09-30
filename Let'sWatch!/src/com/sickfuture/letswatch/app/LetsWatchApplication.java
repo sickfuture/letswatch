@@ -32,6 +32,8 @@ import com.sickfuture.letswatch.processor.tmdb.movies.TmdbUpcomingProcessor;
 import com.sickfuture.letswatch.processor.tmdb.persons.PersonCreditsProcessor;
 import com.sickfuture.letswatch.processor.tmdb.persons.PersonProcessor;
 import com.sickfuture.letswatch.processor.tmdb.persons.PopularPersonsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.search.SearchedMoviesProcessor;
+import com.sickfuture.letswatch.processor.tmdb.search.SearchedPersonsProcessor;
 
 public class LetsWatchApplication extends SickApp {
 
@@ -65,6 +67,8 @@ public class LetsWatchApplication extends SickApp {
 	public static final String TMDB_LIST_PROCESSOR_SERVICE = "sickcore:TmdbPersonProcessor";
 	public static final String TMDB_POPULAR_PERSON_PROCESSOR_SERVICE = "sickcore:TmdbPopularPersonProcessor";
 	public static final String TMDB_PERSON_CREDITS_PROCESSOR_SERVICE = "sickcore:TmdbPersonCreditsProcessor";
+	public static final String TMDB_SEARCHED_MOVIES_PROCESSOR_SERVICE = "sickcore:TmdbSearchedMoviesProcessor";
+	public static final String TMDB_SEARCHED_PERSONS_PROCESSOR_SERVICE = "sickcore:TmdbSearchedPersonsProcessor";
 
     @Override
     public void register() {
@@ -110,5 +114,7 @@ public class LetsWatchApplication extends SickApp {
         registerAppService(new ListProcessor());
         registerAppService(new PopularPersonsProcessor());
         registerAppService(new PersonCreditsProcessor());
+        registerAppService(new SearchedMoviesProcessor());
+        registerAppService(new SearchedPersonsProcessor());
     }
 }

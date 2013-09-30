@@ -7,4 +7,10 @@ public class UserActivity extends DrawerActivity {
 		return ACTIVITY_USER;
 	}
 
+	@Override
+	public void performSearch(String query) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

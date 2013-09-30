@@ -33,7 +33,7 @@ public abstract class TmdbMovieListProcessor extends
 		ArrayList<ContentValues> values2 = new ArrayList<ContentValues>();
 		for (int i = 0; i < movies.size(); i++) {
 			values[i] = new ContentValues();
-			values[i].put(MovieColumns.TMDB_ID, movies.get(i).getId());
+			values[i].put(getIdColumnName(), movies.get(i).getId());
 
 			values2.add(ProcessorHelper.processMovie(movies.get(i)));
 		}
@@ -41,6 +41,8 @@ public abstract class TmdbMovieListProcessor extends
 		return values;
 
 	}
+
+	public abstract String getIdColumnName();
 
 	@Override
 	protected String getIdField() {

@@ -21,6 +21,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -92,6 +93,7 @@ public class PersonFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		mLoaderId = hashCode();
 		Bundle args = getArguments();
 		pid = args.getString(Contract.PersonColumns.TMDB_ID);
@@ -241,4 +243,12 @@ public class PersonFragment extends Fragment implements
 		}
 	}
 
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		if(menu!=null){
+			menu.removeItem(R.id.menu_refresh);
+		}
+			
+	}
 }

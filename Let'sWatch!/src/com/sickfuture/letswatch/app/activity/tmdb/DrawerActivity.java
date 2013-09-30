@@ -7,11 +7,15 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +25,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.android.sickfuture.sickcore.ui.Font;
 import com.android.sickfuture.sickcore.utils.AndroidVersionsUtils;
 import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.app.activity.SearchActivity;
 
 public abstract class DrawerActivity extends ActionBarActivity {
 
+	public static final String ADD_TO_BACKSTACK = "addToBackstack";
 	public static final String FRAGMENT = "FRAGMENT";
 	public static final String ARGUMENTS = "ARGS";
 
@@ -145,21 +150,6 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		getSupportActionBar().setTitle(mTitle);
 	}
 
-	// @Override
-	// public void onItemListClick(Bundle arguments) {
-	// if (arguments.containsKey(Contract.MovieColumns.TMDB_ID)) {
-	// Fragment fragment = new MovieFragment();
-	// fragment.setArguments(arguments);
-	// FragmentManager fragmentManager = getSupportFragmentManager();
-	// fragmentManager.beginTransaction().addToBackStack(null)
-	// .replace(R.id.content_frame, fragment).commit();
-	// } else {
-	// Intent details = new Intent(this, MovieDetailsActivity.class);
-	// details.putExtra(MainActivity.ARGUMENTS, arguments);
-	// startActivity(details);
-	// }
-	// }
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
@@ -172,9 +162,23 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		searchView.setIconifiedByDefault(false);
 		searchView.setSubmitButtonEnabled(true);
 		searchView.setQueryRefinementEnabled(true);
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
 
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				performSearch(query);
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String arg0) {
+				return false;
+			}
+		});
 		return true;
 	}
+
+	public abstract void performSearch(String query);
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -195,6 +199,18 @@ public abstract class DrawerActivity extends ActionBarActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
+	}
+
+	protected void replaceFragment(Fragment fragment, Bundle arguments) {
+		if (arguments != null)
+			fragment.setArguments(arguments);
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction transaction = fragmentManager.beginTransaction();
+		transaction.replace(CONTENT_FRAME, fragment);
+		if (arguments != null && arguments.getBoolean(ADD_TO_BACKSTACK, true)) {
+			transaction.addToBackStack(null);
+		}
+		transaction.commit();
 	}
 
 	// private void applyCustomFontForPreICS() {

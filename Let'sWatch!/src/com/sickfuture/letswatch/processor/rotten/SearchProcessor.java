@@ -19,11 +19,11 @@ public class SearchProcessor extends RottenMovieProcessor {
 
 	@Override
 	public boolean cache(ContentValues[] result, Context context) {
-		context.getContentResolver()
-				.bulkInsert(
-						ContractUtils
-								.getProviderUriFromContract(Contract.SearchColumns.class),
-						result);
+//		context.getContentResolver()
+//				.bulkInsert(
+//						ContractUtils
+//								.getProviderUriFromContract(Contract.SearchColumns.class),
+//						result);
 		return true;
 	}
 }

@@ -23,6 +23,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -127,7 +128,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setHasOptionsMenu(true);
 		Bundle args = getArguments();
 		mid = args.getString(Contract.MovieColumns.TMDB_ID);
 		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
@@ -471,4 +472,12 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 
 	}
 
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		if(menu!=null){
+			menu.removeItem(R.id.menu_refresh);
+		}
+			
+	}
 }

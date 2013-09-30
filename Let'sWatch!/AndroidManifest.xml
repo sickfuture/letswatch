@@ -27,10 +27,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".app.activity.SearchActivity" />
         </activity>
         <activity android:name=".app.activity.tmdb.MovieActivity" >
         </activity>
@@ -116,11 +112,6 @@
         <provider
             android:name=".content.provider.RecentMovieSuggestionsProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.RecentMovieSuggestionsProvider"
-            android:exported="false" >
-        </provider>
-        <provider
-            android:name=".content.provider.SearchProvider"
-            android:authorities="com.sickfuture.letswatch.content.provider.SearchProvider"
             android:exported="false" >
         </provider>
         <provider
@@ -241,6 +232,16 @@
         <provider
             android:name=".content.provider.tmdb.PopularPersonsProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.tmdb.PopularPersonsProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.SearchedMoviesProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.SearchedMoviesProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.provider.tmdb.SearchedPersonsProvider"
+            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.SearchedPersonsProvider"
             android:exported="false" >
         </provider>
     </application>

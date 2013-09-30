@@ -46,7 +46,7 @@ public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 			ratingView.setText(String.format("%.1f", r));
 			ratingView.setVisibility(View.VISIBLE);
 		} else {
-			ratingView.setVisibility(View.GONE);
+			ratingView.setVisibility(View.INVISIBLE);
 		}
 		RecyclingImageView posterImageView = (RecyclingImageView) holder
 				.getViewById(getImageRes());

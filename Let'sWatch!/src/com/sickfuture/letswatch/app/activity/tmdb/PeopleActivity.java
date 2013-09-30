@@ -1,11 +1,19 @@
 package com.sickfuture.letswatch.app.activity.tmdb;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.sickfuture.letswatch.R;
+import com.sickfuture.letswatch.app.activity.SearchActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.tmdb.people.CastFragment;
 import com.sickfuture.letswatch.app.fragment.tmdb.people.CrewFragment;
@@ -15,8 +23,6 @@ import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
 public class PeopleActivity extends DrawerActivity implements IListClickable {
-
-	private static final String ADD_TO_BACKSTACK = "addToBackstack";
 
 	@Override
 	@SuppressLint("NewApi")
@@ -30,27 +36,19 @@ public class PeopleActivity extends DrawerActivity implements IListClickable {
 			onItemListClick(args);
 		} else if (getIntent().hasExtra("cast_mid")) {
 			Bundle args = new Bundle();
-			args.putString("mid",
-					getIntent().getStringExtra("cast_mid"));
-			Fragment fragment = new CastFragment();
-			fragment.setArguments(args);
-			FragmentManager manager = getSupportFragmentManager();
-			manager.beginTransaction().replace(CONTENT_FRAME, fragment)
-					.commit();
+			args.putString("mid", getIntent().getStringExtra("cast_mid"));
+			replaceFragment(new CastFragment(), args);
 		} else if (getIntent().hasExtra("crew_mid")) {
 			Bundle args = new Bundle();
-			args.putString("mid",
-					getIntent().getStringExtra("crew_mid"));
-			Fragment fragment = new CrewFragment();
-			fragment.setArguments(args);
-			FragmentManager manager = getSupportFragmentManager();
-			manager.beginTransaction().replace(CONTENT_FRAME, fragment)
-					.commit();
+			args.putString("mid", getIntent().getStringExtra("crew_mid"));
+			replaceFragment(new CrewFragment(), args);
+		} else if (getIntent().hasExtra(SearchActivity.SEARCHED_PERSON_ID)) {
+			Bundle arguments = new Bundle();
+			arguments.putString(PersonColumns.TMDB_ID, getIntent()
+					.getStringExtra(SearchActivity.SEARCHED_PERSON_ID));
+			onItemListClick(arguments);
 		} else {
-			FragmentManager manager = getSupportFragmentManager();
-			manager.beginTransaction()
-					.replace(CONTENT_FRAME, new PopularPersonsFragment())
-					.commit();
+			replaceFragment(new PopularPersonsFragment(), null);
 		}
 	}
 
@@ -61,15 +59,29 @@ public class PeopleActivity extends DrawerActivity implements IListClickable {
 
 	@Override
 	public void onItemListClick(Bundle arguments) {
-		Fragment fragment = new PersonFragment();
-		fragment.setArguments(arguments);
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction transaction = fragmentManager.beginTransaction();
-		transaction.replace(CONTENT_FRAME, fragment);
-		if (arguments.getBoolean(ADD_TO_BACKSTACK, true)) {
-			transaction.addToBackStack(null);
-		}
-		transaction.commit();
+		replaceFragment(new PersonFragment(), arguments);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		boolean sup = super.onCreateOptionsMenu(menu);
+		MenuItem searchItem = menu.findItem(R.id.menu_search);
+		SearchView searchView = (SearchView) MenuItemCompat
+				.getActionView(searchItem);
+		searchView.setQueryHint("Search people");
+		return sup;
+	}
+
+	@Override
+	public void performSearch(String query) {
+		Intent intent = new Intent(this, SearchActivity.class);
+		intent.setAction(Intent.ACTION_SEARCH);
+		intent.putExtra(SearchManager.QUERY, query);
+		Bundle appData = new Bundle();
+		appData.putInt(SearchActivity.SEARCH_TYPE, SearchActivity.PERSON);
+		intent.putExtra(SearchManager.APP_DATA, appData);
+		startActivity(intent);
+
 	}
 
 }

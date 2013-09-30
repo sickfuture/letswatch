@@ -7,4 +7,9 @@ public class DiscoverActivity extends DrawerActivity {
 		return ACTIVITY_DISCOVER;
 	}
 
+	@Override
+	public void performSearch(String query) {
+		
+	}
+
 }

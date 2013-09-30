@@ -74,4 +74,9 @@ public class MovieResultsProcessor extends TmdbMovieListProcessor {
 				.getProviderUriFromContract(Contract.MovieColumns.class);
 	}
 
+	@Override
+	public String getIdColumnName() {
+		return null;
+	}
+
 }

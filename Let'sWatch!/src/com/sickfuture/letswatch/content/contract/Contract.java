@@ -195,13 +195,22 @@ public class Contract {
 		public static final String MOVIE_ID = "MOVIE_ID";
 	}
 
-	@DBTableName(tableName = "SEARCH_TABLE")
-	@ContentInfo(contentType = "vnd.android.cursor.dir/SEARCH_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.SearchProvider/SEARCH_TABLE")
-	public static final class SearchColumns implements CoreBaseColumns {
+	@DBTableName(tableName = "SEARCHED_MOVIES_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/SEARCHED_MOVIES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.SearchedMoviesProvider/SEARCHED_MOVIES_TABLE")
+	public static final class SearchedMoviesColumns implements CoreBaseColumns {
 
 		@DBUnique
 		@DBLongType
 		public static final String MOVIE_ID = "MOVIE_ID";
+	}
+
+	@DBTableName(tableName = "SEARCHED_PERSONS_TABLE")
+	@ContentInfo(contentType = "vnd.android.cursor.dir/SEARCHED_PERSONS_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.SearchedPersonsProvider/SEARCHED_PERSONS_TABLE")
+	public static final class SearchedPersonsColumns implements CoreBaseColumns {
+
+		@DBUnique
+		@DBLongType
+		public static final String PERSON_ID = "PERSON_ID";
 	}
 
 	@DBTableName(tableName = "THEATERS_TABLE")
@@ -284,7 +293,7 @@ public class Contract {
 		@DBUnique
 		@DBLongType
 		public static final String PERSON_TMDB_ID = "PERSON_TMDB_ID";
-	} 
+	}
 
 	@DBTableName(tableName = "ALT_TITLES_TABLE")
 	@ContentInfo(contentType = "vnd.android.cursor.dir/ALT_TITLES_TABLE", contentUri = "content://com.sickfuture.letswatch.content.provider.tmdb.TitlesProvider/ALT_TITLES_TABLE")
@@ -581,7 +590,7 @@ public class Contract {
 		@DBVarcharType
 		public static final String CERTIFICATION = "CERTIFICATION";
 		@DBVarcharType
-		public static final String  RELEASE_DATE = "RELEASE_DATE";
+		public static final String RELEASE_DATE = "RELEASE_DATE";
 		@DBVarcharType
 		public static final String ISO_3166_1 = "ISO_3166_1";
 

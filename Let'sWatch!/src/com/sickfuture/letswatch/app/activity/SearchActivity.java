@@ -1,92 +1,48 @@
 package com.sickfuture.letswatch.app.activity;
 
-import java.io.InputStream;
+import java.util.Locale;
 
 import android.app.SearchManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.provider.SearchRecentSuggestions;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.sickfuture.sickcore.service.DataSourceRequest;
-import com.android.sickfuture.sickcore.service.SourceResultReceiver;
-import com.android.sickfuture.sickcore.service.SourceService;
-import com.android.sickfuture.sickcore.utils.ContractUtils;
-import com.android.sickfuture.sickcore.utils.InetChecker;
+import com.android.sickfuture.sickcore.utils.L;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
-import com.sickfuture.letswatch.api.MovieApis;
-import com.sickfuture.letswatch.app.LetsWatchApplication;
-import com.sickfuture.letswatch.content.contract.Contract;
-import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
-import com.sickfuture.letswatch.content.provider.RecentMovieSuggestionsProvider;
+import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
+import com.sickfuture.letswatch.app.activity.tmdb.DrawerActivity;
+import com.sickfuture.letswatch.app.callback.IListClickable;
+import com.sickfuture.letswatch.app.fragment.tmdb.search.SearchedMoviesFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.search.SearchedPersonsFragment;
 
-public class SearchActivity extends ActionBarActivity implements
-		LoaderCallbacks<Cursor>, OnItemClickListener {
+public class SearchActivity extends DrawerActivity implements IListClickable {
 
-	private static final Uri mUri = ContractUtils
-			.getProviderUriFromContract(Contract.SearchColumns.class);
-	private CursorAdapter mAdapter;
-	private int mLoaderId;
-	private SourceResultReceiver mReceiver;
-	private ListView mListView;
-	private ProgressBar mProgressBar;
+	private static final String LOG_TAG = SearchActivity.class.getSimpleName();
+
+	public static final String SEARCHED_MOVIE_ID = "searched_movie_id";
+	public static final String SEARCHED_PERSON_ID = "searched_person_id";
+
+	public static final String SEARCH_TYPE = "search_type";
+	public static final int MOVIE = 1;
+	public static final int PERSON = 2;
+	public static final int LIST = 3;
+	public static final int COLLECTION = 4;
+	public static final int COMPANY = 5;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_search);
-		mLoaderId = getClass().hashCode();
-		mAdapter = new BoxOfficeCursorAdapter(this, null);
-		mListView = (ListView) findViewById(R.id.listview_activity_search);
-		mProgressBar = (ProgressBar) findViewById(R.id.progressbar_activity_search);
-		mListView.setAdapter(mAdapter);
-		mListView.setOnItemClickListener(this);
-		mReceiver = new SourceResultReceiver(new Handler()) {
-
-			@Override
-			public void onStart(Bundle result) {
-			}
-
-			@Override
-			public void onError(Exception exception) {
-				mProgressBar.setVisibility(View.INVISIBLE);
-				Toast.makeText(SearchActivity.this, exception.toString(),
-						Toast.LENGTH_LONG).show();
-
-			}
-
-			@Override
-			public void onDone(Bundle result) {
-				mProgressBar.setVisibility(View.INVISIBLE);
-
-			}
-		};
 		Intent intent = getIntent();
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			handleIntent(intent);
 		}
-		getSupportLoaderManager().initLoader(mLoaderId, null, this);
 	}
 
 	@Override
@@ -97,29 +53,41 @@ public class SearchActivity extends ActionBarActivity implements
 
 	private void handleIntent(Intent intent) {
 		String query = intent.getStringExtra(SearchManager.QUERY);
-		SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this,
-				RecentMovieSuggestionsProvider.AUTHORITY,
-				RecentMovieSuggestionsProvider.MODE);
-		suggestions.saveRecentQuery(query, null);
-		search(query);
-
-	}
-
-	private void search(String query) {
-		mProgressBar.setVisibility(View.VISIBLE);
 		query = query.trim().replace(" ", "+");
 		if (TextUtils.isEmpty(query))
 			return;
-		String searchUrl = MovieApis.RottenApi.searchMovies(query, -1, -1);
-		if (InetChecker.checkInetConnection(this)) {
-			getContentResolver().delete(mUri, null, null);
-			DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
-					searchUrl);
-			request.setIsCacheable(true);
-			SourceService.execute(this, request,
-					LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
-					LetsWatchApplication.SEARCH_PROCESSOR_SERVICE, mReceiver);
+		Bundle appData = getIntent().getBundleExtra(SearchManager.APP_DATA);
+		if (appData != null) {
+			appData.putString(SearchManager.QUERY, query);
+			Fragment fr = null;
+			switch (appData.getInt(SEARCH_TYPE)) {
+			case MOVIE:
+				fr = new SearchedMoviesFragment();
+				fr.setArguments(appData);
+				break;
+			case PERSON:
+				fr = new SearchedPersonsFragment();
+				fr.setArguments(appData);
+				break;
+			default:
+				break;
+			}
+			replaceFragment(fr);
 		}
+		// TODO deal with suggestions
+		// SearchRecentSuggestions suggestions = new
+		// SearchRecentSuggestions(this,
+		// RecentMovieSuggestionsProvider.AUTHORITY,
+		// RecentMovieSuggestionsProvider.MODE);
+		// suggestions.saveRecentQuery(query, null);
+		// search(query);
+
+	}
+
+	private void replaceFragment(Fragment fr) {
+		FragmentManager manager = getSupportFragmentManager();
+		manager.beginTransaction().replace(DrawerActivity.CONTENT_FRAME, fr)
+				.commit();
 
 	}
 
@@ -138,34 +106,22 @@ public class SearchActivity extends ActionBarActivity implements
 
 		return true;
 	}
-	
+
 	@Override
-	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(this, mUri, null, null, null, null);
+	protected int getActivityNumberInDrawer() {
+		return -1;
 	}
 
 	@Override
-	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-		mAdapter.swapCursor(data);
-
-	}
-
-	@Override
-	public void onLoaderReset(Loader<Cursor> loader) {
-		mAdapter.swapCursor(null);
+	public void performSearch(String query) {
+		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-		Intent details = new Intent(this, MovieDetailsActivity.class);
-		Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-		Bundle arguments = new Bundle();
-		arguments.putInt(Contract.ID,
-				cursor.getInt(cursor.getColumnIndex(MovieColumns.ROTTEN_ID)));
-		details.putExtra(MainActivity.ARGUMENTS, arguments);
-		startActivity(details);
-		
+	public void onItemListClick(Bundle arguments) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

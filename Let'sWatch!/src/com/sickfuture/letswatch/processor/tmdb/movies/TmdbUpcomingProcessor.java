@@ -3,6 +3,7 @@ package com.sickfuture.letswatch.processor.tmdb.movies;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.UpcomingTmdbColumns;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,6 +21,11 @@ public class TmdbUpcomingProcessor extends TmdbMovieListProcessor {
 	@Override
 	public String getKey() {
 		return LetsWatchApplication.TMDB_UPCOMING_PROCESSOR_SERVICE;
+	}
+
+	@Override
+	public String getIdColumnName() {
+		return UpcomingTmdbColumns.MOVIE_TMDB_ID;
 	}
 
 }
