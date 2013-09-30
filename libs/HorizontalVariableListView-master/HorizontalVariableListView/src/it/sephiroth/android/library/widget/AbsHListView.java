@@ -9,6 +9,7 @@ import it.sephiroth.android.library.util.v11.MultiChoiceModeWrapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -956,7 +957,7 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 	private void updateOnScreenCheckedViews() {
 		final int firstPos = mFirstPosition;
 		final int count = getChildCount();
-		final boolean useActivated = getContext().getApplicationInfo().targetSdkVersion >= 11;
+		final boolean useActivated = android.os.Build.VERSION.SDK_INT >= 11;
 		for ( int i = 0; i < count; i++ ) {
 			final View child = getChildAt( i );
 			final int position = firstPos + i;
@@ -1416,7 +1417,12 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 				&& mChoiceActionMode != null;
 
 		if ( mCheckStates != null ) {
-			ss.checkState = mCheckStates.clone();
+			try {
+				ss.checkState = mCheckStates.clone();
+			} catch( NoSuchMethodError e ) {
+				e.printStackTrace();
+				ss.checkState = new SparseBooleanArray();
+			}
 		}
 		if ( mCheckedIdStates != null ) {
 			final LongSparseArray<Integer> idState = new LongSparseArray<Integer>();
@@ -1793,6 +1799,7 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 	 * 
 	 * @return A view displaying the data associated with the specified position
 	 */
+	@SuppressLint ( "NewApi" )
 	protected View obtainView( int position, boolean[] isScrap ) {
 		isScrap[0] = false;
 		View scrapView;
@@ -2255,7 +2262,7 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 		final ViewTreeObserver treeObserver = getViewTreeObserver();
 		treeObserver.removeOnTouchModeChangeListener( this );
 
-		if ( mAdapter != null ) {
+		if ( mAdapter != null && mDataSetObserver != null ) {
 			mAdapter.unregisterDataSetObserver( mDataSetObserver );
 			mDataSetObserver = null;
 		}
@@ -5170,6 +5177,7 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 	 * @param views
 	 *           A list into which to put the reclaimed views
 	 */
+	@SuppressLint ( "NewApi" )
 	public void reclaimViews( List<View> views ) {
 		int childCount = getChildCount();
 		RecyclerListener listener = mRecycler.mRecyclerListener;
@@ -5502,6 +5510,7 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 		 * @param scrap
 		 *           The view to add
 		 */
+		@SuppressLint ( "NewApi" )
 		public void addScrapView( View scrap, int position ) {
 			AbsHListView.LayoutParams lp = (AbsHListView.LayoutParams) scrap.getLayoutParams();
 			if ( lp == null ) {
@@ -5566,6 +5575,7 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 		/**
 		 * Move all views remaining in mActiveViews to mScrapViews.
 		 */
+		@SuppressLint ( "NewApi" )
 		public void scrapActiveViews() {
 			final View[] activeViews = mActiveViews;
 			final boolean hasListener = mRecyclerListener != null;
@@ -5621,6 +5631,7 @@ public abstract class AbsHListView extends AdapterView<ListAdapter> implements V
 		 * Makes sure that the size of mScrapViews does not exceed the size of mActiveViews. (This can happen if an adapter does not
 		 * recycle its views).
 		 */
+		@SuppressLint ( "NewApi" )
 		private void pruneScrapViews() {
 			final int maxViews = mActiveViews.length;
 			final int viewTypeCount = mViewTypeCount;
