@@ -45,11 +45,11 @@ public class SearchedPersonsFragment extends SickGridCursorFragment {
 	}
 
 	private void search(Bundle arguments) {
-		String query = arguments.getString(SearchManager.QUERY);
-		String url = TmdbApi.searchPerson(query, 0, true, null);
+		getActivity().getContentResolver().delete(sSearchedPersonsUri,
+				null, null);
 		if (NetworkHelper.checkConnection(getActivity())) {
-			getActivity().getContentResolver().delete(sSearchedPersonsUri,
-					null, null);
+			String query = arguments.getString(SearchManager.QUERY);
+			String url = TmdbApi.searchPerson(query, 0, true, null);
 			DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
 					url);
 			SourceService

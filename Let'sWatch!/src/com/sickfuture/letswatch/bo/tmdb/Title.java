@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import com.sickfuture.letswatch.R;
+
 public class Title {
 
 	private String iso_3166_1, title;

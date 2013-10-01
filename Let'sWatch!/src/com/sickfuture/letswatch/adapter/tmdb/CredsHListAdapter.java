@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;

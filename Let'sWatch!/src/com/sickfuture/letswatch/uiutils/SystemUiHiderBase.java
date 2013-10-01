@@ -3,6 +3,7 @@ package com.sickfuture.letswatch.uiutils;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.WindowManager;
+import com.sickfuture.letswatch.R;
 
 /**
  * A base implementation of {@link SystemUiHider}. Uses APIs available in all

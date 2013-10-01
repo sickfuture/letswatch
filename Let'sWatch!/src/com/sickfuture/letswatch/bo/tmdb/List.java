@@ -1,4 +1,7 @@
 package com.sickfuture.letswatch.bo.tmdb;
+
+import com.sickfuture.letswatch.R;
+
 public class List {
 
 	private String description, id, iso_639_1, list_type, name, poster_path,

@@ -60,6 +60,8 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 
 	private static final String LOG_TAG = MovieFragment.class.getSimpleName();
 
+	public static final String MOVIE_ID = "movie_id";
+
 	private static final int HLIST_MOVIE_CREW = R.id.hlist_view_fragment_movie_crew;
 	private static final int HLIST_MOVIE_CAST = R.id.hlist_view_fragment_movie_cast;
 	private static final int HLIST_SIMILAR = R.id.hlist_view_fragment_movie_similar;
@@ -130,7 +132,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		Bundle args = getArguments();
-		mid = args.getString(Contract.MovieColumns.TMDB_ID);
+		mid = args.getString(MOVIE_ID);
 		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
 		moviesSelection = movTable + "." + Contract.MovieColumns.TMDB_ID
@@ -434,7 +436,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			startActivity(intent);
 		} else if (parent.getId() == HLIST_SIMILAR) {
 			Bundle args = new Bundle();
-			args.putString(MovieColumns.TMDB_ID,
+			args.putString(MOVIE_ID,
 					c.getString(c.getColumnIndex(MovieColumns.TMDB_ID)));
 			((IListClickable) getActivity()).onItemListClick(args);
 		}
@@ -461,13 +463,13 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			startActivity(intent);
 		} else if (view.getId() == SIMILAR_CONTAINER) {
 			Bundle args = new Bundle();
-			args.putString("ids", mSimilarIds);
+			args.putString(SimilarMoviesFragment.SIMILAR_IDS, mSimilarIds);
 			Fragment fragment = new SimilarMoviesFragment();
 			fragment.setArguments(args);
 			FragmentManager fragmentManager = getActivity()
 					.getSupportFragmentManager();
 			fragmentManager.beginTransaction().addToBackStack(null)
-			.replace(R.id.content_frame, fragment).commit();
+					.replace(R.id.content_frame, fragment).commit();
 		}
 
 	}
@@ -475,9 +477,9 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		if(menu!=null){
+		if (menu != null) {
 			menu.removeItem(R.id.menu_refresh);
 		}
-			
+
 	}
 }

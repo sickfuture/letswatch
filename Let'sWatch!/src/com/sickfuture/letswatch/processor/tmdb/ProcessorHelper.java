@@ -6,6 +6,7 @@ import android.content.Context;
 import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.*;
 import com.sickfuture.letswatch.content.contract.Contract;

@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.image.SickImageLoader;
+import com.sickfuture.letswatch.R;
 
 public class UIHelper {
 

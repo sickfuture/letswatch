@@ -9,6 +9,7 @@ import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.TextView;
 
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 
 public class CastGridAdapter extends PeopleGridCursorAdapter {

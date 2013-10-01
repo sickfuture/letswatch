@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.bo.rotten;
 
+import com.sickfuture.letswatch.R;
+
 public class Clip {
 
 	private String title, thumbnail;

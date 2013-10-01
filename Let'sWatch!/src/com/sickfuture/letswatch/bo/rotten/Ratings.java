@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.bo.rotten;
 
+import com.sickfuture.letswatch.R;
+
 public class Ratings {
 
 	private int critics_score, audience_score;

@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import com.sickfuture.letswatch.R;
+
 public class Review {
 
 	private String id, author, content, url, iso_639_1, media_id, media_title,

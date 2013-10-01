@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.adapter;
 
+import com.sickfuture.letswatch.R;
+
 
 //public class CriticsRepliesCursorAdapter extends ViewHolderCursorAdapter {
 //

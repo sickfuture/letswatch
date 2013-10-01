@@ -7,6 +7,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import com.sickfuture.letswatch.R;
 
 public abstract class SickCursorListFragment extends SickAdapterViewFragment<ListView> implements
 		LoaderCallbacks<Cursor> {

@@ -15,6 +15,7 @@ import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.IOUtils;
 import com.android.sickfuture.sickcore.utils.L;
 import com.google.gson.Gson;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.bo.rotten.Movie;
 import com.sickfuture.letswatch.bo.rotten.MovieList;
 import com.sickfuture.letswatch.content.contract.Contract;

@@ -3,19 +3,21 @@
     xmlns:lwapp="http://schemas.android.com/apk/res-auto" >
 
     <item
-        android:id="@+id/menu_refresh"
-        lwapp:actionViewClass="com.manuelpeinado.refreshactionitem.RefreshActionItem"
-        lwapp:showAsAction="always"
-        android:title="@string/menu_refresh"/>
-    <item
         android:id="@+id/menu_search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="@string/menu_search"
+        android:orderInCategory="1000"
         lwapp:actionViewClass="android.support.v7.widget.SearchView"
         lwapp:showAsAction="ifRoom|collapseActionView"/>
     <item
+        android:id="@+id/menu_refresh"
+        lwapp:actionViewClass="com.manuelpeinado.refreshactionitem.RefreshActionItem"
+        android:orderInCategory="10"
+        lwapp:showAsAction="ifRoom"
+        android:title="@string/menu_refresh"/>
+    <item
         android:id="@+id/menu_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:showAsAction="never"
         android:title="@string/menu_settings"/>
 

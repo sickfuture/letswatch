@@ -55,6 +55,8 @@ public class PersonFragment extends Fragment implements
 
 	private static final String LOG_TAG = PersonFragment.class.getSimpleName();
 
+	public static final String PERSON_ID = "person_id";
+	
 	private static final int HLIST_CREW = R.id.hlist_view_fragment_person_crew;
 	private static final int HLIST_CAST = R.id.hlist_view_fragment_person_cast;
 	private static final int CASTS_CONTAINER = R.id.layout_fragment_person_casts;
@@ -96,7 +98,7 @@ public class PersonFragment extends Fragment implements
 		setHasOptionsMenu(true);
 		mLoaderId = hashCode();
 		Bundle args = getArguments();
-		pid = args.getString(Contract.PersonColumns.TMDB_ID);
+		pid = args.getString(PERSON_ID);
 		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
 		uri = ContractUtils

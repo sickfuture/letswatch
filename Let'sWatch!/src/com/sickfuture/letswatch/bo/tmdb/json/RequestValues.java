@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.bo.tmdb.json;
 
+import com.sickfuture.letswatch.R;
+
 public class RequestValues {
 
 	public static String postMovieFavorite(String movieId, boolean favorite) {

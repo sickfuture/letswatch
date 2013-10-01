@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.android.sickfuture.sickcore.http.HttpManager.RequestType;
+import com.sickfuture.letswatch.R;
 
 public class LoadingRequest implements Parcelable {
 

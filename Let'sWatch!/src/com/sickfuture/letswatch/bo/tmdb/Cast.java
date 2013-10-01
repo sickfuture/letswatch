@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import com.sickfuture.letswatch.R;
+
 public class Cast {
 
 	private int id, order;

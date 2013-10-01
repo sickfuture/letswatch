@@ -16,6 +16,7 @@ import com.android.sickfuture.sickcore.asynctask.ParamCallback;
 import com.android.sickfuture.sickcore.exceptions.BadRequestException;
 import com.android.sickfuture.sickcore.http.HttpManager;
 import com.android.sickfuture.sickcore.http.HttpManager.RequestType;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.processor.rotten.RottenMovieProcessor;
 import com.sickfuture.letswatch.request.LoadingRequest;
 

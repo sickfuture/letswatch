@@ -1,5 +1,7 @@
 package com.sickfuture.letswatch.bo.rotten;
 
+import com.sickfuture.letswatch.R;
+
 public class Review {
 
 	private String critic, date, freshness, publication, quote, original_score;

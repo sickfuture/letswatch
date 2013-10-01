@@ -10,6 +10,7 @@ import java.util.Locale;
 import android.text.TextUtils;
 
 import com.android.sickfuture.sickcore.utils.L;
+import com.sickfuture.letswatch.R;
 
 public class AgeHelper {
 

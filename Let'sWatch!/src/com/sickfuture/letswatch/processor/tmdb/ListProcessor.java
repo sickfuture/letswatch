@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.google.gson.Gson;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.List;
 import com.sickfuture.letswatch.content.contract.Contract;

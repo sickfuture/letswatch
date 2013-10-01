@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.android.sickfuture.sickcore.source.IProcessor;
+import com.sickfuture.letswatch.R;
 
 public abstract class InsertOrUpdateProcessor<DataSource> implements
 		IProcessor<DataSource, ContentValues> {

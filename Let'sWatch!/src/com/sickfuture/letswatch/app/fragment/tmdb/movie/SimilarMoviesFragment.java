@@ -13,6 +13,7 @@ import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
 public class SimilarMoviesFragment extends CommonGridFragment {
 
+	public static final String SIMILAR_IDS = "similar_ids";
 	private static final Uri moviesUri = ContractUtils
 			.getProviderUriFromContract(Contract.MovieColumns.class);
 	private static final String[] similarProjection = new String[] {
@@ -25,8 +26,8 @@ public class SimilarMoviesFragment extends CommonGridFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (getArguments().containsKey("ids")) {
-			mSimilarIds = getArguments().getString("ids");
+		if (getArguments().containsKey(SIMILAR_IDS)) {
+			mSimilarIds = getArguments().getString(SIMILAR_IDS);
 		}
 	}
 

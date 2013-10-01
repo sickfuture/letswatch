@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.tmdb.CredsCursorAdapter;
 import com.sickfuture.letswatch.adapter.tmdb.CrewGridAdapter;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonGridFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
@@ -61,7 +63,7 @@ public class CrewFragment extends CommonGridFragment {
 	protected String getSelection() {
 		if (isMovieCasts) {
 			return CrewColumns.TMDB_MOVIE_ID + " = " + mid;
-		} else 
+		} else
 			return CrewColumns.TMDB_PERSON_ID + " = " + pid;
 	}
 
@@ -69,7 +71,7 @@ public class CrewFragment extends CommonGridFragment {
 	public CursorAdapter cursorAdapter() {
 		if (isMovieCasts) {
 			return new CrewGridAdapter(getActivity(), null);
-		} else 
+		} else
 			return new CredsCursorAdapter(getActivity(), null);
 	}
 
@@ -81,12 +83,12 @@ public class CrewFragment extends CommonGridFragment {
 			Cursor cursor = (Cursor) list.getItemAtPosition(position);
 			long id_ = cursor.getLong(cursor
 					.getColumnIndex(CrewColumns.TMDB_PERSON_ID));
-			args.putString(PersonColumns.TMDB_ID, String.valueOf(id_));
+			args.putString(PersonFragment.PERSON_ID, String.valueOf(id_));
 		} else {
 			Cursor cursor = (Cursor) list.getItemAtPosition(position);
 			long id_ = cursor.getLong(cursor
 					.getColumnIndex(CrewColumns.TMDB_MOVIE_ID));
-			args.putString(MovieColumns.TMDB_ID, String.valueOf(id_));
+			args.putString(MovieFragment.MOVIE_ID, String.valueOf(id_));
 		}
 		((IListClickable) getActivity()).onItemListClick(args);
 	}

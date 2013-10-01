@@ -1,6 +1,7 @@
 package com.sickfuture.letswatch.processor.tmdb.movies;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.UpcomingTmdbColumns;

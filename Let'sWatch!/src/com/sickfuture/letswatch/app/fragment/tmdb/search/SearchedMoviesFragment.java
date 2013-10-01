@@ -45,12 +45,12 @@ public class SearchedMoviesFragment extends SickGridCursorFragment {
 	}
 
 	private void search(Bundle arguments) {
-		String query = arguments.getString(SearchManager.QUERY);
-		String url = TmdbApi.searchMovie(query, 0, Locale.getDefault()
-				.getLanguage(), true, 0, 0, null);
+		getActivity().getContentResolver().delete(sSearchedMoviesUri, null,
+				null);
 		if (NetworkHelper.checkConnection(getActivity())) {
-			getActivity().getContentResolver().delete(sSearchedMoviesUri, null,
-					null);
+			String query = arguments.getString(SearchManager.QUERY);
+			String url = TmdbApi.searchMovie(query, 0, Locale.getDefault()
+					.getLanguage(), true, 0, 0, null);
 			DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
 					url);
 			SourceService

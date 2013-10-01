@@ -10,6 +10,7 @@ import android.net.Uri;
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.google.gson.Gson;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.Movie;
 import com.sickfuture.letswatch.content.contract.Contract;

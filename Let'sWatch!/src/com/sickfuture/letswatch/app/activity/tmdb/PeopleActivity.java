@@ -28,27 +28,31 @@ public class PeopleActivity extends DrawerActivity implements IListClickable {
 	@SuppressLint("NewApi")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Bundle args = null;
 		if (getIntent().hasExtra(CastColumns.TMDB_PERSON_ID)) {
-			Bundle args = new Bundle();
-			args.putString(PersonColumns.TMDB_ID,
+			args = new Bundle();
+			args.putString(PersonFragment.PERSON_ID,
 					getIntent().getStringExtra(CastColumns.TMDB_PERSON_ID));
 			args.putBoolean(ADD_TO_BACKSTACK, false);
 			onItemListClick(args);
 		} else if (getIntent().hasExtra("cast_mid")) {
-			Bundle args = new Bundle();
+			args = new Bundle();
 			args.putString("mid", getIntent().getStringExtra("cast_mid"));
+			args.putBoolean(ADD_TO_BACKSTACK, false);
 			replaceFragment(new CastFragment(), args);
 		} else if (getIntent().hasExtra("crew_mid")) {
-			Bundle args = new Bundle();
+			args = new Bundle();
 			args.putString("mid", getIntent().getStringExtra("crew_mid"));
+			args.putBoolean(ADD_TO_BACKSTACK, false);
 			replaceFragment(new CrewFragment(), args);
 		} else if (getIntent().hasExtra(SearchActivity.SEARCHED_PERSON_ID)) {
 			Bundle arguments = new Bundle();
-			arguments.putString(PersonColumns.TMDB_ID, getIntent()
+			arguments.putString(PersonFragment.PERSON_ID, getIntent()
 					.getStringExtra(SearchActivity.SEARCHED_PERSON_ID));
+			arguments.putBoolean(ADD_TO_BACKSTACK, false);
 			onItemListClick(arguments);
 		} else {
-			replaceFragment(new PopularPersonsFragment(), null);
+			replaceFragment(new PopularPersonsFragment(), args);
 		}
 	}
 
@@ -68,7 +72,7 @@ public class PeopleActivity extends DrawerActivity implements IListClickable {
 		MenuItem searchItem = menu.findItem(R.id.menu_search);
 		SearchView searchView = (SearchView) MenuItemCompat
 				.getActionView(searchItem);
-		searchView.setQueryHint("Search people");
+		searchView.setQueryHint(getString(R.string.search_hint_people));
 		return sup;
 	}
 

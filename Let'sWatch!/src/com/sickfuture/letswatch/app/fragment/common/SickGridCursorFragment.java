@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 
 public abstract class SickGridCursorFragment extends SickAdapterViewFragment<GridView> implements

@@ -11,6 +11,7 @@ import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.StringsUtils;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public abstract class BaseListProcessor <DataSource, Result> implements IProcessor<DataSource, Result> {

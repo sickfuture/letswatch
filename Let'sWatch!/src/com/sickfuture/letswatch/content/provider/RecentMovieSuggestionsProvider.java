@@ -1,6 +1,7 @@
 package com.sickfuture.letswatch.content.provider;
 
 import android.content.SearchRecentSuggestionsProvider;
+import com.sickfuture.letswatch.R;
 
 public class RecentMovieSuggestionsProvider extends
 		SearchRecentSuggestionsProvider {

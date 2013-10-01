@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
+import com.sickfuture.letswatch.R;
 
 public class CommonListAdapter extends BaseCursorAdapter {
 

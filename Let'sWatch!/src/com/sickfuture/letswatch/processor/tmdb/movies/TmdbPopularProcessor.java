@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.PopularTmdbColumns;

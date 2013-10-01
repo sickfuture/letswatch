@@ -103,7 +103,7 @@ public class PopularPersonsFragment extends SickGridCursorFragment implements
 			long id) {
 		Cursor c = (Cursor) list.getItemAtPosition(position);
 		Bundle bundle = new Bundle();
-		bundle.putString(PersonColumns.TMDB_ID,
+		bundle.putString(PersonFragment.PERSON_ID,
 				c.getString(c.getColumnIndex(PersonColumns.TMDB_ID)));
 		((IListClickable) getActivity()).onItemListClick(bundle);
 

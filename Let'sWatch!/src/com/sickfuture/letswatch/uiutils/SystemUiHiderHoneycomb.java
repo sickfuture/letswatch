@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import com.sickfuture.letswatch.R;
 
 /**
  * An API 11+ implementation of {@link SystemUiHider}. Uses APIs available in

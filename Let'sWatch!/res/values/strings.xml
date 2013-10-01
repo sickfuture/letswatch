@@ -96,6 +96,8 @@
     <string name="storyline">Storyline</string>
     <string name="similar">Similar</string>
     <string name="crew">Crew</string>
+    <string name="search_hint_people">Search people</string>
+    <string name="search_hint_movie">Search movie</string>
     
 
 </resources>

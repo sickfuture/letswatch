@@ -7,6 +7,7 @@ import android.util.Log;
 import com.android.sickfuture.sickcore.content.CommonProvider;
 import com.android.sickfuture.sickcore.utils.DatabaseUtils;
 import com.android.sickfuture.sickcore.utils.SQLQueryBuilder;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.content.contract.Contract.PopularTmdbColumns;

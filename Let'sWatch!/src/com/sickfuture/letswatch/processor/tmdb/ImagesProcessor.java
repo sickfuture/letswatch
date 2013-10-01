@@ -10,6 +10,7 @@ import android.content.Context;
 
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.google.gson.Gson;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.Image;
 import com.sickfuture.letswatch.bo.tmdb.Images;

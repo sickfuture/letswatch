@@ -1,6 +1,7 @@
 package com.sickfuture.letswatch.api;
 
 import android.text.TextUtils;
+import com.sickfuture.letswatch.R;
 
 public class MovieApis {
 

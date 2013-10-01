@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
+import com.sickfuture.letswatch.R;
 
 /**
  * A utility class that helps with showing and hiding system UI such as the

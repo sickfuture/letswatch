@@ -35,9 +35,12 @@ public class MoviesGridCursorAdapter extends BaseCursorAdapter {
 	@Override
 	public void bindData(View view, Context context, Cursor cursor,
 			ViewHolder holder) {
-		TextView title = (TextView) holder.getViewById(getTitleViewRes());
-		title.setText(cursor.getString(cursor
-				.getColumnIndex(Contract.MovieColumns.TITLE)));
+		TextView titleView = (TextView) holder.getViewById(getTitleViewRes());
+		String title = cursor.getString(cursor
+				.getColumnIndex(Contract.MovieColumns.TITLE));
+		String titleOrig = cursor.getString(cursor
+				.getColumnIndex(Contract.MovieColumns.TITLE_ORIGINAL));
+		titleView.setText(TextUtils.isEmpty(title) ? titleOrig : title);
 		TextView ratingView = (TextView) holder.getViewById(getRatingViewRes());
 		String rating = cursor.getString(cursor
 				.getColumnIndex(Contract.MovieColumns.VOTE_AVERAGE));

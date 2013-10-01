@@ -17,6 +17,7 @@ import android.widget.GridView;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.service.SourceResultReceiver;
 import com.android.sickfuture.sickcore.utils.AppUtils;
+import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 

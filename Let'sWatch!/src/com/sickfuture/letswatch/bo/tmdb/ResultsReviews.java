@@ -1,5 +1,6 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
+import com.sickfuture.letswatch.R;
 import java.util.List;
 
 public class ResultsReviews {

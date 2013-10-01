@@ -8,6 +8,7 @@ import com.android.sickfuture.sickcore.annotations.db.types.DBIntegerType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBLongType;
 import com.android.sickfuture.sickcore.annotations.db.types.DBVarcharType;
 import com.android.sickfuture.sickcore.content.contract.CoreBaseColumns;
+import com.sickfuture.letswatch.R;
 
 @DBContract
 public class Contract {

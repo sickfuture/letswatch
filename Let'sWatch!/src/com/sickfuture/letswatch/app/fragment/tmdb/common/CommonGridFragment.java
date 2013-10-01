@@ -23,10 +23,10 @@ import com.manuelpeinado.refreshactionitem.RefreshActionItem;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.tmdb.MoviePosterGridAdapter;
-import com.sickfuture.letswatch.adapter.tmdb.MoviesGridCursorAdapter;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
-import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
 public abstract class CommonGridFragment extends SickGridCursorFragment
 		implements RefreshActionListener {
@@ -123,11 +123,10 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 	@Override
 	public void onItemClick(AdapterView<?> list, View view, int position,
 			long id) {
-		String key = Contract.MovieColumns.TMDB_ID;
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
-		long mid = cursor.getLong(cursor.getColumnIndex(key));
+		long mid = cursor.getLong(cursor.getColumnIndex(MovieColumns.TMDB_ID));
 		Bundle args = new Bundle();
-		args.putString(key, String.valueOf(mid));
+		args.putString(MovieFragment.MOVIE_ID, String.valueOf(mid));
 		((IListClickable) getActivity()).onItemListClick(args);
 
 	}
