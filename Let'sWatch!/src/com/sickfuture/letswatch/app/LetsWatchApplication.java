@@ -37,19 +37,19 @@ import com.sickfuture.letswatch.processor.tmdb.search.SearchedPersonsProcessor;
 
 public class LetsWatchApplication extends SickApp {
 
-    public static final String BASE_PROCESSOR_SERVICE = "sickcore:BaseMovieProcessor";
-    public static final String BOX_OFFICE_PROCESSOR_SERVICE = "sickcore:BoxOfficeMovieProcessor";
-    public static final String OPENING_PROCESSOR_SERVICE = "sickcore:OpeningMovieProcessor";
-    public static final String THEATERS_PROCESSOR_SERVICE = "sickcore:TheatersMovieProcessor";
-    public static final String UPCOMING_PROCESSOR_SERVICE = "sickcore:UpcomingMovieProcessor";
-    public static final String TOP_RENTALS_PROCESSOR_SERVICE = "sickcore:TopRentalsProcessor";
-    public static final String UPCOMING_DVD_PROCESSOR_SERVICE = "sickcore:UpcomingDvdProcessor";
-    public static final String CURRENT_RELEASE_PROCESSOR_SERVICE = "sickcore:CurrentReleaseProcessor";
-    public static final String NEW_RELEASE_PROCESSOR_SERVICE = "sickcore:NewReleaseProcessor";
-    public static final String SEARCH_PROCESSOR_SERVICE = "sickcore:SearchProcessor";
-    public static final String INFO_PROCESSOR_SERVICE = "sickcore:InfoProcessor";
-    
-    public static final String TMDB_MOVIE_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
+	public static final String BASE_PROCESSOR_SERVICE = "sickcore:BaseMovieProcessor";
+	public static final String BOX_OFFICE_PROCESSOR_SERVICE = "sickcore:BoxOfficeMovieProcessor";
+	public static final String OPENING_PROCESSOR_SERVICE = "sickcore:OpeningMovieProcessor";
+	public static final String THEATERS_PROCESSOR_SERVICE = "sickcore:TheatersMovieProcessor";
+	public static final String UPCOMING_PROCESSOR_SERVICE = "sickcore:UpcomingMovieProcessor";
+	public static final String TOP_RENTALS_PROCESSOR_SERVICE = "sickcore:TopRentalsProcessor";
+	public static final String UPCOMING_DVD_PROCESSOR_SERVICE = "sickcore:UpcomingDvdProcessor";
+	public static final String CURRENT_RELEASE_PROCESSOR_SERVICE = "sickcore:CurrentReleaseProcessor";
+	public static final String NEW_RELEASE_PROCESSOR_SERVICE = "sickcore:NewReleaseProcessor";
+	public static final String SEARCH_PROCESSOR_SERVICE = "sickcore:SearchProcessor";
+	public static final String INFO_PROCESSOR_SERVICE = "sickcore:InfoProcessor";
+
+	public static final String TMDB_MOVIE_PROCESSOR_SERVICE = "sickcore:TmdbMovieProcessor";
 	public static final String TMDB_POPULAR_PROCESSOR_SERVICE = "sickcore:TmdbPopularProcessor";
 	public static final String TMDB_NOW_PLAYING_PROCESSOR_SERVICE = "sickcore:TmdbNowPlayingProcessor";
 	public static final String TMDB_UPCOMING_PROCESSOR_SERVICE = "sickcore:TmdbUpcomingProcessor";
@@ -70,51 +70,53 @@ public class LetsWatchApplication extends SickApp {
 	public static final String TMDB_SEARCHED_MOVIES_PROCESSOR_SERVICE = "sickcore:TmdbSearchedMoviesProcessor";
 	public static final String TMDB_SEARCHED_PERSONS_PROCESSOR_SERVICE = "sickcore:TmdbSearchedPersonsProcessor";
 
-    @Override
-    public void register() {
-        /** DATA_SOURCE */
-        registerAppService(new HttpInputStreamDataSource());
-        /***************/
+	@Override
+	public void register() {
+		/** DATA_SOURCE */
+		registerAppService(new HttpInputStreamDataSource());
+		/***************/
 
-        /** SUPER_IMAGE_LOADER */
-        ImageLoaderParamsBuilder builder = new ImageLoaderParamsBuilder(this);
-		builder.setMemoryCacheEnabled(true).enableFadeIn(true)
-				.setDiscCacheEnabled(true).setDiscCacheSize(10 * 1024 * 1024)
-				.setFadeInTime(600).setLoadingImage(R.drawable.empty_photo)
-				.setPartOfAvailibleMemoryCache(0.25f);
+		/** SICK_IMAGE_LOADER */
+		ImageLoaderParamsBuilder builder = new ImageLoaderParamsBuilder(
+				getApplicationContext());
+		builder.enableFadeIn(true).setDiscCacheEnabled(true)
+				.setDiscCacheSize(10 * 1024 * 1024).setMemoryCacheEnabled(true)
+				.setPartOfAvailibleMemoryCache(0.5f)
+				.setLoadingImage(R.drawable.empty_photo);
 		registerAppService(builder.build());
-        /**********************/
+		/**********************/
 
-        /** PROCESSORS */
-        registerAppService(new BoxOfficeProcessor());
-        registerAppService(new OpeningProcessor());
-        registerAppService(new TheatersProcessor());
-        registerAppService(new UpcomingProcessor());
-        registerAppService(new TopRentalsProcessor());
-        registerAppService(new UpcomingDvdProcessor());
-        registerAppService(new CurrentReleaseProcessor());
-        registerAppService(new NewReleaseProcessor());
-        registerAppService(new SearchProcessor());
-        registerAppService(new InfoProcessor());
-        registerAppService(new TmdbMovieProcessor());
-        registerAppService(new TmdbPopularProcessor());
-        registerAppService(new TmdbNowPlayingProcessor());
-        registerAppService(new TmdbTopRatedProcessor());
-        registerAppService(new TmdbUpcomingProcessor());
-        registerAppService(new TitlesProcessor());
-        registerAppService(new CastsProcessor());
-        registerAppService(new ImagesProcessor());
-        registerAppService(new KeywordsProcessor());
-        registerAppService(new ReleasesProcessor());
-        registerAppService(new TrailersProcessor());
-        registerAppService(new MovieResultsProcessor());
-        registerAppService(new ReviewsProcessor());
-        registerAppService(new ListsProcessor());
-        registerAppService(new PersonProcessor());
-        registerAppService(new ListProcessor());
-        registerAppService(new PopularPersonsProcessor());
-        registerAppService(new PersonCreditsProcessor());
-        registerAppService(new SearchedMoviesProcessor());
-        registerAppService(new SearchedPersonsProcessor());
-    }
+		/** PROCESSORS */
+		registerAppService(new BoxOfficeProcessor());
+		registerAppService(new OpeningProcessor());
+		registerAppService(new TheatersProcessor());
+		registerAppService(new UpcomingProcessor());
+		registerAppService(new TopRentalsProcessor());
+		registerAppService(new UpcomingDvdProcessor());
+		registerAppService(new CurrentReleaseProcessor());
+		registerAppService(new NewReleaseProcessor());
+		registerAppService(new SearchProcessor());
+		registerAppService(new InfoProcessor());
+		registerAppService(new TmdbMovieProcessor());
+		registerAppService(new TmdbPopularProcessor());
+		registerAppService(new TmdbNowPlayingProcessor());
+		registerAppService(new TmdbTopRatedProcessor());
+		registerAppService(new TmdbUpcomingProcessor());
+		registerAppService(new TitlesProcessor());
+		registerAppService(new CastsProcessor());
+		registerAppService(new ImagesProcessor());
+		registerAppService(new KeywordsProcessor());
+		registerAppService(new ReleasesProcessor());
+		registerAppService(new TrailersProcessor());
+		registerAppService(new MovieResultsProcessor());
+		registerAppService(new ReviewsProcessor());
+		registerAppService(new ListsProcessor());
+		registerAppService(new PersonProcessor());
+		registerAppService(new ListProcessor());
+		registerAppService(new PopularPersonsProcessor());
+		registerAppService(new PersonCreditsProcessor());
+		registerAppService(new SearchedMoviesProcessor());
+		registerAppService(new SearchedPersonsProcessor());
+	}
+
 }
