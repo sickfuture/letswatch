@@ -1,8 +1,6 @@
 package com.sickfuture.letswatch.animations;
 
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -12,7 +10,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -21,10 +18,9 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 
-import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
-import com.android.sickfuture.sickcore.image.callback.ImageLoadedCallback;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
+import com.android.sickfuture.sickcore.task.AsyncTask;
 import com.android.sickfuture.sickcore.utils.AppUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
@@ -32,7 +28,6 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi.BACKDROP;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 
-// TODO add timer and refactor this class
 public class AnimatedCellLayout extends ViewGroup {
 
 	private Cursor mCursor;
@@ -74,11 +69,9 @@ public class AnimatedCellLayout extends ViewGroup {
 		} finally {
 			a.recycle();
 		}
-
 		mImageLoader = (SickImageLoader) AppUtils.get(context,
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
-		mTimer = new Timer();
-		mTimer.schedule(new AnimationTimerTask(), 5 * 1000, 5 * 1000);
+		new AnimationTask().start();
 	}
 
 	@Override
@@ -167,13 +160,6 @@ public class AnimatedCellLayout extends ViewGroup {
 	}
 
 	@Override
-	protected void onDetachedFromWindow() {
-		super.onDetachedFromWindow();
-		mTimer.cancel();
-		mTimer.purge();
-	}
-
-	@Override
 	public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
 		return new LayoutParams(getContext(), attrs);
 	}
@@ -220,95 +206,65 @@ public class AnimatedCellLayout extends ViewGroup {
 	private static final Interpolator accelerator = new AccelerateInterpolator();
 	private static final Interpolator decelerator = new DecelerateInterpolator();
 
-	private Timer mTimer;
+	public class AnimationTask extends AsyncTask<String, Void, Bitmap> {
 
-	@SuppressLint("NewApi")
-	private void flipAnimate() {
-		try {
-			final RecyclingImageView childToAnimate = (RecyclingImageView) getChildAt(mRandom
-					.nextInt(getChildCount() - 1));
-			// if (!mCursor
-			// .moveToPosition(mRandom.nextInt(mCursor.getCount() - 1))) {
-			// return;
-			// }
-
-			// // TODO set appropriate uri
-			// String path = mCursor.getString(mCursor
-			// .getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
-			// String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
-
-			mImageLoader.loadBitmap(
-					"http://cs409717.vk.me/v409717209/20b3/ys47qBXgPMY.jpg",
-					new ImageLoadedCallback() {
-
-						@Override
-						public void onLoadStarted(String uri) {
-						}
-
-						@Override
-						public void onLoadFinished(final Object result) {
-							ObjectAnimator visToInvis = ObjectAnimator.ofFloat(
-									childToAnimate, "rotationY", 0f, 90f);
-							visToInvis.setDuration(500);
-							visToInvis.setInterpolator(accelerator);
-							final ObjectAnimator invisToVis = ObjectAnimator
-									.ofFloat(childToAnimate, "rotationY", -90f,
-											0f);
-							invisToVis.setDuration(500);
-							invisToVis.setInterpolator(decelerator);
-							visToInvis
-									.addListener(new AnimatorListenerAdapter() {
-										@Override
-										public void onAnimationEnd(Animator anim) {
-											invisToVis.start();
-											childToAnimate
-													.setImageBitmap((Bitmap) result);
-										}
-									});
-							visToInvis.start();
-						}
-
-						@Override
-						public void onLoadError(Throwable e) {
-							ObjectAnimator visToInvis = ObjectAnimator.ofFloat(
-									childToAnimate, "rotationY", 0f, 90f);
-							visToInvis.setDuration(500);
-							visToInvis.setInterpolator(accelerator);
-							final ObjectAnimator invisToVis = ObjectAnimator
-									.ofFloat(childToAnimate, "rotationY", -90f,
-											0f);
-							invisToVis.setDuration(500);
-							invisToVis.setInterpolator(decelerator);
-							visToInvis
-									.addListener(new AnimatorListenerAdapter() {
-										@Override
-										public void onAnimationEnd(Animator anim) {
-											invisToVis.start();
-											childToAnimate.setImageBitmap(null);
-										}
-									});
-							visToInvis.start();
-						}
-					});
-
-		} finally {
-			// TODO close cursor
+		public AnimationTask() {
 		}
-	}
 
-	public Handler mHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			flipAnimate();
-		};
-	};
-
-	private class AnimationTimerTask extends TimerTask {
+		public void start() {
+			executeOnExecutor(SERIAL_EXECUTOR);
+		}
 
 		@Override
-		public void run() {
-			mHandler.obtainMessage(1).sendToTarget();
+		protected Bitmap doInBackground(String... params) {
+			try {
+				Thread.sleep(5 * 1000);
+			} catch (InterruptedException e) {
+				// can be ignored
+			}
+			if (mCursor == null) {
+				return null;
+			}
+			String path = mCursor.getString(mCursor
+					.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
+			String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
+			Bitmap result = mImageLoader.loadBitmapSync(posterUrl);
+			return result;
 		}
 
+		@SuppressLint("NewApi")
+		@Override
+		protected void onPostExecute(final Bitmap result) {
+			if (result == null) {
+				return;
+			}
+			int randomCursorPosition = mRandom.nextInt(mCursor.getCount() - 1);
+			int randomViewPosition = mRandom.nextInt(getChildCount() - 1);
+			if (!mCursor.moveToPosition(randomCursorPosition)) {
+				return;
+			}
+			final RecyclingImageView childToAnimate = (RecyclingImageView) getChildAt(randomViewPosition);
+			if (childToAnimate == null) {
+				return;
+			}
+			ObjectAnimator visToInvis = ObjectAnimator.ofFloat(childToAnimate,
+					"rotationY", 0f, 90f);
+			visToInvis.setDuration(500);
+			visToInvis.setInterpolator(accelerator);
+			final ObjectAnimator invisToVis = ObjectAnimator.ofFloat(
+					childToAnimate, "rotationY", -90f, 0f);
+			invisToVis.setDuration(500);
+			invisToVis.setInterpolator(decelerator);
+			visToInvis.addListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator anim) {
+					invisToVis.start();
+					childToAnimate.setImageBitmap(result);
+				}
+			});
+			visToInvis.start();
+			new AnimationTask().start();
+		}
 	}
 
 	public static class LayoutParams extends ViewGroup.LayoutParams {
