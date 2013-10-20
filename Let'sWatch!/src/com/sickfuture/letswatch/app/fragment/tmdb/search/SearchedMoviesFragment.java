@@ -5,15 +5,23 @@ import java.util.Locale;
 
 import android.app.SearchManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -34,23 +42,32 @@ import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
 public class SearchedMoviesFragment extends SickGridCursorFragment {
 
+	private InputMethodManager mKeyboard;
+	private SearchView mSearchView;
+	
 	private static final Uri sSearchedMoviesUri = ContractUtils
 			.getProviderUriFromContract(Contract.SearchedMoviesColumns.class);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mKeyboard = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		setHasOptionsMenu(true);
 		search(getArguments());
 	}
 
 	private void search(Bundle arguments) {
+		String query = arguments.getString(SearchManager.QUERY);
+		loadInfo(query);
+	}
+
+	private void loadInfo(String query) {
 		getActivity().getContentResolver().delete(sSearchedMoviesUri, null,
 				null);
 		if (NetworkHelper.checkConnection(getActivity())) {
-			String query = arguments.getString(SearchManager.QUERY);
+			mSearchView.setQuery("", false);
 			String url = TmdbApi.searchMovie(query, 0, Locale.getDefault()
-					.getLanguage(), true, 0, 0, null);
+					.getLanguage(), false, 0, 0, null);
 			DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
 					url);
 			SourceService
@@ -132,12 +149,38 @@ public class SearchedMoviesFragment extends SickGridCursorFragment {
 	}
 
 	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		MenuItem searchItem = menu.findItem(R.id.menu_search);
+		mSearchView = (SearchView) MenuItemCompat
+				.getActionView(searchItem);
+		mSearchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				query = query.trim().replace(" ", "+");
+				if (TextUtils.isEmpty(query)) {
+					return false;
+				}
+				mKeyboard.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+				loadInfo(query);
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String arg0) {
+				return false;
+			}
+		});
+	}
+
+	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		if(menu!=null){
+		if (menu != null) {
 			menu.removeItem(R.id.menu_refresh);
 		}
-			
+
 	}
 
 }

@@ -50,6 +50,34 @@ public class Cast {
 		return adult;
 	}
 
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setProfile_path(String profile_path) {
+		this.profile_path = profile_path;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setOriginal_title(String original_title) {
+		this.original_title = original_title;
+	}
+
+	public void setPoster_path(String poster_path) {
+		this.poster_path = poster_path;
+	}
+
+	public void setRelease_date(String release_date) {
+		this.release_date = release_date;
+	}
+
+	public void setAdult(boolean adult) {
+		this.adult = adult;
+	}
+
 	// "id": 819,
 	// "name": "Edward Norton",
 	// "character": "The Narrator",

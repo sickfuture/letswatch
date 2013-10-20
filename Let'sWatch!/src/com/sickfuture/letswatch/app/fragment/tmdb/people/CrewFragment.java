@@ -8,16 +8,13 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
-import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.tmdb.CredsCursorAdapter;
 import com.sickfuture.letswatch.adapter.tmdb.CrewGridAdapter;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonGridFragment;
 import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
-import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
-import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
-import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
+import com.sickfuture.letswatch.content.provider.tmdb.CrewProvider;
 
 public class CrewFragment extends CommonGridFragment {
 
@@ -91,6 +88,16 @@ public class CrewFragment extends CommonGridFragment {
 			args.putString(MovieFragment.MOVIE_ID, String.valueOf(id_));
 		}
 		((IListClickable) getActivity()).onItemListClick(args);
+	}
+
+	@Override
+	protected String getSortOrder() {
+		return CrewProvider.PERSON_ID;
+	}
+
+	@Override
+	protected String[] getSelectionArgs() {
+		return null;
 	}
 
 }

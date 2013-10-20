@@ -57,7 +57,15 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), getUri(), getProjection(), getSelection(), null, null);
+		return new CursorLoader(getActivity(), getUri(), getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
+	}
+
+	protected String getSortOrder() {
+		return null;
+	}
+
+	protected String[] getSelectionArgs() {
+		return null;
 	}
 
 	protected abstract String[] getProjection();

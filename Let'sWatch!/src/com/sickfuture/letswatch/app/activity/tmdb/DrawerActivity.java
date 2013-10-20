@@ -19,6 +19,7 @@ import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -45,6 +46,7 @@ public abstract class DrawerActivity extends ActionBarActivity {
 
 	private String[] mDrawerTitles;
 	private ListView mDrawerList;
+	private ViewGroup mRightDrawerView;
 	private CharSequence mDrawerTitle;
 	private CharSequence mTitle;
 	private DrawerLayout mDrawerLayout;
@@ -62,13 +64,16 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerTitles = getResources().getStringArray(TITLES_DRAWER);
 
+		
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mRightDrawerView = (ViewGroup) findViewById(R.id.right_drawer);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, mRightDrawerView);
 
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, mDrawerTitles));
 
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+		mDrawerToggle = new ActionBarDrawerToggle(this, getDrawerLayout(),
 				R.drawable.ic_drawer, R.string.app_name, R.string.app_name) {
 			public void onDrawerClosed(View view) {
 				ActionBar actionBar = getSupportActionBar();
@@ -86,7 +91,7 @@ public abstract class DrawerActivity extends ActionBarActivity {
 												// onPrepareOptionsMenu()
 			}
 		};
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		getDrawerLayout().setDrawerListener(mDrawerToggle);
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -95,13 +100,13 @@ public abstract class DrawerActivity extends ActionBarActivity {
 				if (position != getActivityNumberInDrawer())
 					selectItem(position);
 				else
-					mDrawerLayout.closeDrawer(mDrawerList);
+					getDrawerLayout().closeDrawer(mDrawerList);
 			}
 		});
 
 		mKeyboard = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-		mDrawerLayout.setDrawerListener(mDrawerToggle);
+		getDrawerLayout().setDrawerListener(mDrawerToggle);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -113,7 +118,7 @@ public abstract class DrawerActivity extends ActionBarActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// If the nav drawer is open, hide action items related to the content
 		// view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		boolean drawerOpen = getDrawerLayout().isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.menu_refresh).setVisible(!drawerOpen);
 		return super.onPrepareOptionsMenu(menu);
 	}
@@ -141,7 +146,7 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		startActivity(intent);
 		mDrawerList.setItemChecked(position, true);
 		setTitle(mDrawerTitles[position]);
-		mDrawerLayout.closeDrawer(mDrawerList);
+		getDrawerLayout().closeDrawer(mDrawerList);
 	}
 
 	@Override
@@ -213,6 +218,14 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		transaction.commit();
 	}
 
+	public DrawerLayout getDrawerLayout() {
+		return mDrawerLayout;
+	}
+
+	public ViewGroup getRightDrawerView() {
+		return mRightDrawerView;
+	}
+	
 	// private void applyCustomFontForPreICS() {
 	// if (!AndroidVersionsUtils.hasICS()) {
 	// new Font(

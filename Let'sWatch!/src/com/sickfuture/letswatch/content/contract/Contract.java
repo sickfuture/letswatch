@@ -347,18 +347,18 @@ public class Contract {
 		public static final String TMDB_MOVIE_ID = "TMDB_MOVIE_ID";
 		@DBVarcharType
 		public static final String CHARACTER = "CHARACTER";
-		@DBVarcharType
-		public static final String MOVIE_TITLE = "MOVIE_TITLE";
-		@DBVarcharType
-		public static final String MOVIE_ORIGINAL_TITLE = "MOVIE_ORIGINAL_TITLE";
-		@DBVarcharType
-		public static final String PERSON_NAME = "PERSON_NAME";
-		@DBIntegerType
-		public static final String MOVIE_ADULT = "MOVIE_ADULT";
-		@DBVarcharType
-		public static final String PERSON_PROFILE_PATH = "PERSON_PROFILE_PATH";
-		@DBVarcharType
-		public static final String MOVIE_POSTER_PATH = "MOVIE_POSTER_PATH";
+//		@DBVarcharType
+//		public static final String MOVIE_TITLE = "MOVIE_TITLE";
+//		@DBVarcharType
+//		public static final String MOVIE_ORIGINAL_TITLE = "MOVIE_ORIGINAL_TITLE";
+//		@DBVarcharType
+//		public static final String PERSON_NAME = "PERSON_NAME";
+//		@DBIntegerType
+//		public static final String MOVIE_ADULT = "MOVIE_ADULT";
+//		@DBVarcharType
+//		public static final String PERSON_PROFILE_PATH = "PERSON_PROFILE_PATH";
+//		@DBVarcharType
+//		public static final String MOVIE_POSTER_PATH = "MOVIE_POSTER_PATH";
 		@DBIntegerType
 		public static final String LAST_UPDATE = "LAST_UPDATE";
 	}
@@ -375,18 +375,18 @@ public class Contract {
 		public static final String DEPARTMENT = "DEPARTMENT";
 		@DBVarcharType
 		public static final String JOB = "JOB";
-		@DBVarcharType
-		public static final String MOVIE_TITLE = "MOVIE_TITLE";
-		@DBVarcharType
-		public static final String MOVIE_ORIGINAL_TITLE = "MOVIE_ORIGINAL_TITLE";
-		@DBVarcharType
-		public static final String PERSON_NAME = "PERSON_NAME";
-		@DBVarcharType
-		public static final String PERSON_PROFILE_PATH = "PERSON_PROFILE_PATH";
-		@DBVarcharType
-		public static final String MOVIE_POSTER_PATH = "MOVIE_POSTER_PATH";
-		@DBIntegerType
-		public static final String MOVIE_ADULT = "MOVIE_ADULT";
+//		@DBVarcharType
+//		public static final String MOVIE_TITLE = "MOVIE_TITLE";
+//		@DBVarcharType
+//		public static final String MOVIE_ORIGINAL_TITLE = "MOVIE_ORIGINAL_TITLE";
+//		@DBVarcharType
+//		public static final String PERSON_NAME = "PERSON_NAME";
+//		@DBVarcharType
+//		public static final String PERSON_PROFILE_PATH = "PERSON_PROFILE_PATH";
+//		@DBVarcharType
+//		public static final String MOVIE_POSTER_PATH = "MOVIE_POSTER_PATH";
+//		@DBIntegerType
+//		public static final String MOVIE_ADULT = "MOVIE_ADULT";
 		@DBIntegerType
 		public static final String LAST_UPDATE = "LAST_UPDATE";
 	}

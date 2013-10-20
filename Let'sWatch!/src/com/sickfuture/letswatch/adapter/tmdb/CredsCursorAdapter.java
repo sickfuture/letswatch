@@ -11,16 +11,26 @@ import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.android.sickfuture.sickcore.utils.AppUtils;
+import com.android.sickfuture.sickcore.utils.DatabaseUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
+import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
+import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.provider.tmdb.CastProvider;
 
-public class CredsCursorAdapter  extends BaseCursorAdapter {
+public class CredsCursorAdapter extends BaseCursorAdapter {
 
 	private static final int TEXT_VIEW_MOVIE_TITLE = R.id.text_view_adapter_poster_title;
 	private static final int IMAGE_VIEW_POSTER = R.id.image_view_adapter_poster;
+	
+	private static final String moviesTable = DatabaseUtils
+			.getTableNameFromContract(Contract.MovieColumns.class);
+	private static final String TITLE_COLUMN = moviesTable + "." + MovieColumns.TITLE;
+	private static final String POSTER_PATH_COLUMN = moviesTable + "." + MovieColumns.POSTER_PATH;
+	
 	private SickImageLoader mImageLoader;
 	
 	public CredsCursorAdapter(Context context, Cursor c) {
@@ -35,13 +45,13 @@ public class CredsCursorAdapter  extends BaseCursorAdapter {
 		RecyclingImageView imageView = (RecyclingImageView) holder
 				.getViewById(IMAGE_VIEW_POSTER);
 		String path = c.getString(c
-				.getColumnIndex(CastColumns.MOVIE_POSTER_PATH));
+				.getColumnIndex(CastProvider.MOVIE_POSTER_PATH));
 		if (!TextUtils.isEmpty(path)) {
 			mImageLoader.loadBitmap(imageView,
 					TmdbApi.getPoster(path, POSTER.W185));
 		}
 		TextView titleView = (TextView) holder.getViewById(TEXT_VIEW_MOVIE_TITLE);
-		String title = c.getString(c.getColumnIndex(CastColumns.MOVIE_TITLE));
+		String title = c.getString(c.getColumnIndex(CastProvider.MOVIE_TITLE));
 		titleView.setText(title);
 	}
 	

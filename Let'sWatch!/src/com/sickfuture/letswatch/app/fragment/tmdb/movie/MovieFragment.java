@@ -53,6 +53,8 @@ import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.provider.tmdb.CastProvider;
+import com.sickfuture.letswatch.content.provider.tmdb.CrewProvider;
 import com.sickfuture.letswatch.helpers.UIHelper;
 
 public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
@@ -103,7 +105,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	private String[] castProjection;
 	private String castSelection;
 	private String[] castSelectionArgs;
-	private String castSortOrder;
+	private String castSortOrder = CastProvider.PERSON_ID;
 	private CursorAdapter mCastAdapter;
 
 	private static final Uri crewUri = ContractUtils
@@ -111,7 +113,8 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	private String[] crewProjection;
 	private String crewSelection;
 	private String[] crewSelectionArgs;
-	private String crewSortOrder;
+	private String crewSortOrder = CrewProvider.PERSON_ID;
+
 	private CursorAdapter mCrewAdapter;
 
 	private String mSimilarIds;
@@ -124,8 +127,12 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	private CursorAdapter mSimilarAdapter;
 	private boolean similarLoaderInited = false;
 
-	private static final String movTable = DatabaseUtils
+	private static final String moviesTable = DatabaseUtils
 			.getTableNameFromContract(MovieColumns.class);
+	private static final String castTable = DatabaseUtils
+			.getTableNameFromContract(CastColumns.class);
+	private static final String crewTable = DatabaseUtils
+			.getTableNameFromContract(CrewColumns.class);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -135,12 +142,10 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 		mid = args.getString(MOVIE_ID);
 		mImageLoader = (SickImageLoader) AppUtils.get(getActivity(),
 				LetsWatchApplication.IMAGE_LOADER_SERVICE);
-		moviesSelection = movTable + "." + Contract.MovieColumns.TMDB_ID
+		moviesSelection = moviesTable + "." + Contract.MovieColumns.TMDB_ID
 				+ " = " + mid;
-		castSelection = CastColumns.TMDB_MOVIE_ID + " = " + mid;
-		crewSelection = CrewColumns.TMDB_MOVIE_ID + " = " + mid;
-		// similarSelection = movTable + "." + Contract.MovieColumns.TMDB_ID
-		// + " IN (" + mSimilarIds + ")";
+		castSelection = CastProvider.MOVIE_ID + " = " + mid;
+		crewSelection = CrewProvider.MOVIE_ID + " = " + mid;
 	}
 
 	@Override
@@ -184,6 +189,12 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 		mProductionContainer = (ViewGroup) mParentView
 				.findViewById(PRODUCTION_CONTAINER);
 		mLoaderId = hashCode();
+		return mParentView;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 		getActivity().getSupportLoaderManager().initLoader(mLoaderId, null,
 				this);
 		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 1, null,
@@ -192,7 +203,6 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 				this);
 		getActivity().getSupportLoaderManager().initLoader(mLoaderId + 3, null,
 				this);
-		return mParentView;
 	}
 
 	@Override
@@ -210,8 +220,9 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			return new CursorLoader(getActivity(), crewUri, crewProjection,
 					crewSelection, crewSelectionArgs, crewSortOrder);
 		} else if (id == mLoaderId + 3) {
-			similarSelection = movTable + "." + Contract.MovieColumns.TMDB_ID
-					+ " IN (" + mSimilarIds + ")";
+			similarSelection = moviesTable + "."
+					+ Contract.MovieColumns.TMDB_ID + " IN (" + mSimilarIds
+					+ ")";
 			return new CursorLoader(getActivity(), moviesUri,
 					similarProjection, similarSelection, similarSelectionArgs,
 					similarSortOrder);
@@ -221,7 +232,6 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-		L.d(LOG_TAG, "onLoadFinished: ");
 		if (cursor.getCount() > 0)
 			if (loader.getId() == mLoaderId) {
 				compliteView(cursor);
@@ -263,10 +273,10 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	}
 
 	private void loadCast() {
-		getActivity().getContentResolver().delete(castUri, castSelection,
-				castSelectionArgs);
-		getActivity().getContentResolver().delete(crewUri, crewSelection,
-				crewSelectionArgs);
+//		getActivity().getContentResolver().delete(castUri,
+//				CastColumns.TMDB_MOVIE_ID + " = " + mid, castSelectionArgs);
+//		getActivity().getContentResolver().delete(crewUri,
+//				CrewColumns.TMDB_MOVIE_ID + " = " + mid, crewSelectionArgs);
 		String url = TmdbApi.getMovieCasts(mid);
 		L.d(LOG_TAG, "loadCast: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
@@ -432,7 +442,7 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 				|| parent.getId() == HLIST_MOVIE_CREW) {
 			Intent intent = new Intent(getActivity(), PeopleActivity.class);
 			intent.putExtra(CastColumns.TMDB_PERSON_ID,
-					c.getString(c.getColumnIndex(CastColumns.TMDB_PERSON_ID)));
+					c.getString(c.getColumnIndex(CastProvider.PERSON_ID)));
 			startActivity(intent);
 		} else if (parent.getId() == HLIST_SIMILAR) {
 			Bundle args = new Bundle();

@@ -16,9 +16,20 @@
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/drawer_white_transp"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
-        android:dividerHeight="1dp"
-        android:background="@color/drawer_white_transp" />
+        android:dividerHeight="1dp" />
+
+    <RelativeLayout
+        android:id="@+id/right_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@drawable/shape_rect_lgrey"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="1dp" >
+    </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

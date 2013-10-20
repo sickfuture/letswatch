@@ -10,17 +10,26 @@ import android.widget.TextView;
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.utils.AppUtils;
+import com.android.sickfuture.sickcore.utils.DatabaseUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
+import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
 public class PeopleGridCursorAdapter extends BaseCursorAdapter {
 
 	public static final int TEXT_VIEW_NAME = R.id.text_view_adapter_poster_title;
 	public static final int TEXT_VIEW_INFO = R.id.text_view_adapter_poster_addit_info;
 	public static final int IMAGE_VIEW_PHOTO = R.id.image_view_adapter_poster;
+
+	private static final String personTable = DatabaseUtils
+			.getTableNameFromContract(Contract.PersonColumns.class);
+	private static final String PROFILE_PATH_COLUMN = personTable + "."
+			+ PersonColumns.PROFILE_PATH;
+	private static final String NAME_COLUMN = personTable + "."
+			+ PersonColumns.NAME;
 
 	private SickImageLoader mImageLoader;
 
@@ -43,11 +52,11 @@ public class PeopleGridCursorAdapter extends BaseCursorAdapter {
 	}
 
 	protected String getProfPathColumn() {
-		return Contract.PersonColumns.PROFILE_PATH;
+		return PROFILE_PATH_COLUMN;
 	}
 
 	protected String getNameColumn() {
-		return Contract.PersonColumns.NAME;
+		return NAME_COLUMN;
 	}
 
 	@Override
