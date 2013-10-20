@@ -1,7 +1,5 @@
 package com.sickfuture.letswatch.app.activity;
 
-import java.util.Locale;
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -14,9 +12,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.android.sickfuture.sickcore.utils.L;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.app.activity.tmdb.DrawerActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.tmdb.search.SearchedMoviesFragment;
@@ -42,7 +38,7 @@ public class SearchActivity extends DrawerActivity implements IListClickable {
 		Intent intent = getIntent();
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			handleIntent(intent);
-		}
+		} else finish();
 	}
 
 	@Override

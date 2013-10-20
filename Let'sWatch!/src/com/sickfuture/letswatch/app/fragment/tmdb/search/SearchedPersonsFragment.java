@@ -10,8 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.SearchView;
+import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -45,10 +51,14 @@ public class SearchedPersonsFragment extends SickGridCursorFragment {
 	}
 
 	private void search(Bundle arguments) {
-		getActivity().getContentResolver().delete(sSearchedPersonsUri,
-				null, null);
+		String query = arguments.getString(SearchManager.QUERY);
+		loadInfo(query);
+	}
+
+	private void loadInfo(String query) {
+		getActivity().getContentResolver().delete(sSearchedPersonsUri, null,
+				null);
 		if (NetworkHelper.checkConnection(getActivity())) {
-			String query = arguments.getString(SearchManager.QUERY);
 			String url = TmdbApi.searchPerson(query, 0, true, null);
 			DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
 					url);
@@ -133,9 +143,35 @@ public class SearchedPersonsFragment extends SickGridCursorFragment {
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		if(menu!=null){
+		if (menu != null) {
 			menu.removeItem(R.id.menu_refresh);
 		}
-			
+
 	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		MenuItem searchItem = menu.findItem(R.id.menu_search);
+		SearchView searchView = (SearchView) MenuItemCompat
+				.getActionView(searchItem);
+		searchView.setOnQueryTextListener(new OnQueryTextListener() {
+
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				query = query.trim().replace(" ", "+");
+				if (TextUtils.isEmpty(query)) {
+					return false;
+				}
+				loadInfo(query);
+				return true;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String arg0) {
+				return false;
+			}
+		});
+	}
+
 }

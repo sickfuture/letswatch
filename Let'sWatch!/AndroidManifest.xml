@@ -195,16 +195,6 @@
             android:exported="false" >
         </provider>
         <provider
-            android:name=".content.provider.tmdb.MovieToCastProvider"
-            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.MovieToCastProvider"
-            android:exported="false" >
-        </provider>
-        <provider
-            android:name=".content.provider.tmdb.MovieToCrewProvider"
-            android:authorities="com.sickfuture.letswatch.content.provider.tmdb.MovieToCrewProvider"
-            android:exported="false" >
-        </provider>
-        <provider
             android:name=".content.provider.tmdb.ListProvider"
             android:authorities="com.sickfuture.letswatch.content.provider.tmdb.ListProvider"
             android:exported="false" >

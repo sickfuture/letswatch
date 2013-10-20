@@ -1,6 +1,5 @@
 package com.sickfuture.letswatch.bo.tmdb;
 
-import com.sickfuture.letswatch.R;
 import java.util.List;
 
 public class Movie {
@@ -77,7 +76,8 @@ public class Movie {
 	}
 
 	public String getSimilarIds() {
-		if(similar_movies.getResults() == null || similar_movies.getResults().size()==0)
+		if (similar_movies.getResults() == null
+				|| similar_movies.getResults().size() == 0)
 			return null;
 		StringBuilder builder = new StringBuilder();
 		for (Movie movie : similar_movies.getResults()) {
@@ -199,7 +199,7 @@ public class Movie {
 		}
 		return null;
 	}
-	
+
 	public float getPopularity() {
 		return popularity;
 	}

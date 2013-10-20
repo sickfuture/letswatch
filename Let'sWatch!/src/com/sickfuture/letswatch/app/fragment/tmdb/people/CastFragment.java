@@ -3,11 +3,13 @@ package com.sickfuture.letswatch.app.fragment.tmdb.people;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
 import android.widget.AdapterView;
 
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.CursorUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.tmdb.CastGridAdapter;
 import com.sickfuture.letswatch.adapter.tmdb.CredsCursorAdapter;
@@ -17,6 +19,7 @@ import com.sickfuture.letswatch.app.fragment.tmdb.movie.MovieFragment;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
+import com.sickfuture.letswatch.content.provider.tmdb.CastProvider;
 
 public class CastFragment extends CommonGridFragment {
 
@@ -93,6 +96,23 @@ public class CastFragment extends CommonGridFragment {
 		}
 		((IListClickable) getActivity()).onItemListClick(args);
 
+	}
+
+	@Override
+	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+		CursorUtils.logCursor(data, CastColumns.class);
+		super.onLoadFinished(loader, data);
+	}
+
+	@Override
+	protected String getSortOrder() {
+		return CastProvider.PERSON_ID;
+	}
+
+	@Override
+	protected String[] getSelectionArgs() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
