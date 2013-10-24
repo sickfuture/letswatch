@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.image.SickImageLoader;
@@ -47,8 +48,7 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.tmdb.PeopleActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
-import com.sickfuture.letswatch.app.fragment.tmdb.people.CastFragment;
-import com.sickfuture.letswatch.app.fragment.tmdb.people.CrewFragment;
+import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
@@ -57,7 +57,7 @@ import com.sickfuture.letswatch.content.provider.tmdb.CastProvider;
 import com.sickfuture.letswatch.content.provider.tmdb.CrewProvider;
 import com.sickfuture.letswatch.helpers.UIHelper;
 
-public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
+public class MovieFragment extends CommonFragment implements LoaderCallbacks<Cursor>,
 		OnItemClickListener, OnClickListener {
 
 	private static final String LOG_TAG = MovieFragment.class.getSimpleName();
@@ -79,10 +79,11 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	private static final int CREW_CONTAINER = R.id.layout_fragment_movie_crew;
 	private static final int SIMILAR_CONTAINER = R.id.layout_fragment_movie_similar;
 	private static final int PRODUCTION_CONTAINER = R.id.layout_fragment_movie_production_creds;
+	private static final int PR_BAR_CAST = R.id.progress_bar_fragment_movie_cast;
+	private static final int PR_BAR_CREW = R.id.progress_bar_fragment_movie_crew;
 
 	private View mParentView;
-	private ViewGroup mInfoContainer, mStoryContainer, mCastsContainer,
-			mCrewContainer, mSimilarContainer, mProductionContainer;
+	private ViewGroup mInfoContainer, mStoryContainer, mSimilarContainer, mProductionContainer;
 	private RecyclingImageView mBackdropImageView, mPosterImageView;
 	private ImageView mCertifyImageView;
 	private TextView mTaglineTextView, mYearTextView;
@@ -188,6 +189,10 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 
 		mProductionContainer = (ViewGroup) mParentView
 				.findViewById(PRODUCTION_CONTAINER);
+
+		mProgressBarCast = (ProgressBar) mParentView.findViewById(PR_BAR_CAST);
+		mProgressBarCrew = (ProgressBar) mParentView.findViewById(PR_BAR_CREW);
+
 		mLoaderId = hashCode();
 		return mParentView;
 	}
@@ -236,10 +241,16 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 			if (loader.getId() == mLoaderId) {
 				compliteView(cursor);
 			} else if (loader.getId() == mLoaderId + 1) {
-				mCastsContainer.setVisibility(View.VISIBLE);
+
+				if (cursor.getCount() > 0) {
+					mProgressBarCast.setVisibility(View.GONE);
+				}
 				mCastAdapter.swapCursor(cursor);
 			} else if (loader.getId() == mLoaderId + 2) {
-				mCrewContainer.setVisibility(View.VISIBLE);
+
+				if (cursor.getCount() > 0) {
+					mProgressBarCrew.setVisibility(View.GONE);
+				}
 				mCrewAdapter.swapCursor(cursor);
 			} else if (loader.getId() == mLoaderId + 3) {
 				mSimilarContainer.setVisibility(View.VISIBLE);
@@ -273,17 +284,13 @@ public class MovieFragment extends Fragment implements LoaderCallbacks<Cursor>,
 	}
 
 	private void loadCast() {
-//		getActivity().getContentResolver().delete(castUri,
-//				CastColumns.TMDB_MOVIE_ID + " = " + mid, castSelectionArgs);
-//		getActivity().getContentResolver().delete(crewUri,
-//				CrewColumns.TMDB_MOVIE_ID + " = " + mid, crewSelectionArgs);
 		String url = TmdbApi.getMovieCasts(mid);
 		L.d(LOG_TAG, "loadCast: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
 				url);
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
-				LetsWatchApplication.TMDB_CASTS_PROCESSOR_SERVICE, null);
+				LetsWatchApplication.TMDB_CASTS_PROCESSOR_SERVICE, mReceiverCasts);
 	}
 
 	private void compliteView(Cursor c) {

@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
@@ -53,5 +54,10 @@ public class TitlesProcessor implements
 			i++;
 		}
 		return values;
+	}
+
+	@Override
+	public Bundle extraProcessingData() {
+		return null;
 	}
 }

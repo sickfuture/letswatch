@@ -13,9 +13,9 @@ import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.bo.tmdb.*;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
-import com.sickfuture.letswatch.processor.tmdb.movies.CastsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.casts.CastsProcessor;
+import com.sickfuture.letswatch.processor.tmdb.casts.PersonCreditsProcessor;
 import com.sickfuture.letswatch.processor.tmdb.movies.MovieResultsProcessor;
-import com.sickfuture.letswatch.processor.tmdb.persons.PersonCreditsProcessor;
 
 public class ProcessorHelper {
 

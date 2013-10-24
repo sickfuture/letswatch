@@ -119,7 +119,12 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		// If the nav drawer is open, hide action items related to the content
 		// view
 		boolean drawerOpen = getDrawerLayout().isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.menu_refresh).setVisible(!drawerOpen);
+		try {
+			menu.findItem(R.id.menu_refresh).setVisible(!drawerOpen);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 

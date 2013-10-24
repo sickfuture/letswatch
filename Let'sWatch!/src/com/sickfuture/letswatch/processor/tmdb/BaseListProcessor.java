@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.source.IProcessor;
@@ -89,4 +90,10 @@ public abstract class BaseListProcessor <DataSource, Result> implements IProcess
 		Context context = ContextHolder.getInstance().getContext();
 		context.getContentResolver().bulkInsert(getUri(), values);
 	}
+
+	@Override
+	public Bundle extraProcessingData() {
+		return null;
+	}
+	
 }

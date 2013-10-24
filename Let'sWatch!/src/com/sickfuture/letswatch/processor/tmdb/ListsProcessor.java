@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.google.gson.Gson;
@@ -50,6 +51,11 @@ public class ListsProcessor implements IProcessor<InputStream, ContentValues[]> 
 	public boolean cache(ContentValues[] result, Context context) {
 		// TODO cache
 		return false;
+	}
+
+	@Override
+	public Bundle extraProcessingData() {
+		return null;
 	}
 
 }

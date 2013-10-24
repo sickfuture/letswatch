@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sickfuture.letswatch.animations.AnimatedCellLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cell="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sections_upcoming_grid"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    cell:columns="4"
+    cell:spacing="1dp" >
+
+    <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        cell:layout_cellsHeight="1"
+        cell:layout_cellsWidth="1"
+        cell:layout_left="0"
+        cell:layout_top="0"
+        android:background="#00FF00"
+        android:scaleType="centerCrop" />
+
+    <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        cell:layout_cellsHeight="1"
+        cell:layout_cellsWidth="1"
+        cell:layout_left="1"
+        cell:layout_top="0"
+        android:background="#00FF00"
+        android:scaleType="centerCrop" />
+
+    <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        cell:layout_cellsHeight="1"
+        cell:layout_cellsWidth="1"
+        cell:layout_left="2"
+        cell:layout_top="0"
+        android:background="#00FF00"
+        android:scaleType="centerCrop" />
+
+    <com.android.sickfuture.sickcore.image.view.RecyclingImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        cell:layout_cellsHeight="1"
+        cell:layout_cellsWidth="1"
+        cell:layout_left="3"
+        cell:layout_top="0"
+        android:background="#00FF00"
+        android:scaleType="centerCrop" />
+
+</com.sickfuture.letswatch.animations.AnimatedCellLayout>

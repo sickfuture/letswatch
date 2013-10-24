@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.android.sickfuture.sickcore.source.IProcessor;
 import com.sickfuture.letswatch.R;
@@ -26,6 +27,11 @@ public abstract class InsertOrUpdateProcessor<DataSource> implements
 			cursor.close();
 		}
 		return true;
+	}
+
+	@Override
+	public Bundle extraProcessingData() {
+		return null;
 	}
 
 	public abstract Uri getUri();

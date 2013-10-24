@@ -6,13 +6,13 @@ import it.sephiroth.android.library.widget.HListView;
 
 import java.io.InputStream;
 import java.text.DateFormat;
+import java.util.Locale;
 
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.sickfuture.sickcore.image.SickImageLoader;
@@ -42,6 +43,7 @@ import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi.PROFILE;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.tmdb.MovieActivity;
+import com.sickfuture.letswatch.app.fragment.tmdb.common.CommonFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.CastColumns;
 import com.sickfuture.letswatch.content.contract.Contract.CrewColumns;
@@ -52,7 +54,7 @@ import com.sickfuture.letswatch.content.provider.tmdb.CrewProvider;
 import com.sickfuture.letswatch.helpers.AgeHelper;
 import com.sickfuture.letswatch.helpers.UIHelper;
 
-public class PersonFragment extends Fragment implements
+public class PersonFragment extends CommonFragment implements
 		LoaderCallbacks<Cursor>, OnItemClickListener, OnClickListener {
 
 	private static final String LOG_TAG = PersonFragment.class.getSimpleName();
@@ -63,6 +65,8 @@ public class PersonFragment extends Fragment implements
 	private static final int HLIST_CAST = R.id.hlist_view_fragment_person_cast;
 	private static final int CASTS_CONTAINER = R.id.layout_fragment_person_casts;
 	private static final int CREW_CONTAINER = R.id.layout_fragment_person_crew;
+	private static final int PR_BAR_CAST = R.id.progress_bar_fragment_person_cast;
+	private static final int PR_BAR_CREW = R.id.progress_bar_fragment_person_crew;
 
 	private static final String moviesTable = DatabaseUtils
 			.getTableNameFromContract(MovieColumns.class);
@@ -71,7 +75,7 @@ public class PersonFragment extends Fragment implements
 	private static final String crewTable = DatabaseUtils
 			.getTableNameFromContract(CrewColumns.class);
 
-	private ViewGroup mCrewContainer, mCastsContainer;
+	// private ViewGroup mCrewContainer, mCastsContainer;
 	private HListView mCastHListView, mCrewHListView;
 	private RecyclingImageView mProfileImageView;
 	private TextView mBioTextView, mInfoTextView;
@@ -141,6 +145,9 @@ public class PersonFragment extends Fragment implements
 		mCastHListView.setAdapter(mCastAdapter);
 		mCastHListView.setOnItemClickListener(this);
 
+		mProgressBarCast = (ProgressBar) parent.findViewById(PR_BAR_CAST);
+		mProgressBarCrew = (ProgressBar) parent.findViewById(PR_BAR_CREW);
+
 		return parent;
 	}
 
@@ -153,11 +160,11 @@ public class PersonFragment extends Fragment implements
 	}
 
 	private void loadData() {
-//		getActivity().getContentResolver().delete(castUri,
-//				CastColumns.TMDB_PERSON_ID + " = " + pid, castSelectionArgs);
-//		getActivity().getContentResolver().delete(crewUri,
-//				CrewColumns.TMDB_PERSON_ID + " = " + pid, crewSelectionArgs);
-		String url = MovieApis.TmdbApi.getPerson(pid, "credits");
+		// getActivity().getContentResolver().delete(castUri,
+		// CastColumns.TMDB_PERSON_ID + " = " + pid, castSelectionArgs);
+		// getActivity().getContentResolver().delete(crewUri,
+		// CrewColumns.TMDB_PERSON_ID + " = " + pid, crewSelectionArgs);
+		String url = MovieApis.TmdbApi.getPerson(pid);
 		Log.d(LOG_TAG, "loadData: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
 				url);
@@ -165,6 +172,18 @@ public class PersonFragment extends Fragment implements
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
 				LetsWatchApplication.TMDB_PERSON_PROCESSOR_SERVICE);
+	}
+
+	private void loadCreds() {
+		String url = TmdbApi.getPersonCredits(pid, Locale.getDefault()
+				.getLanguage());
+		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
+				url);
+		request.setIsCacheable(true);
+		SourceService.execute(getActivity(), request,
+				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,
+				LetsWatchApplication.TMDB_PERSON_CREDITS_PROCESSOR_SERVICE,
+				mReceiverCasts);
 	}
 
 	private void compliteView(Cursor c) {
@@ -194,7 +213,7 @@ public class PersonFragment extends Fragment implements
 			return new CursorLoader(getActivity(), uri, projection, selection,
 					selectionArgs, sortOrder);
 		} else if (id == mLoaderId + 1) {
-			// loadCast();
+			loadCreds();
 			L.d(LOG_TAG, "onCreateLoader: cast");
 			return new CursorLoader(getActivity(), castUri, castProjection,
 					castSelection, castSelectionArgs, castSortOrder);
@@ -212,13 +231,15 @@ public class PersonFragment extends Fragment implements
 			if (loader.getId() == mLoaderId) {
 				compliteView(cursor);
 			} else if (loader.getId() == mLoaderId + 1) {
-				L.d(LOG_TAG, "onLoadFinished: cast");
-				CursorUtils.logCursor(cursor, CastColumns.class);
-				mCastsContainer.setVisibility(View.VISIBLE);
+				
+				if (cursor.getCount() > 0) {
+					mProgressBarCast.setVisibility(View.GONE);
+				}
 				mCastAdapter.swapCursor(cursor);
 			} else if (loader.getId() == mLoaderId + 2) {
-				L.d(LOG_TAG, "onLoadFinished: crew");
-				CursorUtils.logCursor(cursor, CrewColumns.class);
+				if (cursor.getCount() > 0) {
+					mProgressBarCrew.setVisibility(View.GONE);
+				}
 				mCrewContainer.setVisibility(View.VISIBLE);
 				mCrewAdapter.swapCursor(cursor);
 			}

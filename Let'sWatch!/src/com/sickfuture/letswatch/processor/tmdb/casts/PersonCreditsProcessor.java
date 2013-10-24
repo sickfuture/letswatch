@@ -1,4 +1,4 @@
-package com.sickfuture.letswatch.processor.tmdb.persons;
+package com.sickfuture.letswatch.processor.tmdb.casts;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -10,6 +10,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 
 import com.android.sickfuture.sickcore.context.ContextHolder;
 import com.android.sickfuture.sickcore.exceptions.BadRequestException;
@@ -33,7 +34,7 @@ import com.sickfuture.letswatch.processor.tmdb.ProcessorHelper;
 import com.sickfuture.letswatch.processor.tmdb.movies.TmdbMovieProcessor;
 
 public class PersonCreditsProcessor implements
-		IProcessor<InputStream, ContentValues[]> {
+		IProcessor<InputStream, ContentValues[]>, ICasts {
 
 	private static final String LOG_TAG = PersonCreditsProcessor.class
 			.getSimpleName();
@@ -60,9 +61,10 @@ public class PersonCreditsProcessor implements
 	}
 
 	public void processCredits(Credits credits) {
-		java.util.List<Cast> cast = credits.getCast();
 		long time = System.currentTimeMillis();
 		long id = credits.getId();
+
+		java.util.List<Cast> cast = credits.getCast();
 		ArrayList<ContentValues> castsValues = null;
 		if (cast != null && cast.size() > 0) {
 			castsValues = new ArrayList<ContentValues>(cast.size());
@@ -75,6 +77,7 @@ public class PersonCreditsProcessor implements
 				castsValues.add(castsValue);
 			}
 		}
+
 		java.util.List<Crew> crew = credits.getCrew();
 		ArrayList<ContentValues> crewValues = null;
 		if (crew != null && crew.size() > 0) {
@@ -88,16 +91,15 @@ public class PersonCreditsProcessor implements
 				crewValues.add(crewValue);
 			}
 		}
+
 		processNewMovies(castsValues, crewValues);
 		if (castsValues != null)
-			// insertToDb(castsValues, CAST_URI);
 			processNew(
 					castsValues,
 					id,
 					ContractUtils.getProviderUriFromContract(CastColumns.class),
 					CastColumns.TMDB_PERSON_ID, CastColumns.TMDB_MOVIE_ID);
 		if (crewValues != null)
-			// insertToDb(crewValues, CREW_URI);
 			processNew(
 					crewValues,
 					id,
@@ -115,11 +117,17 @@ public class PersonCreditsProcessor implements
 			ArrayList<ContentValues> crewValues) {
 		HashSet<Long> ids = new HashSet<Long>();
 		if (castsValues != null) {
+			if (castsValues.size() > 0) {
+				sResultBundle.putInt(RESULT_CAST, castsValues.size());
+			}
 			for (ContentValues cv : castsValues) {
 				ids.add(cv.getAsLong(CastColumns.TMDB_MOVIE_ID));
 			}
 		}
 		if (crewValues != null) {
+			if (crewValues.size() > 0) {
+				sResultBundle.putInt(RESULT_CREW, crewValues.size());
+			}
 			for (ContentValues cv : crewValues) {
 				ids.add(cv.getAsLong(CastColumns.TMDB_MOVIE_ID));
 			}
@@ -207,7 +215,7 @@ public class PersonCreditsProcessor implements
 			}
 			if (array.size() > 0)
 				insertToDb(array, uri);
-			//updateInDb(forUpdate, uri, field_movie);
+			// updateInDb(forUpdate, uri, field_movie);
 		} else {
 			insertToDb(array, uri);
 		}
@@ -232,6 +240,11 @@ public class PersonCreditsProcessor implements
 		Context context = ContextHolder.getInstance().getContext();
 		int x = context.getContentResolver().bulkInsert(uri, values);
 		L.d("LOG_TAG", "insertToDb: " + x);
+	}
+
+	@Override
+	public Bundle extraProcessingData() {
+		return sResultBundle;
 	}
 
 }

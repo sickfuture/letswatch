@@ -81,7 +81,6 @@ public class CrewProvider extends CommonProvider {
 								Contract.PersonColumns.TMDB_ID, crewTable,
 								Contract.CrewColumns.TMDB_PERSON_ID))
 				//.orderBy(sortOrder)
-				.groupBy(sortOrder)
 				.getSql();
 
 		Log.d(LOG_TAG, "query: " + sql);

@@ -105,7 +105,7 @@
                 android:text="@string/description_info_movie_details" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layout_fragment_movie_casts"
             style="@style/styleSelectableLayout"
             android:layout_width="match_parent"
@@ -114,22 +114,34 @@
             android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:paddingBottom="4dp"
-            android:paddingTop="8dp"
-            android:visibility="gone" >
+            android:paddingTop="8dp" >
 
             <TextView
+                android:id="@+id/tv_cast"
                 style="@style/styleSectionTitle"
                 android:layout_marginLeft="8dp"
                 android:text="@string/cast" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_cast" >
+
+                <include
+                    android:id="@+id/progress_bar_fragment_movie_cast"
+                    layout="@layout/view_progress_bar_horisontal"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
             <it.sephiroth.android.library.widget.HListView
                 android:id="@+id/hlist_view_fragment_movie_cast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_cast"
                 android:layout_marginTop="8dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/layout_fragment_movie_crew"
             style="@style/styleSelectableLayout"
             android:layout_width="match_parent"
@@ -137,21 +149,33 @@
             android:layout_below="@id/layout_fragment_movie_casts"
             android:orientation="vertical"
             android:paddingBottom="8dp"
-            android:paddingTop="4dp"
-            android:visibility="gone" >
+            android:paddingTop="4dp" >
 
             <TextView
+                android:id="@+id/tv_crew"
                 style="@style/styleSectionTitle"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/crew" />
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_crew" >
+
+                <include
+                    android:id="@+id/progress_bar_fragment_movie_crew"
+                    layout="@layout/view_progress_bar_horisontal"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
             <it.sephiroth.android.library.widget.HListView
                 android:id="@+id/hlist_view_fragment_movie_crew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_crew"
                 android:layout_marginTop="8dp" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/layout_fragment_movie_production_creds"
