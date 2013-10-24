@@ -4,9 +4,6 @@
     android:id="@+id/sections_upcoming_grid"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
     cell:columns="4"
     cell:spacing="1dp" >
 

@@ -19,13 +19,18 @@ import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.image.view.RecyclingImageView;
 import com.android.sickfuture.sickcore.utils.AndroidVersionsUtils;
 import com.android.sickfuture.sickcore.utils.AppUtils;
+import com.android.sickfuture.sickcore.utils.DatabaseUtils;
 import com.android.sickfuture.sickcore.view.CellLayout;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi.BACKDROP;
+import com.sickfuture.letswatch.api.MovieApis.TmdbApi.POSTER;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
 
 public class AnimatedCellLayout extends CellLayout {
+
+	public static final String MOVIES_TABLE = DatabaseUtils
+			.getTableNameFromContract(Contract.MovieColumns.class);
 
 	private Cursor mCursor;
 
@@ -35,7 +40,7 @@ public class AnimatedCellLayout extends CellLayout {
 	private static final int DEFAULT_DURATION = 500;
 	private int mDuration;
 
-	private static final long DEFAULT_ANIMATION_DELAY = 5000l;
+	private static final long DEFAULT_ANIMATION_DELAY = 1000l;
 	private long mAnimationDelay;
 
 	public AnimatedCellLayout(Context context) {
@@ -82,7 +87,7 @@ public class AnimatedCellLayout extends CellLayout {
 		notify(cursor);
 		if (AndroidVersionsUtils.hasHoneycombMR1()) {
 			// TODO start task
-			// new AnimationTask().start();
+			new AnimationTask().start();
 		}
 	}
 
@@ -95,9 +100,9 @@ public class AnimatedCellLayout extends CellLayout {
 			// TODO set appropriate uri
 			RecyclingImageView child = (RecyclingImageView) getChildAt(i);
 			cursor.moveToPosition(i);
-			String path = cursor.getString(cursor
-					.getColumnIndex(Contract.MovieColumns.BACKDROP_PATH));
-			String posterUrl = TmdbApi.getBackdrop(path, BACKDROP.W300);
+			String path = cursor.getString(cursor.getColumnIndex(MOVIES_TABLE
+					+ "." + Contract.MovieColumns.POSTER_PATH));
+			String posterUrl = TmdbApi.getPoster(path, POSTER.W185);
 			mImageLoader.loadBitmap(child, posterUrl);
 		}
 	}
@@ -121,7 +126,7 @@ public class AnimatedCellLayout extends CellLayout {
 			} catch (InterruptedException e) {
 				// can be ignored
 			}
-			if (mCursor == null) {
+			if (mCursor == null || mCursor.isClosed()) {
 				return null;
 			}
 			String path = mCursor.getString(mCursor

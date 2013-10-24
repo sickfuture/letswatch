@@ -4,23 +4,42 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.android.sickfuture.sickcore.utils.L;
+import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.animations.AnimatedCellLayout;
+import com.sickfuture.letswatch.app.activity.tmdb.DrawerActivity;
+import com.sickfuture.letswatch.content.contract.Contract;
 
 public class MovieSectionsFragment extends Fragment implements
-		LoaderCallbacks<Cursor> {
+		LoaderCallbacks<Cursor>, OnClickListener {
 
 	private static final String LOG_TAG = MovieSectionsFragment.class
 			.getSimpleName();
+
+	public static final Uri NOW_PLAYING_URI = ContractUtils
+			.getProviderUriFromContract(Contract.NowPlayingTmdbColumns.class);
+	public static final Uri POPULAR_URI = ContractUtils
+			.getProviderUriFromContract(Contract.PopularTmdbColumns.class);
+	public static final Uri TOP_RATED_URI = ContractUtils
+			.getProviderUriFromContract(Contract.TopRatedTmdbColumns.class);
+	public static final Uri UPCOMING_URI = ContractUtils
+			.getProviderUriFromContract(Contract.UpcomingTmdbColumns.class);
+
+	private static final int COVER_NOW_PLAYING = R.id.text_view_now_playing;
+	private static final int COVER_POPULAR = R.id.text_view_popular;
+	private static final int COVER_TOP_RATED = R.id.text_view_top_rated;
+	private static final int COVER_UPCOMING = R.id.text_view_upcoming;
 
 	private int mNowPlayingLoaderId, mPopularLoaderId, mTopRatedLoaderId,
 			mUpcomingLoaderId;
@@ -30,7 +49,8 @@ public class MovieSectionsFragment extends Fragment implements
 	private AnimatedCellLayout mTopRatedLayout;
 	private AnimatedCellLayout mUpcomingLayout;
 
-	private Uri mLoaderUri;
+	private TextView mTextViewCoverPop, mTextViewCoverNow, mTextViewCoverTop,
+			mTextViewCoverUp;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +83,16 @@ public class MovieSectionsFragment extends Fragment implements
 				.findViewById(R.id.sections_upcoming_grid);
 		mUpcomingLoaderId = mUpcomingLayout.hashCode();
 
+		mTextViewCoverNow = (TextView) view.findViewById(COVER_NOW_PLAYING);
+		mTextViewCoverPop = (TextView) view.findViewById(COVER_POPULAR);
+		mTextViewCoverTop = (TextView) view.findViewById(COVER_TOP_RATED);
+		mTextViewCoverUp = (TextView) view.findViewById(COVER_UPCOMING);
+		
+		mTextViewCoverNow.setOnClickListener(this);
+		mTextViewCoverPop.setOnClickListener(this);
+		mTextViewCoverTop.setOnClickListener(this);
+		mTextViewCoverUp.setOnClickListener(this);
+		
 		LoaderManager loaderManager = getActivity().getSupportLoaderManager();
 		loaderManager.initLoader(mNowPlayingLoaderId, null, this);
 		loaderManager.initLoader(mPopularLoaderId, null, this);
@@ -72,21 +102,24 @@ public class MovieSectionsFragment extends Fragment implements
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle bundle) {
+		// TODO use projection!!!
 		if (id == mNowPlayingLoaderId) {
-			// TODO set appropriate uri
+			return new CursorLoader(getActivity(), NOW_PLAYING_URI, null, null,
+					null, null);
 		} else if (id == mPopularLoaderId) {
 			// TODO set appropriate uri
+			return new CursorLoader(getActivity(), POPULAR_URI, null, null,
+					null, null);
 		} else if (id == mTopRatedLoaderId) {
 			// TODO set appropriate uri
+			return new CursorLoader(getActivity(), TOP_RATED_URI, null, null,
+					null, null);
 		} else if (id == mUpcomingLoaderId) {
 			// TODO set appropriate uri
+			return new CursorLoader(getActivity(), UPCOMING_URI, null, null,
+					null, null);
 		}
-		if (mLoaderUri == null) {
-			L.w(LOG_TAG, "Can't load cursor by 'null' uri!");
-			return null;
-		}
-		return new CursorLoader(getActivity(), mLoaderUri, null, null, null,
-				null);
+		return null;
 	}
 
 	@Override
@@ -122,6 +155,29 @@ public class MovieSectionsFragment extends Fragment implements
 		} else if (loaderId == mUpcomingLoaderId) {
 			mUpcomingLayout.swapCursor(null);
 		}
+	}
+
+	@Override
+	public void onClick(View view) {
+		Fragment fragment = null;
+		switch (view.getId()) {
+		case COVER_NOW_PLAYING:
+			fragment = new NowPlayingFragment();
+			break;
+		case COVER_POPULAR:
+			fragment = new PopularMoviesFragment();
+			break;
+		case COVER_TOP_RATED:
+			fragment = new TopRatedFragment();
+			break;
+		case COVER_UPCOMING:
+			fragment = new UpcomingMoviesFragment();
+			break;
+		}
+		FragmentManager manager = getActivity().getSupportFragmentManager();
+		manager.beginTransaction().addToBackStack(null)
+				.replace(DrawerActivity.CONTENT_FRAME, fragment).commit();
+
 	}
 
 }
