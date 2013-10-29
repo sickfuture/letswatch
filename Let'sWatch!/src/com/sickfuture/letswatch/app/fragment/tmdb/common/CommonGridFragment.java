@@ -16,6 +16,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.android.sickfuture.sickcore.preference.PreferencesHelper;
 import com.android.sickfuture.sickcore.utils.NetworkHelper;
 import com.android.sickfuture.sickcore.utils.NetworkHelper.NetworkCallback;
 import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
@@ -31,18 +32,66 @@ import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 public abstract class CommonGridFragment extends SickGridCursorFragment
 		implements RefreshActionListener {
 
+	private static final int PAGING_PREFS_NAME_RES = R.string.prefs_paging_name;
+
 	private static final String LOG_TAG = CommonGridFragment.class
 			.getSimpleName();
-	
+
 	private RefreshActionItem mRefreshActionItem;
 
+	private boolean mIsNotPaginating = !hasPaging();
+
+	private boolean mIsEndOfData = false, mIsLoading = false;
+
+	public boolean isNotPaginating() {
+		return mIsNotPaginating;
+	}
+
+	public void setIsNotPaginating(boolean mIsNotPaginating) {
+		this.mIsNotPaginating = mIsNotPaginating;
+	}
+
+	protected abstract boolean hasPaging();
+
 	@Override
-	public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		if (!mIsEndOfData && !mIsNotPaginating && !mIsLoading) {
+			if (isNeedLoadingNextData(firstVisibleItem, visibleItemCount,
+					totalItemCount)) {
+				load();
+			}
+		}
+	}
+
+	private boolean isNeedLoadingNextData(int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		boolean lastItem = firstVisibleItem + visibleItemCount == totalItemCount
+				&& totalItemCount > visibleItemCount
+				&& getAdapterView().getChildAt(visibleItemCount - 1) != null
+				&& getAdapterView().getChildAt(visibleItemCount - 1)
+						.getBottom() <= getAdapterView().getHeight();
+		return lastItem;
+	}
+
+	private void load() {
+		mIsLoading = true;
+		int currPage = PreferencesHelper.getInt(getActivity(),
+				getPagingPrefsName(), getPagingPrefsCurrKey());
+		int maxPage = PreferencesHelper.getInt(getActivity(),
+				getPagingPrefsName(), getPagingMaxPrefsKey());
+		if (currPage >= maxPage) {
+			mIsEndOfData = true;
+			mIsLoading = false;
+		} else {
+			mRefreshActionItem.showProgress(true);
+			loadData(++currPage);
+		}
 	}
 
 	protected abstract Uri getUri();
 
-	protected abstract void loadData();
+	protected abstract void loadData(int page);
 
 	@Override
 	public CursorAdapter cursorAdapter() {
@@ -57,7 +106,8 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 
 	@Override
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-		return new CursorLoader(getActivity(), getUri(), getProjection(), getSelection(), getSelectionArgs(), getSortOrder());
+		return new CursorLoader(getActivity(), getUri(), getProjection(),
+				getSelection(), getSelectionArgs(), getSortOrder());
 	}
 
 	protected String getSortOrder() {
@@ -76,7 +126,8 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 	public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 		if (data.getCount() == 0) {
 			if (NetworkHelper.checkConnection(getActivity())) {
-				loadData();
+				mIsLoading = true;
+				loadData(1);
 			}
 		} else {
 			((CursorAdapter) getAdapter()).swapCursor(data);
@@ -99,12 +150,23 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 				.show();
 		Log.d(LOG_TAG, "error: " + exception.toString());
 		mRefreshActionItem.showProgress(false);
+		mIsLoading = false;
+		mIsNotPaginating = true;
 	}
 
 	@Override
 	protected void done(Bundle result) {
+		mIsLoading = false;
 		mRefreshActionItem.showProgress(false);
 	}
+
+	private String getPagingPrefsName() {
+		return getActivity().getResources().getString(PAGING_PREFS_NAME_RES);
+	}
+
+	protected abstract String getPagingPrefsCurrKey();
+
+	protected abstract String getPagingMaxPrefsKey();
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
@@ -145,7 +207,10 @@ public abstract class CommonGridFragment extends SickGridCursorFragment
 
 			@Override
 			public void processTask(Context context) {
-				loadData();
+				mIsLoading = true;
+				mIsNotPaginating = !hasPaging();
+				// TODO clear table
+				loadData(1);
 			}
 
 			@Override

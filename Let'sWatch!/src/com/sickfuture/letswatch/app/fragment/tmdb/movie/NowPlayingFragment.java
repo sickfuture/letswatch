@@ -23,7 +23,7 @@ public class NowPlayingFragment extends CommonGridFragment {
 
 	private static final String LOG_TAG = NowPlayingFragment.class
 			.getSimpleName();
-	
+
 	private static final String[] sProjection = new String[] {
 			MovieColumns._ID, MovieColumns.TMDB_ID, MovieColumns.TITLE,
 			MovieColumns.TITLE_ORIGINAL, MovieColumns.POSTER_PATH,
@@ -37,9 +37,9 @@ public class NowPlayingFragment extends CommonGridFragment {
 	}
 
 	@Override
-	protected void loadData() {
+	protected void loadData(int page) {
 		String url = MovieApis.TmdbApi.getNowPlayingMovies(Locale.getDefault()
-				.getLanguage(), 0);
+				.getLanguage(), page);
 
 		Log.d(LOG_TAG, "loadData: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
@@ -67,6 +67,23 @@ public class NowPlayingFragment extends CommonGridFragment {
 	@Override
 	protected String getSelection() {
 		return null;
+	}
+
+	@Override
+	protected String getPagingPrefsCurrKey() {
+		return getActivity().getResources().getString(
+				R.string.prefs_paging_now_playing_curr_page_count_key);
+	}
+
+	@Override
+	protected String getPagingMaxPrefsKey() {
+		return getActivity().getResources().getString(
+				R.string.prefs_paging_now_playing_max_page_count_key);
+	}
+
+	@Override
+	protected boolean hasPaging() {
+		return true;
 	}
 
 }

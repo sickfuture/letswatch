@@ -1,6 +1,8 @@
 package com.sickfuture.letswatch.processor.tmdb.movies;
 
+import com.android.sickfuture.sickcore.preference.PreferencesHelper;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
+import com.android.sickfuture.sickcore.utils.L;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.content.contract.Contract;
@@ -12,10 +14,28 @@ import android.net.Uri;
 
 public class TmdbNowPlayingProcessor extends TmdbMovieListProcessor {
 
+	private static final String LOG_TAG = TmdbNowPlayingProcessor.class
+			.getSimpleName();
+	
 	@Override
 	public boolean cache(ContentValues[] result, Context context) {
-		Uri uri = ContractUtils.getProviderUriFromContract(Contract.NowPlayingTmdbColumns.class);
+		Uri uri = ContractUtils
+				.getProviderUriFromContract(Contract.NowPlayingTmdbColumns.class);
 		context.getContentResolver().bulkInsert(uri, result);
+		String prefName = context.getResources().getString(
+				R.string.prefs_paging_name);
+		PreferencesHelper.putInt(
+				context,
+				prefName,
+				context.getResources().getString(
+						R.string.prefs_paging_now_playing_curr_page_count_key),
+				getCurrPage());
+		PreferencesHelper.putInt(
+				context,
+				prefName,
+				context.getResources().getString(
+						R.string.prefs_paging_now_playing_max_page_count_key),
+				getTotalPages());
 		return true;
 	}
 

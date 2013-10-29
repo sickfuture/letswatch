@@ -74,7 +74,8 @@ public abstract class SickAdapterViewFragment<T extends AbsListView> extends
 						"Pre-Honeycomb issue. Can't set adapter to adapter view. Use grid or list view.");
 		}
 		mAdapterView.setOnItemClickListener(this);
-
+		mAdapterView.setOnScrollListener(this);
+		
 		mResultReceiver = new SourceResultReceiver(new Handler()) {
 			@Override
 			public void onStart(Bundle result) {

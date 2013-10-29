@@ -35,6 +35,7 @@ import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
+// TODO inherit from CommonGridFragment
 public class PopularPersonsFragment extends SickGridCursorFragment implements
 		RefreshActionListener {
 

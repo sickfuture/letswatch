@@ -29,9 +29,9 @@ public class UpcomingMoviesFragment extends CommonGridFragment {
 	}
 
 	@Override
-	protected void loadData() {
+	protected void loadData(int page) {
 		String url = MovieApis.TmdbApi.getUpcomingMovies(Locale.getDefault()
-				.getLanguage(), 0);
+				.getLanguage(), page);
 
 		Log.d(LOG_TAG, "loadData: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
@@ -61,6 +61,22 @@ public class UpcomingMoviesFragment extends CommonGridFragment {
 	protected String getSelection() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	protected String getPagingPrefsCurrKey() {
+		return getActivity().getResources().getString(
+				R.string.prefs_paging_upcom_curr_page_count_key);
+	}
+
+	@Override
+	protected String getPagingMaxPrefsKey() {
+		return getActivity().getResources().getString(
+				R.string.prefs_paging_upcom_max_page_count_key);
+	}
+
+	@Override
+	protected boolean hasPaging() {
+		return true;
 	}
 
 }

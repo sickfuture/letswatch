@@ -50,9 +50,9 @@ public class PopularMoviesFragment extends CommonGridFragment {
 	}
 
 	@Override
-	protected void loadData() {
+	protected void loadData(int page) {
 		String url = MovieApis.TmdbApi.getPopularMovies(Locale.getDefault()
-				.getLanguage(), 0);
+				.getLanguage(), page);
 
 		Log.d(LOG_TAG, "loadData: " + url);
 		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
@@ -83,98 +83,21 @@ public class PopularMoviesFragment extends CommonGridFragment {
 		return null;
 	}
 
-	// private RefreshActionItem mRefreshActionItem;
-	//
-	// @Override
-	// public void onScroll(AbsListView arg0, int arg1, int arg2, int arg3) {
-	// }
+	@Override
+	protected String getPagingPrefsCurrKey() {
+		return getActivity().getResources().getString(
+				R.string.prefs_paging_pop_curr_page_count_key);
+	}
 
-	// @Override
-	// public CursorAdapter cursorAdapter() {
-	// return new MoviesGridCursorAdapter(getActivity(), null);
-	// }
-	//
-	// @Override
-	// public void onCreate(Bundle savedInstanceState) {
-	// super.onCreate(savedInstanceState);
-	// setHasOptionsMenu(true);
-	// }
-	//
-	// @Override
-	// public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-	// return new CursorLoader(getActivity(), getUri(), null, null, null, null);
-	// }
-	//
-	// @Override
-	// public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-	// if (data == null) {
-	// loadData();
-	// } else {
-	// ((CursorAdapter) mGridViewAdapter).swapCursor(data);
-	// }
-	//
-	// }
-	//
-	// @Override
-	// public void onLoaderReset(Loader<Cursor> loader) {
-	// ((CursorAdapter) mGridViewAdapter).swapCursor(null);
-	// }
-	//
-	// @Override
-	// protected void start(Bundle bundle) {
-	// mRefreshActionItem.showProgress(true);
-	// }
-	//
-	// @Override
-	// protected void error(Exception exception) {
-	// Toast.makeText(getActivity(), exception.toString(), Toast.LENGTH_SHORT)
-	// .show();
-	// Log.d(LOG_TAG, "error: " + exception.toString());
-	// mRefreshActionItem.showProgress(false);
-	// }
-	//
-	// @Override
-	// protected void done(Bundle result) {
-	// mRefreshActionItem.showProgress(false);
-	// }
-	//
-	// @Override
-	// public void onPrepareOptionsMenu(Menu menu) {
-	// MenuItem item = menu.findItem(R.id.menu_refresh);
-	// mRefreshActionItem = (RefreshActionItem)
-	// MenuItemCompat.getActionView(item);
-	// mRefreshActionItem.setMenuItem(item);
-	// mRefreshActionItem.setProgressIndicatorType(ProgressIndicatorType.INDETERMINATE);
-	// mRefreshActionItem.setRefreshActionListener(this);
-	// super.onPrepareOptionsMenu(menu);
-	// }
-	//
-	// @Override
-	// protected int fragmentResource() {
-	// return R.layout.fragment_grid;
-	// }
-	//
-	// @Override
-	// protected int gridViewResource() {
-	// return R.id.grid_view_fragment_grid;
-	// }
-	//
-	// @Override
-	// public void onListItemClick(AdapterView<?> list, View view, int position,
-	// long id, IListClickable clickable) {
-	// String key = Contract.MovieColumns.TMDB_ID;
-	// Cursor cursor = (Cursor) list.getItemAtPosition(position);
-	// long mid = cursor.getLong(cursor.getColumnIndex(key));
-	// Bundle arguments = new Bundle();
-	// arguments.putString(key, String.valueOf(mid));
-	// clickable.onItemListClick(arguments);
-	//
-	// }
-	//
-	// @Override
-	// public void onRefreshButtonClick(RefreshActionItem sender) {
-	// loadData();
-	//
-	// }
+	@Override
+	protected String getPagingMaxPrefsKey() {
+		return getActivity().getResources().getString(
+				R.string.prefs_paging_pop_max_page_count_key);
+	}
+
+	@Override
+	protected boolean hasPaging() {
+		return true;
+	}
 
 }

@@ -52,7 +52,7 @@ public class SimilarMoviesFragment extends CommonGridFragment {
 	}
 
 	@Override
-	protected void loadData() {
+	protected void loadData(int page) {
 		// TODO Auto-generated method stub
 
 	}
@@ -65,6 +65,23 @@ public class SimilarMoviesFragment extends CommonGridFragment {
 	@Override
 	protected int adapterViewResource() {
 		return R.id.grid_view_fragment_grid_posters;
+	}
+
+	@Override
+	protected String getPagingPrefsCurrKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getPagingMaxPrefsKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected boolean hasPaging() {
+		return false;
 	}
 
 }

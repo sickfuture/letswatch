@@ -32,6 +32,7 @@ public class CastFragment extends CommonGridFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setIsNotPaginating(true);
 		if (getArguments().containsKey("mid")) {
 			mid = getArguments().getString("mid");
 			pid = null;
@@ -51,7 +52,7 @@ public class CastFragment extends CommonGridFragment {
 	}
 
 	@Override
-	protected void loadData() {
+	protected void loadData(int page) {
 		// TODO Auto-generated method stub
 
 	}
@@ -113,6 +114,23 @@ public class CastFragment extends CommonGridFragment {
 	protected String[] getSelectionArgs() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected String getPagingPrefsCurrKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getPagingMaxPrefsKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected boolean hasPaging() {
+		return false;
 	}
 
 }

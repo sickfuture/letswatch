@@ -27,6 +27,7 @@ public class CrewFragment extends CommonGridFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setIsNotPaginating(true);
 		if (getArguments().containsKey("mid")) {
 			mid = getArguments().getString("mid");
 			pid = null;
@@ -46,7 +47,7 @@ public class CrewFragment extends CommonGridFragment {
 	}
 
 	@Override
-	protected void loadData() {
+	protected void loadData(int page) {
 		// TODO Auto-generated method stub
 
 	}
@@ -98,6 +99,23 @@ public class CrewFragment extends CommonGridFragment {
 	@Override
 	protected String[] getSelectionArgs() {
 		return null;
+	}
+
+	@Override
+	protected String getPagingPrefsCurrKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected String getPagingMaxPrefsKey() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected boolean hasPaging() {
+		return false;
 	}
 
 }

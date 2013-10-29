@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.net.Uri;
 
+import com.android.sickfuture.sickcore.preference.PreferencesHelper;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
@@ -16,6 +17,20 @@ public class TmdbPopularProcessor extends TmdbMovieListProcessor {
 	public boolean cache(ContentValues[] result, Context context) {
 		Uri uri = ContractUtils.getProviderUriFromContract(Contract.PopularTmdbColumns.class);
 		context.getContentResolver().bulkInsert(uri, result);
+		String prefName = context.getResources().getString(
+				R.string.prefs_paging_name);
+		PreferencesHelper.putInt(
+				context,
+				prefName,
+				context.getResources().getString(
+						R.string.prefs_paging_pop_curr_page_count_key),
+				getCurrPage());
+		PreferencesHelper.putInt(
+				context,
+				prefName,
+				context.getResources().getString(
+						R.string.prefs_paging_pop_max_page_count_key),
+				getTotalPages());
 		return true;
 	}
 

@@ -86,7 +86,6 @@ public class AnimatedCellLayout extends CellLayout {
 		}
 		notify(cursor);
 		if (AndroidVersionsUtils.hasHoneycombMR1()) {
-			// TODO start task
 			new AnimationTask().start();
 		}
 	}
@@ -97,7 +96,6 @@ public class AnimatedCellLayout extends CellLayout {
 		}
 		mCursor = cursor;
 		for (int i = 0; i < getChildCount(); i++) {
-			// TODO set appropriate uri
 			RecyclingImageView child = (RecyclingImageView) getChildAt(i);
 			cursor.moveToPosition(i);
 			String path = cursor.getString(cursor.getColumnIndex(MOVIES_TABLE
@@ -142,9 +140,12 @@ public class AnimatedCellLayout extends CellLayout {
 			if (result == null) {
 				return;
 			}
+			if(mCursor.isClosed()){
+				return;
+			}
 			int randomCursorPosition = mRandom.nextInt(mCursor.getCount() - 1);
 			int randomViewPosition = mRandom.nextInt(getChildCount() - 1);
-			if (!mCursor.moveToPosition(randomCursorPosition)) {
+			if (mCursor.isClosed() || !mCursor.moveToPosition(randomCursorPosition)) {
 				return;
 			}
 			final RecyclingImageView childToAnimate = (RecyclingImageView) getChildAt(randomViewPosition);
