@@ -64,11 +64,11 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		mTitle = mDrawerTitle = getTitle();
 		mDrawerTitles = getResources().getStringArray(TITLES_DRAWER);
 
-		
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mRightDrawerView = (ViewGroup) findViewById(R.id.right_drawer);
-		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, mRightDrawerView);
+		mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+				mRightDrawerView);
 
 		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, mDrawerTitles));
@@ -121,7 +121,7 @@ public abstract class DrawerActivity extends ActionBarActivity {
 		boolean drawerOpen = getDrawerLayout().isDrawerOpen(mDrawerList);
 		try {
 			menu.findItem(R.id.menu_refresh).setVisible(!drawerOpen);
-			
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -143,7 +143,12 @@ public abstract class DrawerActivity extends ActionBarActivity {
 			intent = new Intent(this, UserActivity.class);
 			break;
 		case 3:
-			intent = new Intent(this, DiscoverActivity.class);
+			intent = new Intent(this, SearchActivity.class);
+			intent.setAction(Intent.ACTION_SEARCH);
+			Bundle appData = new Bundle();
+			appData.putInt(SearchActivity.SEARCH_TYPE, SearchActivity.CHOSEN);
+			intent.putExtra(SearchManager.APP_DATA, appData);
+			intent.putExtra(SearchManager.QUERY, "");
 			break;
 		default:
 			break;
@@ -230,7 +235,17 @@ public abstract class DrawerActivity extends ActionBarActivity {
 	public ViewGroup getRightDrawerView() {
 		return mRightDrawerView;
 	}
+
+	protected void unlockRightMenu(boolean unlock) {
+		mDrawerLayout.setDrawerLockMode(
+				unlock ? DrawerLayout.LOCK_MODE_UNLOCKED
+						: DrawerLayout.LOCK_MODE_LOCKED_CLOSED,
+				mRightDrawerView);
+	}
 	
+	protected void showRightMenu(boolean show){
+		mDrawerLayout.openDrawer(mRightDrawerView);
+	}
 	// private void applyCustomFontForPreICS() {
 	// if (!AndroidVersionsUtils.hasICS()) {
 	// new Font(

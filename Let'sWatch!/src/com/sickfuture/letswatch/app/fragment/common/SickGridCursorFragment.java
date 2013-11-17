@@ -5,13 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.widget.CursorAdapter;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-
-import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.app.callback.IListClickable;
 
 public abstract class SickGridCursorFragment extends SickAdapterViewFragment<GridView> implements
 		LoaderCallbacks<Cursor> {
@@ -22,9 +17,12 @@ public abstract class SickGridCursorFragment extends SickAdapterViewFragment<Gri
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mLoaderId = getClass().hashCode();
-		getActivity().getSupportLoaderManager().initLoader(mLoaderId, null,
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId, getLoaderArgs(),
 				this);
+	}
 
+	protected Bundle getLoaderArgs() {
+		return null;
 	}
 
 	@Override
@@ -32,7 +30,7 @@ public abstract class SickGridCursorFragment extends SickAdapterViewFragment<Gri
 		return cursorAdapter();
 	}
 
-	public int getmLoaderId() {
+	public int getLoaderId() {
 		return mLoaderId;
 	}
 

@@ -62,9 +62,9 @@ public abstract class SickAdapterViewFragment<T extends AbsListView> extends
 		mAdapter = adapter();
 		View view = inflater.inflate(fragmentResource(), null);
 		mAdapterView = (T) view.findViewById(adapterViewResource());
-		if (AndroidVersionsUtils.hasHoneycomb())
+		if (AndroidVersionsUtils.hasHoneycomb()) {
 			mAdapterView.setAdapter(mAdapter);
-		else {
+		} else {
 			if (mAdapterView instanceof ListView) {
 				((ListView) mAdapterView).setAdapter(mAdapter);
 			} else if (mAdapterView instanceof GridView) {
@@ -75,7 +75,7 @@ public abstract class SickAdapterViewFragment<T extends AbsListView> extends
 		}
 		mAdapterView.setOnItemClickListener(this);
 		mAdapterView.setOnScrollListener(this);
-		
+
 		mResultReceiver = new SourceResultReceiver(new Handler()) {
 			@Override
 			public void onStart(Bundle result) {

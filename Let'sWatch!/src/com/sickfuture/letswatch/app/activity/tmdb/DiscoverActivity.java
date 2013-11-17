@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 
+@Deprecated
 public class DiscoverActivity extends DrawerActivity {
 
 	@Override

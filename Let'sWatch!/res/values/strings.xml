@@ -38,6 +38,16 @@
     <string name="top_rated">Top rated</string>
     <string name="upcoming">Upcoming</string>
     
+    <string-array name="titles_search_drawer">
+	    <item >@string/search_drawer_movies</item>
+	    <item >@string/search_drawer_person</item>
+	    <item >@string/search_drawer_tv</item>
+	</string-array>
+	
+    <string name="search_drawer_movies">Movies</string>
+    <string name="search_drawer_person">Person</string>
+    <string name="search_drawer_tv">Tv</string>
+    
     <string-array name="movie_sections">
         <item >@string/now_playing</item>
         <item >@string/popular</item>
