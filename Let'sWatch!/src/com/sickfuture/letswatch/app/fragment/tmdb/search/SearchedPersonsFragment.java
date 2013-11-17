@@ -38,6 +38,7 @@ import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
+@Deprecated
 public class SearchedPersonsFragment extends SickGridCursorFragment {
 
 	private static final Uri sSearchedPersonsUri = ContractUtils
