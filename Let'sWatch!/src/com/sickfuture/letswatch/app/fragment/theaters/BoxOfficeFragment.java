@@ -16,7 +16,6 @@ import android.widget.AbsListView;
 import com.android.sickfuture.sickcore.service.DataSourceRequest;
 import com.android.sickfuture.sickcore.service.SourceService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
-import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.adapter.BoxOfficeCursorAdapter;
 import com.sickfuture.letswatch.api.MovieApis;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
@@ -34,13 +33,15 @@ public class BoxOfficeFragment extends CommonMovieListFragment {
 
 	@Override
 	protected Uri getUri() {
-		return ContractUtils.getProviderUriFromContract(Contract.BoxOfficeColumns.class);
+		return ContractUtils
+				.getProviderUriFromContract(Contract.BoxOfficeColumns.class);
 	}
 
 	@Override
 	protected void loadData() {
 		String url = MovieApis.RottenApi.boxOfficeMovies(0, null);
-		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(url);
+		DataSourceRequest<InputStream, ContentValues[]> request = new DataSourceRequest<InputStream, ContentValues[]>(
+				url);
 		request.setIsCacheable(true);
 		SourceService.execute(getActivity(), request,
 				LetsWatchApplication.HTTP_INPUT_STREAM_SERVICE_KEY,

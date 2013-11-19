@@ -119,6 +119,9 @@
 	<string name="prefs_paging_top_rat_max_page_count_key">top_rat_max_key</string>
 	<string name="prefs_paging_pop_curr_page_count_key">pop_curr_key</string>
 	<string name="prefs_paging_pop_max_page_count_key">pop_max_key</string>
+	<string name="search_for">Search for</string>
+	<string name="release_year">Release year</string>
+	<string name="any">Any</string>
 	
     
 </resources>

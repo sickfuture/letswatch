@@ -19,7 +19,6 @@ import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.service.SourceResultReceiver;
 import com.android.sickfuture.sickcore.utils.AndroidVersionsUtils;
 import com.android.sickfuture.sickcore.utils.AppUtils;
-import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 
@@ -27,6 +26,7 @@ public abstract class SickAdapterViewFragment<T extends AbsListView> extends
 		Fragment implements OnScrollListener, OnItemClickListener {
 
 	private T mAdapterView;
+	private View mProgressView;
 	protected SourceResultReceiver mResultReceiver;
 	private BaseAdapter mAdapter;
 
@@ -76,6 +76,8 @@ public abstract class SickAdapterViewFragment<T extends AbsListView> extends
 		mAdapterView.setOnItemClickListener(this);
 		mAdapterView.setOnScrollListener(this);
 
+		mProgressView = view.findViewById(progressViewResource());
+
 		mResultReceiver = new SourceResultReceiver(new Handler()) {
 			@Override
 			public void onStart(Bundle result) {
@@ -113,6 +115,8 @@ public abstract class SickAdapterViewFragment<T extends AbsListView> extends
 
 	protected abstract int adapterViewResource();
 
+	protected abstract int progressViewResource();
+
 	public abstract BaseAdapter adapter();
 
 	public T getAdapterView() {
@@ -125,6 +129,12 @@ public abstract class SickAdapterViewFragment<T extends AbsListView> extends
 
 	public BaseAdapter getAdapter() {
 		return mAdapter;
+	}
+
+	protected void showProgress(boolean show) {
+		if (mProgressView != null) {
+			mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+		}
 	}
 
 }

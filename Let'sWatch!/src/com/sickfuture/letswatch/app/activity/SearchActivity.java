@@ -1,9 +1,11 @@
 package com.sickfuture.letswatch.app.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,14 +20,11 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.app.activity.tmdb.DrawerActivity;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.tmdb.search.SearchResultsFragment;
-import com.sickfuture.letswatch.app.fragment.tmdb.search.SearchedPersonsFragment;
 import com.sickfuture.letswatch.app.fragment.tmdb.search.SearchResultsFragment.ISearchCallbacks;
-import com.sickfuture.letswatch.content.contract.Contract;
 
 public class SearchActivity extends DrawerActivity implements IListClickable,
 		OnItemSelectedListener, ISearchCallbacks {
@@ -48,6 +47,8 @@ public class SearchActivity extends DrawerActivity implements IListClickable,
 
 	private SearchResultsFragment mSearchFragment;
 
+	private Spinner mSpinnerViewType, mSpinnerViewYears;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,13 +62,25 @@ public class SearchActivity extends DrawerActivity implements IListClickable,
 
 	private void fillRightMenu() {
 		unlockRightMenu(true);
-		Spinner spinner = (Spinner) findViewById(R.id.spiner_search_for);
+		mSpinnerViewType = (Spinner) findViewById(R.id.spiner_search_for);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
 				this, R.array.titles_search_drawer,
 				android.R.layout.simple_spinner_item);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
-		spinner.setOnItemSelectedListener(this);
+		mSpinnerViewType.setAdapter(adapter);
+		mSpinnerViewType.setOnItemSelectedListener(this);
+		mSpinnerViewYears = (Spinner) findViewById(R.id.spiner_search_release_year);
+		List<CharSequence> years = new ArrayList<CharSequence>();
+		years.add(getResources().getString(R.string.any));
+		for (int i = 2015; i > 1900; i--) {
+			years.add(String.valueOf(i));
+		}
+		ArrayAdapter<CharSequence> adapterYears = new ArrayAdapter<CharSequence>(
+				this, android.R.layout.simple_spinner_item, years);
+		adapterYears
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mSpinnerViewYears.setAdapter(adapterYears);
+		mSpinnerViewYears.setOnItemSelectedListener(this);
 	}
 
 	@Override
@@ -93,21 +106,6 @@ public class SearchActivity extends DrawerActivity implements IListClickable,
 			}
 			mSearchFragment.setArguments(appData);
 			replaceFragment(mSearchFragment);
-			// TODO delete comments
-			// Fragment fr = null;
-			// switch (appData.getInt(SEARCH_TYPE)) {
-			// case MOVIE:
-			// fr = new SearchedMoviesFragment();
-			// fr.setArguments(appData);
-			// break;
-			// case PERSON:
-			// fr = new SearchedPersonsFragment();
-			// fr.setArguments(appData);
-			// break;
-			// default:
-			// break;
-			// }
-			// replaceFragment(fr);
 		}
 		// TODO deal with suggestions
 		// SearchRecentSuggestions suggestions = new
@@ -180,13 +178,13 @@ public class SearchActivity extends DrawerActivity implements IListClickable,
 	@Override
 	public void changeSearchType(int type) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void showSearchMenu(boolean show) {
 		showRightMenu(show);
-		
+
 	}
 
 }

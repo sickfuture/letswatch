@@ -6,25 +6,17 @@ import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.sickfuture.sickcore.image.SickImageLoader;
-import com.android.sickfuture.sickcore.utils.AppUtils;
-import com.android.sickfuture.sickcore.utils.InetChecker;
 import com.sickfuture.letswatch.R;
-//import com.handmark.pulltorefresh.library.PullToRefreshBase;
-//import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
 
-public abstract class CommonMovieListFragment extends SickCursorListFragment {// implements OnRefreshListener<ListView> {
+public abstract class CommonMovieListFragment extends SickCursorListFragment {
 
 	private static final String LOG_TAG = CommonMovieListFragment.class
 			.getSimpleName();
@@ -43,7 +35,7 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mUri = getUri();
-		
+
 	}
 
 	@Override
@@ -61,17 +53,17 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 		((CursorAdapter) getAdapter()).swapCursor(null);
 	}
 
-//	@Override
-//	public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-//
-//		Log.d(LOG_TAG, "onRefresh: ");
-//		if (InetChecker.checkInetConnection(getActivity())) {
-//			getActivity().getContentResolver().delete(mUri, null, null);
-//			loadData();
-//		} else {
-//			refreshView.onRefreshComplete();
-//		}
-//	}
+	// @Override
+	// public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+	//
+	// Log.d(LOG_TAG, "onRefresh: ");
+	// if (InetChecker.checkInetConnection(getActivity())) {
+	// getActivity().getContentResolver().delete(mUri, null, null);
+	// loadData();
+	// } else {
+	// refreshView.onRefreshComplete();
+	// }
+	// }
 
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -83,7 +75,8 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> list, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> list, View view, int position,
+			long id) {
 		Cursor cursor = (Cursor) list.getItemAtPosition(position);
 		Bundle args = new Bundle();
 		args.putInt(Contract.ID,
@@ -93,16 +86,16 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 
 	@Override
 	protected void error(Exception exception) {
-//		mListView.onRefreshComplete();
+		// mListView.onRefreshComplete();
 		Toast.makeText(getActivity(), exception.getMessage(),
 				Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
 	protected void done(Bundle result) {
-//		mListView.onRefreshComplete();
+		// mListView.onRefreshComplete();
 	}
-	
+
 	@Override
 	protected int fragmentResource() {
 		return R.layout.fragment_common;
@@ -113,5 +106,9 @@ public abstract class CommonMovieListFragment extends SickCursorListFragment {//
 		return R.id.list_view_common_fragment;
 	}
 
+	@Override
+	protected int progressViewResource() {
+		return R.id.progress_bar_common_fragment;
+	}
 
 }

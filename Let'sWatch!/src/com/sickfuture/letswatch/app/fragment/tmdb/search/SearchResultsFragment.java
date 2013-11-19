@@ -33,19 +33,22 @@ import com.android.sickfuture.sickcore.service.SourceService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.android.sickfuture.sickcore.utils.NetworkHelper;
 import com.sickfuture.letswatch.R;
-import com.sickfuture.letswatch.adapter.tmdb.MoviePosterGridAdapter;
-import com.sickfuture.letswatch.adapter.tmdb.PeopleGridCursorAdapter;
 import com.sickfuture.letswatch.adapter.tmdb.SearchedItemsAdapter;
 import com.sickfuture.letswatch.api.MovieApis.TmdbApi;
 import com.sickfuture.letswatch.app.LetsWatchApplication;
 import com.sickfuture.letswatch.app.activity.SearchActivity;
 import com.sickfuture.letswatch.app.activity.tmdb.MovieActivity;
+import com.sickfuture.letswatch.app.activity.tmdb.PeopleActivity;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.MovieColumns;
+import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
 
 public class SearchResultsFragment extends SickGridCursorFragment {
 
+	private static final int RES_PROGRESS_BAR = R.id.progress_bar_fragment_grid_posters;
+	private static final int RES_ADAPTER = R.id.grid_view_fragment_grid_posters;
+	private static final int RES_FRAGMENT = R.layout.fragment_grid_posters;
 	private static final Uri sSearchedMoviesUri = ContractUtils
 			.getProviderUriFromContract(Contract.SearchedMoviesColumns.class);
 	private static final Uri sSearchedPersonsUri = ContractUtils
@@ -86,7 +89,6 @@ public class SearchResultsFragment extends SickGridCursorFragment {
 		}
 	}
 
-	// TODO check
 	private void loadInfo(final String query, final int type) {
 
 		new AsyncTask<Void, Void, Void>() {
@@ -101,6 +103,7 @@ public class SearchResultsFragment extends SickGridCursorFragment {
 			@Override
 			protected void onPostExecute(Void result) {
 				if (NetworkHelper.checkConnection(getActivity())) {
+					showProgress(true);
 					mSearchView.setQuery("", false);
 					String url = null;
 					String proc = null;
@@ -162,6 +165,7 @@ public class SearchResultsFragment extends SickGridCursorFragment {
 
 	@Override
 	public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+		showProgress(false);
 		((CursorAdapter) getAdapter()).swapCursor(cursor);
 	}
 
@@ -183,10 +187,25 @@ public class SearchResultsFragment extends SickGridCursorFragment {
 	public void onItemClick(AdapterView<?> adapterView, View view,
 			int position, long id) {
 		Cursor c = (Cursor) adapterView.getItemAtPosition(position);
-		Intent intent = new Intent(getActivity(), MovieActivity.class);
-		intent.putExtra(SearchActivity.SEARCHED_MOVIE_ID,
-				c.getString(c.getColumnIndex(MovieColumns.TMDB_ID)));
-		// startActivity(intent);
+		Intent intent = null;
+		switch (mCurrSearchType) {
+		case SearchActivity.MOVIE:
+			intent = new Intent(getActivity(), MovieActivity.class);
+			intent.putExtra(SearchActivity.SEARCHED_MOVIE_ID,
+					c.getString(c.getColumnIndex(MovieColumns.TMDB_ID)));
+			startActivity(intent);
+			break;
+		case SearchActivity.PERSON:
+			intent = new Intent(getActivity(), PeopleActivity.class);
+			intent.putExtra(SearchActivity.SEARCHED_PERSON_ID,
+					c.getString(c.getColumnIndex(PersonColumns.TMDB_ID)));
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
+		
+		
 	}
 
 	@Override
@@ -202,6 +221,7 @@ public class SearchResultsFragment extends SickGridCursorFragment {
 
 	@Override
 	protected void error(Exception exception) {
+		showProgress(false);
 		Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG)
 				.show();
 
@@ -215,12 +235,17 @@ public class SearchResultsFragment extends SickGridCursorFragment {
 
 	@Override
 	protected int fragmentResource() {
-		return R.layout.fragment_grid_posters;
+		return RES_FRAGMENT;
 	}
 
 	@Override
 	protected int adapterViewResource() {
-		return R.id.grid_view_fragment_grid_posters;
+		return RES_ADAPTER;
+	}
+
+	@Override
+	protected int progressViewResource() {
+		return RES_PROGRESS_BAR;
 	}
 
 	// TODO change search field similar to google now

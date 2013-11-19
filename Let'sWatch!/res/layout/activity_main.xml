@@ -21,7 +21,9 @@
         android:divider="@android:color/transparent"
         android:dividerHeight="1dp" />
 
-    <RelativeLayout
+    
+    <include layout="@layout/view_right_menu"/>
+   <!--  <RelativeLayout
         android:id="@+id/right_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
@@ -46,6 +48,16 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_search_dropdown_title"
             android:layout_margin="8dp" />
-    </RelativeLayout>
+        
+        <TextView
+            android:id="@+id/text_view_search_year_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Release year"
+            android:textSize="16sp" />
+        
+    </RelativeLayout> -->
 
 </android.support.v4.widget.DrawerLayout>

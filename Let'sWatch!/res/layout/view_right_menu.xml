@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/right_drawer"
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:background="@drawable/shape_rect_lgrey"
+    android:choiceMode="singleChoice"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="1dp" >
+
+    <TextView
+        android:id="@+id/text_view_search_dropdown_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/search_for"
+        android:textSize="16sp" />
+
+    <Spinner
+        android:id="@+id/spiner_search_for"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_search_dropdown_title"
+        android:layout_margin="8dp" />
+
+    <LinearLayout
+        android:id="@+id/layout_search_year_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spiner_search_for"
+        android:layout_marginLeft="8dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/text_view_search_year_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="@string/release_year"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spiner_search_release_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
+</RelativeLayout>

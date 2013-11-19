@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-public abstract class SickGridCursorFragment extends SickAdapterViewFragment<GridView> implements
-		LoaderCallbacks<Cursor> {
+public abstract class SickGridCursorFragment extends
+		SickAdapterViewFragment<GridView> implements LoaderCallbacks<Cursor> {
 
 	private int mLoaderId;
 
@@ -17,8 +17,8 @@ public abstract class SickGridCursorFragment extends SickAdapterViewFragment<Gri
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		mLoaderId = getClass().hashCode();
-		getActivity().getSupportLoaderManager().initLoader(mLoaderId, getLoaderArgs(),
-				this);
+		getActivity().getSupportLoaderManager().initLoader(mLoaderId,
+				getLoaderArgs(), this);
 	}
 
 	protected Bundle getLoaderArgs() {
@@ -35,5 +35,10 @@ public abstract class SickGridCursorFragment extends SickAdapterViewFragment<Gri
 	}
 
 	public abstract CursorAdapter cursorAdapter();
+
+	@Override
+	protected int progressViewResource() {
+		return 0;
+	}
 
 }
