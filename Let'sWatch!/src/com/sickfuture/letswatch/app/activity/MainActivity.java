@@ -25,9 +25,9 @@ public class MainActivity extends DrawerActivity implements IListClickable {
 			fragmentManager.beginTransaction().addToBackStack(null)
 					.replace(R.id.content_frame, fragment).commit();
 		} else {
-			Intent details = new Intent(this, MovieDetailsActivity.class);
-			details.putExtra(MainActivity.ARGUMENTS, arguments);
-			startActivity(details);
+//			Intent details = new Intent(this, MovieDetailsActivity.class);
+//			details.putExtra(MainActivity.ARGUMENTS, arguments);
+//			startActivity(details);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class MainActivity extends DrawerActivity implements IListClickable {
 		appData.putInt(SearchActivity.SEARCH_TYPE, SearchActivity.MOVIE);
 		intent.putExtra(SearchManager.APP_DATA, appData);
 		startActivity(intent);
-		
+
 	}
 
 }

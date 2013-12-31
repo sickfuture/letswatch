@@ -67,13 +67,16 @@
         <item name="android:clickable">true</item>
     </style>
     <style name="styleImagePostersGrid">
-        <item name="android:layout_width">140dp</item>
-        <item name="android:layout_height">208dp</item>
+        <item name="android:minWidth">140dp</item>
+        <item name="android:minHeight">208dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/AliceBlue</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
     <style name="styleTitlePostersGrid" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:layout_width">140dp</item>
+        <item name="android:minWidth">140dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">100dp</item>
         <item name="android:background">@drawable/background_gradient_dark</item>
         <item name="android:gravity">bottom|left</item>
@@ -86,14 +89,16 @@
         <item name="android:textStyle">italic</item>
     </style>
     <style name="styleInfoPostersGrid" parent="android:Widget.Holo.Light.TextView">
-        <item name="android:layout_width">140dp</item>
+        <item name="android:minWidth">140dp</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">36dp</item>
-        <item name="android:background">@color/blackish</item>
+        <item name="android:background">@color/black</item>
         <item name="android:gravity">center|left</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
         <item name="android:textColor">@color/LightGrey</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">italic</item>
     </style>
     <style name="styleTextViewCover" parent="android:Widget.Holo.Light.TextView">
         <item name="android:layout_width">match_parent</item>
@@ -105,5 +110,39 @@
         <item name="android:shadowDy">3</item>
         <item name="android:shadowRadius">2</item>
         <item name="android:textColor">@color/LightGrey</item>
+    </style>
+    <style name="styleTextViewSectionTitle" parent="android:Widget.Holo.Light.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/DarkGray</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:layout_marginLeft">2dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+    <style name="styleWrapContent" parent="android:Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="styleMatchParent" parent="android:Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="styleWMatchHWrap" parent="android:Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="styleWWrapHMatch" parent="android:Widget.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    <style name="styleCategoryParent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/selector_category</item>
+        <item name="android:clickable">true</item>
     </style>
 </resources>

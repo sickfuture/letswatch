@@ -3,7 +3,7 @@
     xmlns:cell="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sections_upcoming_grid"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     cell:columns="4"
     cell:spacing="1dp" >
 
@@ -14,7 +14,7 @@
         cell:layout_cellsWidth="1"
         cell:layout_left="0"
         cell:layout_top="0"
-        android:background="#00FF00"
+        android:background="@color/image_view_bgr_clr"
         android:scaleType="centerCrop" />
 
     <com.android.sickfuture.sickcore.image.view.RecyclingImageView
@@ -24,7 +24,7 @@
         cell:layout_cellsWidth="1"
         cell:layout_left="1"
         cell:layout_top="0"
-        android:background="#00FF00"
+        android:background="@color/image_view_bgr_clr"
         android:scaleType="centerCrop" />
 
     <com.android.sickfuture.sickcore.image.view.RecyclingImageView
@@ -34,7 +34,7 @@
         cell:layout_cellsWidth="1"
         cell:layout_left="2"
         cell:layout_top="0"
-        android:background="#00FF00"
+        android:background="@color/image_view_bgr_clr"
         android:scaleType="centerCrop" />
 
     <com.android.sickfuture.sickcore.image.view.RecyclingImageView
@@ -44,7 +44,7 @@
         cell:layout_cellsWidth="1"
         cell:layout_left="3"
         cell:layout_top="0"
-        android:background="#00FF00"
+        android:background="@color/image_view_bgr_clr"
         android:scaleType="centerCrop" />
 
 </com.sickfuture.letswatch.animations.AnimatedCellLayout>

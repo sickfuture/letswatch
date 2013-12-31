@@ -1,73 +1,56 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:cell="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/LinearLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+              android:id="@+id/LinearLayout1"
+              style="@style/styleMatchParent"
+              android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
-        <include
-            android:id="@+id/sections_now_playing_grid"
-            layout="@layout/layout_animated_cell" />
+    <LinearLayout
+            android:id="@+id/view_now_playing"
+            style="@style/styleCategoryParent">
 
         <TextView
-            android:id="@+id/text_view_now_playing"
-            style="@style/styleTextViewCover"
-            android:text="NOW PLAYING" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
+                style="@style/styleTextViewSectionTitle"
+                android:text="@string/now_playing"/>
         <include
-            android:id="@+id/sections_popular_grid"
-            layout="@layout/layout_animated_cell" />
+                android:id="@+id/sections_now_playing_grid"
+                layout="@layout/layout_animated_cell"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/view_popular"
+            style="@style/styleCategoryParent">
 
         <TextView
-            android:id="@+id/text_view_popular"
-            style="@style/styleTextViewCover"
-            android:text="POPULAR" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
+                style="@style/styleTextViewSectionTitle"
+                android:text="@string/popular"/>
         <include
-            android:id="@+id/sections_top_rated_grid"
-            layout="@layout/layout_animated_cell" />
+                android:id="@+id/sections_popular_grid"
+                layout="@layout/layout_animated_cell"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/view_top_rated"
+            style="@style/styleCategoryParent">
 
         <TextView
-            android:id="@+id/text_view_top_rated"
-            style="@style/styleTextViewCover"
-            android:text="TOP RATED" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-
+                style="@style/styleTextViewSectionTitle"
+                android:text="@string/top_rated"/>
         <include
-            android:id="@+id/sections_upcoming_grid"
-            layout="@layout/layout_animated_cell" />
+                android:id="@+id/sections_top_rated_grid"
+                layout="@layout/layout_animated_cell"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:id="@+id/view_upcoming"
+            style="@style/styleCategoryParent">
 
         <TextView
-            android:id="@+id/text_view_upcoming"
-            style="@style/styleTextViewCover"
-            android:text="UPCOMING" />
-    </RelativeLayout>
+                style="@style/styleTextViewSectionTitle"
+                android:text="@string/upcoming"/>
+        <include
+                android:id="@+id/sections_upcoming_grid"
+                layout="@layout/layout_animated_cell"/>
 
+    </LinearLayout>
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.android.sickfuture.sickcore.adapter.BaseCursorAdapter;
 import com.android.sickfuture.sickcore.image.SickImageLoader;
 import com.android.sickfuture.sickcore.utils.AppUtils;
@@ -41,7 +40,8 @@ public class PeopleGridCursorAdapter extends BaseCursorAdapter {
 
 	@Override
 	public void bindData(View view, Context context, Cursor c, ViewHolder holder) {
-		String name = c
+        holder.getViewById(TEXT_VIEW_INFO).setVisibility(View.GONE);
+                String name = c
 				.getString(c.getColumnIndex(getNameColumn()));
 		String poster = c.getString(c
 				.getColumnIndex(getProfPathColumn()));

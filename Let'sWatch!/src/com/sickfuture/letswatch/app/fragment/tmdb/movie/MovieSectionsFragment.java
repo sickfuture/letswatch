@@ -13,8 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import com.android.sickfuture.sickcore.utils.ContractUtils;
 import com.sickfuture.letswatch.R;
 import com.sickfuture.letswatch.animations.AnimatedCellLayout;
@@ -36,10 +34,10 @@ public class MovieSectionsFragment extends Fragment implements
 	public static final Uri UPCOMING_URI = ContractUtils
 			.getProviderUriFromContract(Contract.UpcomingTmdbColumns.class);
 
-	private static final int COVER_NOW_PLAYING = R.id.text_view_now_playing;
-	private static final int COVER_POPULAR = R.id.text_view_popular;
-	private static final int COVER_TOP_RATED = R.id.text_view_top_rated;
-	private static final int COVER_UPCOMING = R.id.text_view_upcoming;
+	private static final int ID_NOW_PLAYING = R.id.view_now_playing;
+	private static final int ID_POPULAR = R.id.view_popular;
+	private static final int ID_TOP_RATED = R.id.view_top_rated;
+	private static final int ID_UPCOMING = R.id.view_upcoming;
 
 	private int mNowPlayingLoaderId, mPopularLoaderId, mTopRatedLoaderId,
 			mUpcomingLoaderId;
@@ -49,8 +47,8 @@ public class MovieSectionsFragment extends Fragment implements
 	private AnimatedCellLayout mTopRatedLayout;
 	private AnimatedCellLayout mUpcomingLayout;
 
-	private TextView mTextViewCoverPop, mTextViewCoverNow, mTextViewCoverTop,
-			mTextViewCoverUp;
+	private View mViewPop, mViewNow, mViewTop,
+			mViewUp;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -83,15 +81,15 @@ public class MovieSectionsFragment extends Fragment implements
 				.findViewById(R.id.sections_upcoming_grid);
 		mUpcomingLoaderId = mUpcomingLayout.hashCode();
 
-		mTextViewCoverNow = (TextView) view.findViewById(COVER_NOW_PLAYING);
-		mTextViewCoverPop = (TextView) view.findViewById(COVER_POPULAR);
-		mTextViewCoverTop = (TextView) view.findViewById(COVER_TOP_RATED);
-		mTextViewCoverUp = (TextView) view.findViewById(COVER_UPCOMING);
+		mViewNow = view.findViewById(ID_NOW_PLAYING);
+		mViewPop = view.findViewById(ID_POPULAR);
+		mViewTop = view.findViewById(ID_TOP_RATED);
+		mViewUp = view.findViewById(ID_UPCOMING);
 		
-		mTextViewCoverNow.setOnClickListener(this);
-		mTextViewCoverPop.setOnClickListener(this);
-		mTextViewCoverTop.setOnClickListener(this);
-		mTextViewCoverUp.setOnClickListener(this);
+		mViewNow.setOnClickListener(this);
+		mViewPop.setOnClickListener(this);
+		mViewTop.setOnClickListener(this);
+		mViewUp.setOnClickListener(this);
 		
 		LoaderManager loaderManager = getActivity().getSupportLoaderManager();
 		loaderManager.initLoader(mNowPlayingLoaderId, null, this);
@@ -161,16 +159,16 @@ public class MovieSectionsFragment extends Fragment implements
 	public void onClick(View view) {
 		Fragment fragment = null;
 		switch (view.getId()) {
-		case COVER_NOW_PLAYING:
+		case ID_NOW_PLAYING:
 			fragment = new NowPlayingFragment();
 			break;
-		case COVER_POPULAR:
+		case ID_POPULAR:
 			fragment = new PopularMoviesFragment();
 			break;
-		case COVER_TOP_RATED:
+		case ID_TOP_RATED:
 			fragment = new TopRatedFragment();
 			break;
-		case COVER_UPCOMING:
+		case ID_UPCOMING:
 			fragment = new UpcomingMoviesFragment();
 			break;
 		}
