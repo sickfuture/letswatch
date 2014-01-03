@@ -97,38 +97,38 @@ public class RefreshActionItem extends FrameLayout implements OnClickListener, O
         int N = a.getIndexCount();
         for (int i = 0; i < N; ++i) {
             int attr = a.getIndex(i);
-            switch (attr) {
-            case R.styleable.RefreshActionItem_progressIndicatorType:
+            if (attr == R.styleable.RefreshActionItem_progressIndicatorType) {
                 mProgressIndicatorType = ProgressIndicatorType.values()[a.getInt(attr, 0)];
                 if (mProgressIndicatorType == ProgressIndicatorType.PIE) {
                     mProgressIndicator.setPieStyle(true);
                 }
-                break;
-            case R.styleable.RefreshActionItem_refreshActionItemIcon:
+
+            } else if (attr == R.styleable.RefreshActionItem_refreshActionItemIcon) {
                 Drawable refreshButtonIcon = a.getDrawable(attr);
                 mRefreshButton.setImageDrawable(refreshButtonIcon);
-                break;
-            case R.styleable.RefreshActionItem_progressIndicatorForegroundColor:
+
+            } else if (attr == R.styleable.RefreshActionItem_progressIndicatorForegroundColor) {
                 int color = a.getColor(attr, 0);
                 mProgressIndicator.setForegroundColor(color);
-                break;
-            case R.styleable.RefreshActionItem_progressIndicatorBackgroundColor:
+
+            } else if (attr == R.styleable.RefreshActionItem_progressIndicatorBackgroundColor) {
+                int color;
                 color = a.getColor(attr, 0);
                 mProgressIndicator.setBackgroundColor(color);
-                break;
-            case R.styleable.RefreshActionItem_refreshActionItemBackground:
+
+            } else if (attr == R.styleable.RefreshActionItem_refreshActionItemBackground) {
                 Drawable drawable = a.getDrawable(attr);
                 mRefreshButton.setBackgroundDrawable(drawable);
-                break;
-            case R.styleable.RefreshActionItem_badgeBackgroundColor:
+
+            } else if (attr == R.styleable.RefreshActionItem_badgeBackgroundColor) {
                 mBadgeBackgroundColor = a.getColor(attr, -1);
-                break;
-            case R.styleable.RefreshActionItem_badgeTextStyle:
+
+            } else if (attr == R.styleable.RefreshActionItem_badgeTextStyle) {
                 mBadgeTextStyle = a.getResourceId(attr, 0);
-                break;
-            case R.styleable.RefreshActionItem_badgePosition:
+
+            } else if (attr == R.styleable.RefreshActionItem_badgePosition) {
                 mBadgePosition = a.getInt(attr, 0);
-                break;
+
             }
         }
         a.recycle();

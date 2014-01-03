@@ -1,16 +1,11 @@
-apply plugin: 'android'
+apply plugin: 'android-library'
 
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
-    compile project(':sickcore:Sickcore')
-    compile project(':letswatch:libs:RefreshActionItem-ActionBarCompat-master:library:src:main')
-    compile project(':letswatch:libs:appcompat')
-    compile project(':letswatch:libs:gridlayout')
-    compile project(':letswatch:libs:HorizontalVariableListView-master:HorizontalVariableListView')
 }
 
 android {
-    compileSdkVersion 18
+    compileSdkVersion 7
     buildToolsVersion "19.0.0"
 
     sourceSets {

@@ -15,11 +15,10 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
 import com.android.sickfuture.sickcore.preference.PreferencesHelper;
 import com.android.sickfuture.sickcore.utils.NetworkHelper;
 import com.android.sickfuture.sickcore.utils.NetworkHelper.NetworkCallback;
-import com.manuelpeinado.refreshactionitem.ProgressIndicatorType;
+import com.manuelpeinado.refreshactionitem.*;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem;
 import com.manuelpeinado.refreshactionitem.RefreshActionItem.RefreshActionListener;
 import com.sickfuture.letswatch.R;

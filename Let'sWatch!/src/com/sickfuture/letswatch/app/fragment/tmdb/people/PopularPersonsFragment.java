@@ -1,7 +1,5 @@
 package com.sickfuture.letswatch.app.fragment.tmdb.people;
 
-import java.io.InputStream;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -17,7 +15,6 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
 import com.android.sickfuture.sickcore.service.DataSourceRequest;
 import com.android.sickfuture.sickcore.service.SourceService;
 import com.android.sickfuture.sickcore.utils.ContractUtils;
@@ -34,6 +31,8 @@ import com.sickfuture.letswatch.app.callback.IListClickable;
 import com.sickfuture.letswatch.app.fragment.common.SickGridCursorFragment;
 import com.sickfuture.letswatch.content.contract.Contract;
 import com.sickfuture.letswatch.content.contract.Contract.PersonColumns;
+
+import java.io.InputStream;
 
 // TODO inherit from CommonGridFragment
 public class PopularPersonsFragment extends SickGridCursorFragment implements
