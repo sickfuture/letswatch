@@ -242,11 +242,17 @@ public class MovieApis {
 
     public static class TmdbApi {
 
+        //        public static final String SORT_BY_CREATED_AT = "created_at";
+//        public static final String SORT_ORDER_ASC = "asc";
+//        public static final String SORT_ORDER_DESC = "desc";
+        public static final String EXTERNAL_IDS = "/external_ids";
+        public static final String INCLUDE_IMAGE_LANGUAGE = "include_image_language";
+        private static final String POSTER_W92 = "w92";
         private static final String REVIEW = "/review";
-        private static final String QUERY = "query=%s";
-        private static final String SEARCH_TYPE = "search_type=%s";
-        private static final String PRIMARY_RELEASE_YEAR = "primary_release_year=%s";
-        private static final String YEAR = "year=%s";
+        private static final String QUERY = "query";
+        private static final String SEARCH_TYPE = "search_type";
+        private static final String PRIMARY_RELEASE_YEAR = "primary_release_year";
+        private static final String YEAR = "year";
         private static final String SEARCH = "/search";
         private static final String INCLUDE_ADULT = "include_adult=%s";
         private static final String DISCOVER = "/discover";
@@ -293,9 +299,9 @@ public class MovieApis {
         private static final String AUTHENTICATION = "/authentication";
         private static final String URL_TEMPLATE = "http://api.themoviedb.org/3%s?api_key=8df0f158f56c4b9766eeb45fdbbe3b7d";
         private static final String CONFIGURATION = "/configuration";
-        private static final String APPEND = "append_to_response=%s";
-        private static final String PAGE = "page=%s";
-        private static final String FAVORITE = "/favorite";
+//        private static final String APPEND = "append_to_response=%s";
+//        private static final String PAGE = "page=%s";
+//        private static final String FAVORITE = "/favorite";
 
         public static final String SORT_BY_CREATED_AT = "created_at";
         public static final String SORT_ORDER_ASC = "asc";
@@ -310,6 +316,11 @@ public class MovieApis {
         public static final String EXTERNAL_SOURCE = "external_source";
         public static final String COMBINED_CREDITS = "/combined_credits";
         public static final String MOVIE_CREDITS = "/movie_credits";
+        private static final String APPEND = "append_to_response";
+        private static final String PAGE = "page=%s";
+        private static final String FAVORITE = "/favorite";
+        public static final String TV = "/tv";
+//        private static final String SECURE_BASE_URL = "https://d3gtl9l2a4fn1j.cloudfront.net/t/p/%s%s";
 
         public static String configutration() {
             return String.format(URL_TEMPLATE, CONFIGURATION);
@@ -445,10 +456,10 @@ public class MovieApis {
          *
          * @param id
          * @param sessionId
-         * @param sort_order asc | desc
-         * @param sort_by    Only 'created_at` is currently supported.
+         * @param sortOrder asc | desc
+         * @param sortBy    Only 'created_at` is currently supported.
          * @param page
-         * @param language   ISO 639-1 code.
+         * @param language  ISO 639-1 code.
          * @return url
          */
         public static String getAccountWatchlist(String id, String sessionId,
@@ -474,6 +485,245 @@ public class MovieApis {
         public static String manageAccountWatchlist(String id, String sessionId) {
             StringBuilder builder = getAccountBuilder(MOVIE_WATCHLIST, id,
                     sessionId);
+            return builder.toString();
+        }
+
+        /**
+         * Get the primary information about a TV series by id.
+         *
+         * @param id
+         * @param language         ISO 639-1 code.
+         * @param appendToResponse Comma separated, any tv series method
+         * @return
+         */
+        public static String getTV(String id, String language,
+                                   String... appendToResponse) {
+            //todo check
+            StringBuilder builder = getUrlBuilder(TV, null, id);
+            addLanguage(language, builder);
+            appendToResponse(builder, appendToResponse);
+            return builder.toString();
+        }
+
+        /**
+         * Get the cast & crew information about a TV series. Just like the website,
+         * we pull this information from the last season of the series.
+         *
+         * @param id
+         * @param language         ISO 639-1 code.
+         * @param appendToResponse Comma separated, any tv series method
+         * @return
+         */
+        public static String getTvCredits(String id, String language,
+                                          String... appendToResponse) {
+            //todo check
+            StringBuilder builder = getUrlBuilder(TV, CREDITS, id);
+            addLanguage(language, builder);
+            appendToResponse(builder, appendToResponse);
+            return builder.toString();
+        }
+
+        /**
+         * Get the external ids that we have stored for a TV series.
+         *
+         * @param id
+         * @param language ISO 639-1 code.
+         * @return
+         */
+        public static String getTvExternalIds(String id, String language) {
+            //todo check
+            StringBuilder builder = getUrlBuilder(TV, EXTERNAL_IDS, id);
+            addLanguage(language, builder);
+            return builder.toString();
+        }
+
+        /**
+         * Get the images (posters and backdrops) for a TV series.
+         *
+         * @param id
+         * @param language             ISO 639-1 code.
+         * @param includeImageLanguage Comma separated, a valid ISO 69-1.
+         * @return
+         */
+        public static String getTvImages(String id, String language, String... includeImageLanguage) {
+            //todo check
+            StringBuilder builder = getUrlBuilder(TV, IMAGES, id);
+            addLanguage(language, builder);
+            appendCommaSeparatedParams(builder, INCLUDE_IMAGE_LANGUAGE, includeImageLanguage);
+            return builder.toString();
+        }
+
+        /**
+         * Get the list of translations that exist for a TV series.
+         * These translations cascade down to the episode level.
+         *
+         * @param id
+         * @return
+         */
+        public static String getTvTranslations(String id) {
+            //todo check
+            StringBuilder builder = getUrlBuilder(TV, IMAGES, id);
+            return builder.toString();
+        }
+
+        /**
+         * Get the list of top rated TV shows. By default, this
+         * list will only include TV shows that have 2 or more votes.
+         * This list refreshes every day.
+         *
+         * @param language ISO 639-1 code.
+         * @param page
+         * @return
+         */
+        public static String getTVsPopular(String language, int page) {
+            StringBuilder builder = getUrlBuilder(TV, POPULAR, null);
+            addLanguage(language, builder);
+            addPage(page, builder);
+            return builder.toString();
+        }
+
+        /**
+         * Get the list of popular TV shows. This list refreshes every day.
+         *
+         * @param language ISO 639-1 code.
+         * @param page
+         * @return
+         */
+        public static String getTVsTopRated(String language, int page) {
+            StringBuilder builder = getUrlBuilder(TV, TOP_RATED, null);
+            addLanguage(language, builder);
+            addPage(page, builder);
+            return builder.toString();
+        }
+
+        // TV SEASONS
+
+        /**
+         * Get the primary information about a TV season by its season number.
+         *
+         * @param id
+         * @param seasonNumber
+         * @param language
+         * @param appendToResponse
+         * @return
+         */
+        public static String getTvSeason(String id, int seasonNumber, String language,
+                                         String... appendToResponse) {
+            String s = String.format("/season/%s", seasonNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
+            addLanguage(language, builder);
+            appendToResponse(builder, appendToResponse);
+            return builder.toString();
+        }
+
+        /**
+         * Get the cast & crew credits for a TV season by season number.
+         *
+         * @param id
+         * @param seasonNumber
+         * @return
+         */
+        public static String getTvSeasonCredits(String id, int seasonNumber) {
+            String s = String.format("/season/%s" + CREDITS, seasonNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
+            return builder.toString();
+        }
+
+        /**
+         * Get the external ids that we have stored for a TV season by season number.
+         *
+         * @param id
+         * @param seasonNumber
+         * @return
+         */
+        public static String getTvSeasonExternalIds(String id, int seasonNumber) {
+            String s = String.format("/season/%s" + EXTERNAL_IDS, seasonNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
+            return builder.toString();
+        }
+
+        /**
+         * Get the external ids that we have stored for a TV season by season number.
+         *
+         * @param id
+         * @param seasonNumber
+         * @param language             ISO 639-1 code
+         * @param includeImageLanguage comma-separated, ISO 639-1
+         * @return
+         */
+        public static String getTvSeasonImages(String id, int seasonNumber,
+                                               String language, String... includeImageLanguage) {
+            String s = String.format("/season/%s" + IMAGES, seasonNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
+            addLanguage(language, builder);
+            appendCommaSeparatedParams(builder, INCLUDE_IMAGE_LANGUAGE, includeImageLanguage);
+            return builder.toString();
+        }
+
+        // TV EPISODES
+
+        /**
+         * Get the primary information about a TV episode by combination of a season and episode number.
+         *
+         * @param id
+         * @param seasonNumber
+         * @param episodeNumber
+         * @param language         ISO 639-1 code.
+         * @param appendToResponse Comma separated, any tv series method
+         * @return
+         */
+        public static String getTvEpisode(String id, int seasonNumber, String episodeNumber,
+                                          String language, String... appendToResponse) {
+            String s = String.format("/season/%s" + "/episode/%s", seasonNumber, episodeNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
+            addLanguage(language, builder);
+            appendToResponse(builder, appendToResponse);
+            return builder.toString();
+        }
+
+        /**
+         * Get the TV episode credits by combination of season and episode number.
+         *
+         * @param id
+         * @param seasonNumber
+         * @param episodeNumber
+         * @return
+         */
+        public static String getTvEpisodeCredits(String id, int seasonNumber, String episodeNumber) {
+            String s = String.format("/season/%s" + "/episode/%s" + CREDITS, seasonNumber, episodeNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
+            return builder.toString();
+        }
+
+        /**
+         * Get the external ids for a TV episode by comabination of a season and episode number.
+         *
+         * @param id
+         * @param seasonNumber
+         * @param episodeNumber
+         * @param language      ISO 639-1 code.
+         * @return
+         */
+        public static String getTvEpisodeExternalIds(String id, int seasonNumber, String episodeNumber,
+                                                     String language) {
+            String s = String.format("/season/%s" + "/episode/%s" + EXTERNAL_IDS, seasonNumber, episodeNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
+            addLanguage(language, builder);
+            return builder.toString();
+        }
+
+        /**
+         * Get the images (episode stills) for a TV episode by combination of a season and episode number.
+         * Since episode stills don't have a language, this call will always return all images.
+         *
+         * @param id
+         * @param seasonNumber
+         * @param episodeNumber
+         * @return
+         */
+        public static String getTvEpisodeImages(String id, int seasonNumber, String episodeNumber) {
+            String s = String.format("/season/%s" + "/episode/%s" + IMAGES, seasonNumber, episodeNumber);
+            StringBuilder builder = getUrlBuilder(TV, s, id);
             return builder.toString();
         }
 
@@ -535,7 +785,7 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return url
          */
-        public static String getImagesMovie(String id, String language,
+        public static String getMovieImages(String id, String language,
                                             String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(IMAGES, id);
             addLanguage(language, builder);
@@ -550,7 +800,7 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return url
          */
-        public static String getKeywordsMovie(String id,
+        public static String getMovieKeywords(String id,
                                               String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(KEYWORDS, id);
             appendToResponse(builder, appendToResponse);
@@ -565,7 +815,7 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return url
          */
-        public static String getReleasesMovie(String id,
+        public static String getMovieReleases(String id,
                                               String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(RELEASES, id);
             appendToResponse(builder, appendToResponse);
@@ -579,7 +829,7 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return url
          */
-        public static String getTrailersMovie(String id,
+        public static String getMovieTrailers(String id,
                                               String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(TRAILERS, id);
             appendToResponse(builder, appendToResponse);
@@ -593,7 +843,7 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return url
          */
-        public static String getTranslationsMovie(String id,
+        public static String getMovieTranslations(String id,
                                                   String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(TRANSLATIONS, id);
             appendToResponse(builder, appendToResponse);
@@ -610,7 +860,7 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return
          */
-        public static String getSimilarMovie(String id, String language,
+        public static String getMovieSimilar(String id, String language,
                                              int page, String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(SIMILAR_MOVIES, id);
             addLanguage(language, builder);
@@ -628,7 +878,7 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return
          */
-        public static String getReviewsMovie(String id, String language,
+        public static String getMovieReviews(String id, String language,
                                              int page, String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(REVIEWS, id);
             addLanguage(language, builder);
@@ -646,8 +896,8 @@ public class MovieApis {
          * @param appendToResponse Comma separated, any movie method
          * @return
          */
-        public static String getListsMovie(String id, String language,
-                                           int page, String... appendToResponse) {
+        public static String getMoviesLists(String id, String language,
+                                            int page, String... appendToResponse) {
             StringBuilder builder = getMovieBuilder(LISTS, id);
             addLanguage(language, builder);
             addPage(page, builder);
@@ -660,7 +910,7 @@ public class MovieApis {
          *
          * @return url
          */
-        public static String getLatestMovie() {
+        public static String getMovieLatest() {
             StringBuilder builder = new StringBuilder(String.format(
                     URL_TEMPLATE, MOVIE + LATEST));
             return builder.toString();
@@ -833,13 +1083,6 @@ public class MovieApis {
             StringBuilder builder = getUrlBuilder("/network", null, id);
             return builder.toString();
         }
-
-        private static void addParam(String paramName, String param, StringBuilder builder) {
-            if (!TextUtils.isEmpty(param)) {
-                builder.append("&").append(String.format("%s=%s", paramName, param));
-            }
-        }
-
 
         /**
          * Get the general person information for a specific id. Required
@@ -1159,24 +1402,24 @@ public class MovieApis {
          *                              this value. Expected value is a year.
          * @param primary_release_year  Filter the results so that only the primary release date
          *                              year has this value. Expected value is a year.
-         * @param vote_count            .gte Only include movies that are equal to, or have a vote
+         * @param vote_count_gte        .gte Only include movies that are equal to, or have a vote
          *                              count higher than this value. Expected value is an
          *                              integer.
-         * @param vote_average          .gte Only include movies that are equal to, or have a
+         * @param vote_average_gte      .gte Only include movies that are equal to, or have a
          *                              higher average rating than this value. Expected value is a
          *                              float.
          * @param with_genres           Only include movies with the specified genres. Expected
          *                              value is an integer (the id of a genre). Multiple values
          *                              can be specified. Comma separated indicates an 'AND'
          *                              query, while a pipe (|) separated value indicates an 'OR'.
-         * @param release_date          .gte The minimum release to include. Expected format is
+         * @param release_date_gte      .gte The minimum release to include. Expected format is
          *                              YYYY-MM-DD.
-         * @param release_date          .lte The maximum release to include. Expected format is
+         * @param release_date_lte      .lte The maximum release to include. Expected format is
          *                              YYYY-MM-DD.
          * @param certification_country Only include movies with certifications for a specific
          *                              country. When this value is specified, 'certification.lte'
          *                              is required. A ISO 3166-1 is expected.
-         * @param certification         .lte Only include movies with this certification and
+         * @param certification_lte     .lte Only include movies with this certification and
          *                              lower. Expected value is a valid certification for the
          *                              specified 'certification_country'.
          * @param with_companies        Filter movies to include a specific company. Expected
@@ -1184,12 +1427,13 @@ public class MovieApis {
          *                              comma separated to indicate an 'AND' query.
          * @return url
          */
-        public static String discover(int page, String language,
-                                      String sort_by, boolean include_adult, int year,
-                                      int primary_release_year, int vote_count_gte,
-                                      float vote_average_gte, String with_genres,
-                                      String release_date_lte, String certification_country,
-                                      String certification_lte, int... with_companies) {
+        public static String discoverMovie(int page, String language,
+                                           String sort_by, boolean include_adult, int year,
+                                           int primary_release_year, int vote_count_gte,
+                                           float vote_average_gte, String with_genres,
+                                           String release_date_gte,
+                                           String release_date_lte, String certification_country,
+                                           String certification_lte, int... with_companies) {
             StringBuilder builder = new StringBuilder(String.format(
                     URL_TEMPLATE, DISCOVER + MOVIE));
             addPage(page, builder);
@@ -1197,15 +1441,16 @@ public class MovieApis {
             addSortBy(sort_by, builder);
             builder.append("&").append(
                     String.format(INCLUDE_ADULT, include_adult));
-            addInt(builder, YEAR, year);
-            addInt(builder, PRIMARY_RELEASE_YEAR, primary_release_year);
-            addInt(builder, "vote_count.gte=%s", vote_count_gte);
-            addFloat(builder, "vote_average.gte=%s", vote_average_gte);
-            addString(builder, "with_genres=%s", with_genres);
-            addString(builder, "release_date.lte=%s", release_date_lte);
-            addString(builder, "certification_country=%s",
-                    certification_country);
-            addString(builder, "certification.lte=%s", certification_lte);
+            addParam(YEAR, year, builder);
+            addParam(PRIMARY_RELEASE_YEAR, primary_release_year, builder);
+            addParam("vote_count.gte", vote_count_gte, builder);
+            addParam("vote_average.gte", vote_average_gte, builder);
+            addParam("with_genres", with_genres, builder);
+            addParam("release_date.lte", release_date_lte, builder);
+            addParam("release_date.gte", release_date_gte, builder);
+            addParam("certification_country",
+                    certification_country, builder);
+            addParam("certification.lte", certification_lte, builder);
             if (with_companies.length > 0) {
                 String a = "";
                 for (int append : with_companies) {
@@ -1214,6 +1459,58 @@ public class MovieApis {
                 a.substring(0, a.length() - 1);
                 builder.append("&").append(
                         String.format("with_companies=%s", a));
+            }
+            return builder.toString();
+        }
+
+        /**
+         * Discover TV shows by different types of data like average rating, number of votes,
+         * genres, the network they aired on and air dates.
+         *
+         * @param page
+         * @param language
+         * @param sort_by             Available options are vote_average.desc, vote_average.asc, first_air_date.desc,
+         *                            first_air_date.asc, popularity.desc, popularity.asc
+         * @param first_air_date_year Filter the results release dates to matches that include this value.
+         *                            Expected value is a year.
+         * @param vote_count_gte      Only include TV shows that are equal to, or have a vote count higher than this value.
+         *                            Expected value is an integer.
+         * @param vote_average_gte    Only include TV shows that are equal to, or have a higher average rating than
+         *                            this value. Expected value is a float.
+         * @param with_genres         Only include TV shows with the specified genres. Expected value is an integer
+         *                            (the id of a genre). Multiple values can be specified.
+         *                            Comma separated indicates an 'AND' query, while a pipe (|)
+         *                            separated value indicates an 'OR'.
+         * @param first_air_date_gte  The minimum release to include. Expected format is YYYY-MM-DD.
+         * @param first_air_date_lte  The maximum release to include. Expected format is YYYY-MM-DD.
+         * @param with_networks       Filter TV shows to include a specific network. Expected value is an integer
+         *                            (the id of a network). They can be comma separated to indicate an 'AND' query.
+         * @return
+         */
+        public static String discoverTV(int page, String language,
+                                        String sort_by, int first_air_date_year, int vote_count_gte,
+                                        float vote_average_gte, String with_genres,
+                                        String first_air_date_gte,
+                                        String first_air_date_lte, int... with_networks) {
+            StringBuilder builder = new StringBuilder(String.format(
+                    URL_TEMPLATE, DISCOVER + TV));
+            addPage(page, builder);
+            addLanguage(language, builder);
+            addSortBy(sort_by, builder);
+            addParam("first_air_date_year", first_air_date_year, builder);
+            addParam("vote_count.gte", vote_count_gte, builder);
+            addParam("vote_average.gte", vote_average_gte, builder);
+            addParam("with_genres", with_genres, builder);
+            addParam("first_air_date.gte", first_air_date_gte, builder);
+            addParam("first_air_date.lte", first_air_date_lte, builder);
+            if (with_networks.length > 0) {
+                String a = "";
+                for (int append : with_networks) {
+                    a += append + ",";
+                }
+                a.substring(0, a.length() - 1);
+                builder.append("&").append(
+                        String.format("with_networks=%s", a));
             }
             return builder.toString();
         }
@@ -1244,14 +1541,44 @@ public class MovieApis {
             if (TextUtils.isEmpty(query)) {
                 throw new IllegalArgumentException("Query must be not empty");
             }
-            addString(builder, QUERY, query);
+            addParam(QUERY, query, builder);
             addPage(page, builder);
             addLanguage(language, builder);
             builder.append("&").append(
                     String.format(INCLUDE_ADULT, include_adult));
-            addInt(builder, YEAR, year);
-            addInt(builder, PRIMARY_RELEASE_YEAR, primary_release_year);
-            addString(builder, SEARCH_TYPE, search_type);
+            addParam(YEAR, year, builder);
+            addParam(PRIMARY_RELEASE_YEAR, primary_release_year, builder);
+            addParam(SEARCH_TYPE, search_type, builder);
+            return builder.toString();
+        }
+
+        /**
+         * Search for TV shows by title.
+         *
+         * @param query               CGI escaped string
+         * @param page                Minimum value is 1, expected value is an integer.
+         * @param language            ISO 639-1 code.
+         * @param first_air_date_year Filter the results to only match shows that have a air date with with value.
+         * @param search_type         By default, the search type is 'phrase'.
+         *                            This is almost guaranteed the option you will want.
+         *                            It's a great all purpose search type and by far the most
+         *                            tuned for every day querying. For those wanting more of an
+         *                            "autocomplete" type search, set this option to 'ngram'.
+         * @return
+         */
+        public static String searchTV(String query, int page,
+                                      String language, int first_air_date_year,
+                                      String search_type) {
+            //todo refactor
+            StringBuilder builder = getSearchBuilder(TV);
+            if (TextUtils.isEmpty(query)) {
+                throw new IllegalArgumentException("Query must be not empty");
+            }
+            addParam(QUERY, query, builder);
+            addPage(page, builder);
+            addLanguage(language, builder);
+            addParam("first_air_date_year", first_air_date_year, builder);
+            addParam(SEARCH_TYPE, search_type, builder);
             return builder.toString();
         }
 
@@ -1269,7 +1596,7 @@ public class MovieApis {
             if (TextUtils.isEmpty(query)) {
                 throw new IllegalArgumentException("Query must be not empty");
             }
-            addString(builder, QUERY, query);
+            addParam(QUERY, query, builder);
             addPage(page, builder);
             addLanguage(language, builder);
             return builder.toString();
@@ -1295,11 +1622,11 @@ public class MovieApis {
             if (TextUtils.isEmpty(query)) {
                 throw new IllegalArgumentException("Query must be not empty");
             }
-            addString(builder, QUERY, query);
+            addParam(QUERY, query, builder);
             addPage(page, builder);
             builder.append("&").append(
                     String.format(INCLUDE_ADULT, include_adult));
-            addString(builder, SEARCH_TYPE, search_type);
+            addParam(SEARCH_TYPE, search_type, builder);
             return builder.toString();
         }
 
@@ -1318,7 +1645,7 @@ public class MovieApis {
             if (TextUtils.isEmpty(query)) {
                 throw new IllegalArgumentException("Query must be not empty");
             }
-            addString(builder, QUERY, query);
+            addParam(QUERY, query, builder);
             addPage(page, builder);
             builder.append("&").append(
                     String.format(INCLUDE_ADULT, include_adult));
@@ -1337,7 +1664,7 @@ public class MovieApis {
             if (TextUtils.isEmpty(query)) {
                 throw new IllegalArgumentException("Query must be not empty");
             }
-            addString(builder, QUERY, query);
+            addParam(QUERY, query, builder);
             addPage(page, builder);
             return builder.toString();
         }
@@ -1354,7 +1681,7 @@ public class MovieApis {
             if (TextUtils.isEmpty(query)) {
                 throw new IllegalArgumentException("Query must be not empty");
             }
-            addString(builder, QUERY, query);
+            addParam(QUERY, query, builder);
             addPage(page, builder);
             return builder.toString();
         }
@@ -1379,16 +1706,30 @@ public class MovieApis {
                     .toString();
         }
 
-        private static void appendToResponse(StringBuilder builder,
-                                             String... appendToResponse) {
-            if (appendToResponse.length > 0) {
+        private static void appendCommaSeparatedParams(StringBuilder builder,
+                                                       String paramName, String... params) {
+            if (params.length > 0) {
                 String a = "";
-                for (String append : appendToResponse) {
+                for (String append : params) {
                     a += append + ",";
                 }
                 a.substring(0, a.length() - 1);
-                builder.append("&").append(String.format(APPEND, a));
+                builder.append("&").append(String.format("%s=%s", paramName, a));
             }
+        }
+
+        //todo check
+        private static void appendToResponse(StringBuilder builder,
+                                             String... appendToResponse) {
+            appendCommaSeparatedParams(builder, APPEND, appendToResponse);
+//            if (appendToResponse.length > 0) {
+//                String a = "";
+//                for (String append : appendToResponse) {
+//                    a += append + ",";
+//                }
+//                a.substring(0, a.length() - 1);
+//                builder.append("&").append(String.format(APPEND, a));
+//            }
         }
 
         private static StringBuilder getAccountBuilder(String method,
@@ -1472,25 +1813,52 @@ public class MovieApis {
             }
         }
 
-        private static void addInt(StringBuilder builder, String field, int val) {
-            if (val > 0) {
-                builder.append("&").append(String.format(field, val));
+        private static void addParam(String paramName, Object param, StringBuilder builder) {
+            String p = null;
+            if (param instanceof String) {
+                if (!TextUtils.isEmpty((String) param)) {
+                    p = (String) param;
+                }
+            } else if (param instanceof Integer) {
+                if ((Integer) param > 0) {
+                    p = String.valueOf(param);
+                }
+
+            } else if (param instanceof Float) {
+                if ((Float) param > 0) {
+                    p = String.valueOf(param);
+                }
+            } else {
+                try {
+                    p = String.valueOf(param);
+                } catch (Exception ignored) {
+                    p = null;
+                }
+            }
+            if (p != null) {
+                builder.append(String.format("&%s=%s", paramName, p));
             }
         }
 
-        private static void addFloat(StringBuilder builder, String field,
-                                     float val) {
-            if (val > 0) {
-                builder.append("&").append(String.format(field, val));
-            }
-        }
-
-        private static void addString(StringBuilder builder, String field,
-                                      String val) {
-            if (!TextUtils.isEmpty(val)) {
-                builder.append("&").append(String.format(field, val));
-            }
-        }
+//        private static void addInt(StringBuilder builder, String field, int val) {
+//            if (val > 0) {
+//                builder.append("&").append(String.format(field, val));
+//            }
+//        }
+//
+//        private static void addFloat(StringBuilder builder, String field,
+//                                     float val) {
+//            if (val > 0) {
+//                builder.append("&").append(String.format(field, val));
+//            }
+//        }
+//
+//        private static void addString(StringBuilder builder, String field,
+//                                      String val) {
+//            if (!TextUtils.isEmpty(val)) {
+//                builder.append("&").append(String.format(field, val));
+//            }
+//        }
 
         private static void checkSessionId(String sessionId) {
             if (TextUtils.isEmpty(sessionId)) {
@@ -1504,7 +1872,6 @@ public class MovieApis {
         public enum POSTER {
             W92("w92"), W154("w154"), W185("w185"), W342("w342"), W500("w500"), ORIGINAL(
                     "original");
-
             private final String size;
 
             POSTER(String path) {
@@ -1519,7 +1886,6 @@ public class MovieApis {
 
         public enum BACKDROP {
             W300("w300"), W780("w780"), W1280("w1280"), ORIGINAL("original");
-
             private final String size;
 
             BACKDROP(String path) {
@@ -1534,7 +1900,6 @@ public class MovieApis {
 
         public enum PROFILE {
             W45("w45"), W185("w185"), H632("h632"), ORIGINAL("original");
-
             private final String size;
 
             PROFILE(String path) {
@@ -1550,7 +1915,6 @@ public class MovieApis {
         public enum LOGO {
             W45("w45"), W154("w154"), W185("w185"), W92("w92"), W300("w300"), W500(
                     "w500"), ORIGINAL("original");
-
             private final String size;
 
             LOGO(String path) {
